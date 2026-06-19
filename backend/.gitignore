@@ -1,0 +1,3 @@
+
+# Ignore SimpleCov coverage reports.
+/coverage/

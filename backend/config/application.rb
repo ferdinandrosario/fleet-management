@@ -1,0 +1,73 @@
+require_relative "boot"
+
+require "rails"
+# Pick the frameworks you want:
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+require "active_storage/engine"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_mailbox/engine"
+require "action_text/engine"
+require "action_view/railtie"
+require "action_cable/engine"
+# require "rails/test_unit/railtie"
+
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module Backend
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 8.1
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
+
+    # Only loads a smaller set of middleware suitable for API only apps.
+    # Middleware like session, flash, cookies can be added back manually.
+    # Skip views, helpers and assets when generating a new resource.
+    config.api_only = true
+
+    # PostGIS spatial types and per-schema search paths can't be represented in
+    # the Ruby schema.rb — dump structure.sql instead.
+    config.active_record.schema_format = :sql
+
+    # --- Internationalization: six locales, English is base + fallback ------
+    # No user-facing string is hard-coded; backend messages (validation,
+    # notifications, receipts) resolve through these. Indic scripts: ta, ml,
+    # te (Dravidian) + mr, hi (Devanagari). Per-locale files may live in
+    # config/locales/<locale>/*.yml, hence the recursive glob.
+    config.i18n.available_locales = %i[en ta ml te mr hi]
+    config.i18n.default_locale = :en
+    config.i18n.fallbacks = [ :en ]
+    config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
+
+    # --- Active Record Encryption: PII at rest (DPDP Act 2023) --------------
+    # Keys come from ENV; production fails fast on boot if any is missing.
+    # Dev/test use clearly NON-SECRET defaults so the suite needs no secrets —
+    # these never protect real data. Set in application.rb (not an initializer)
+    # so they're in place before the Active Record encryption railtie reads them.
+    if Rails.env.local?
+      ENV["AR_ENCRYPTION_PRIMARY_KEY"] ||= "dev_only_primary_key_not_secret_0001"
+      ENV["AR_ENCRYPTION_DETERMINISTIC_KEY"] ||= "dev_only_deterministic_key_not_secret"
+      ENV["AR_ENCRYPTION_KEY_DERIVATION_SALT"] ||= "dev_only_key_derivation_salt_not_secret"
+    end
+    config.active_record.encryption.primary_key = ENV.fetch("AR_ENCRYPTION_PRIMARY_KEY")
+    config.active_record.encryption.deterministic_key = ENV.fetch("AR_ENCRYPTION_DETERMINISTIC_KEY")
+    config.active_record.encryption.key_derivation_salt = ENV.fetch("AR_ENCRYPTION_KEY_DERIVATION_SALT")
+    config.active_record.encryption.support_unencrypted_data = false
+  end
+end

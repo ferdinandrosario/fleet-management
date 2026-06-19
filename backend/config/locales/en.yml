@@ -1,0 +1,15 @@
+# English — base and fallback locale. This is the authoritative copy; the
+# other five locales fall back here for any missing key.
+en:
+  errors:
+    unauthorized: "You are not authorized to perform this action."
+    not_found: "The requested resource was not found."
+    rate_limited: "Too many requests. Please retry later."
+    validation_failed: "Validation failed."
+    unknown_tenant: "Unknown tenant."
+    invalid_credentials: "Invalid phone number or password."
+    invalid_token: "Invalid or expired token."
+    phone_unverified: "Please verify your phone number first."
+    otp_invalid: "Invalid or expired code."
+  health:
+    status: "ok"

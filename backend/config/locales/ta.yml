@@ -1,0 +1,15 @@
+# Tamil. Best-effort translations — PENDING professional review (Deferred Paid
+# Items). English (en.yml) is the source of truth + fallback.
+ta:
+  errors:
+    unauthorized: "இந்தச் செயலைச் செய்ய உங்களுக்கு அனுமதி இல்லை."
+    not_found: "கோரப்பட்ட ஆதாரம் கிடைக்கவில்லை."
+    rate_limited: "மிக அதிகமான கோரிக்கைகள். பிறகு மீண்டும் முயற்சிக்கவும்."
+    validation_failed: "சரிபார்ப்பு தோல்வியடைந்தது."
+    unknown_tenant: "அறியப்படாத டெனண்ட்."
+    invalid_credentials: "தவறான தொலைபேசி எண் அல்லது கடவுச்சொல்."
+    invalid_token: "தவறான அல்லது காலாவதியான டோக்கன்."
+    phone_unverified: "முதலில் உங்கள் தொலைபேசி எண்ணைச் சரிபார்க்கவும்."
+    otp_invalid: "தவறான அல்லது காலாவதியான குறியீடு."
+  health:
+    status: "சரி"

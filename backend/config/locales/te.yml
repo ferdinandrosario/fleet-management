@@ -1,0 +1,15 @@
+# Telugu. Best-effort translations — PENDING professional review (Deferred Paid
+# Items). English (en.yml) is the source of truth + fallback.
+te:
+  errors:
+    unauthorized: "ఈ చర్యను చేయడానికి మీకు అనుమతి లేదు."
+    not_found: "అభ్యర్థించిన వనరు కనుగొనబడలేదు."
+    rate_limited: "చాలా ఎక్కువ అభ్యర్థనలు. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి."
+    validation_failed: "ధృవీకరణ విఫలమైంది."
+    unknown_tenant: "తెలియని టెనెంట్."
+    invalid_credentials: "చెల్లని ఫోన్ నంబర్ లేదా పాస్‌వర్డ్."
+    invalid_token: "చెల్లని లేదా గడువు ముగిసిన టోకెన్."
+    phone_unverified: "దయచేసి ముందుగా మీ ఫోన్ నంబర్‌ను ధృవీకరించండి."
+    otp_invalid: "చెల్లని లేదా గడువు ముగిసిన కోడ్."
+  health:
+    status: "సరే"

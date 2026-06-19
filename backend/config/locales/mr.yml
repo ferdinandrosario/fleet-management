@@ -1,0 +1,15 @@
+# Marathi (Devanagari). Best-effort translations — PENDING professional review
+# (Deferred Paid Items). English (en.yml) is the source of truth + fallback.
+mr:
+  errors:
+    unauthorized: "ही कृती करण्यासाठी तुम्हाला अधिकार नाही."
+    not_found: "विनंती केलेले संसाधन सापडले नाही."
+    rate_limited: "खूप जास्त विनंत्या. कृपया नंतर पुन्हा प्रयत्न करा."
+    validation_failed: "प्रमाणीकरण अयशस्वी झाले."
+    unknown_tenant: "अज्ञात टेनंट."
+    invalid_credentials: "अवैध फोन नंबर किंवा पासवर्ड."
+    invalid_token: "अवैध किंवा कालबाह्य टोकन."
+    phone_unverified: "कृपया प्रथम तुमचा फोन नंबर सत्यापित करा."
+    otp_invalid: "अवैध किंवा कालबाह्य कोड."
+  health:
+    status: "ठीक आहे"

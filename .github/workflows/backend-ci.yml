@@ -1,0 +1,61 @@
+name: Backend CI
+
+# Every gate here is blocking: the job fails (red) if tests drop below 100%
+# line coverage, RuboCop finds an offense, Brakeman finds a vulnerability, or
+# bundler-audit finds a vulnerable gem. Matches the local commands in
+# docs/02-backend-setup.md.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      RAILS_ENV: test
+      CI: "true"
+      COVERAGE: "full" # enables the SimpleCov 100% line gate + eager load
+      DATABASE_URL: "postgis://postgres:postgres@localhost:5432/fleet_management_test"
+
+    services:
+      postgres:
+        image: postgis/postgis:18-3.6 # Postgres 18 + PostGIS 3.6, matching local
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.5
+          bundler-cache: true
+          working-directory: backend
+
+      - name: Prepare test database (loads structure.sql)
+        run: bin/rails db:test:prepare
+
+      - name: Tests + 100% coverage gate
+        run: bundle exec rspec
+
+      - name: RuboCop
+        run: bin/rubocop
+
+      - name: Brakeman (static security analysis)
+        run: bundle exec brakeman -q --no-pager
+
+      - name: Bundler audit (vulnerable dependencies)
+        run: bundle exec bundler-audit check --update

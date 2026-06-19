@@ -1,0 +1,28 @@
+# OS / editor
+.DS_Store
+.idea/
+*.swp
+
+# Secrets / env — keep the committed examples
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Node / JS (mobile, web-admin)
+node_modules/
+dist/
+build/
+.expo/
+*.log
+
+# Ruby / Rails (backend)
+/backend/tmp/
+/backend/log/
+/backend/storage/
+/backend/vendor/bundle/
+/backend/.bundle/
+
+# Test coverage
+coverage/
+/backend/coverage/

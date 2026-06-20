@@ -152,7 +152,7 @@ Applies to every dependency, OS, and CI runner across `backend/`,
   alpha/beta/rc/nightly/canary/preview/experimental/deprecated/EOL.
 - **Pin deliberately, per manifest.** `Gemfile` pins exact (`= x.y.z`);
   `.ruby-version` / `backend/.ruby-version` pin exact; `.mise.toml`
-  pins Ruby exact and Node by major. `package.json` stays inside one
+  pins Ruby and Node exact (both `4.0.5` / `26.3.1`). `package.json` stays inside one
   pinned major — mobile uses the exact / tilde pins its Expo SDK
   requires — and the lockfile holds the exact resolution. Upgrade
   deliberately — one tool per PR, reason in the PR description.

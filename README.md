@@ -13,7 +13,7 @@ session-by-session — see the [documentation map](#documentation) and
 ## New here? Start in this order
 
 1. **[`docs/01-prerequisites.md`](docs/01-prerequisites.md)** — install Ruby
-   (via mise), PostgreSQL + PostGIS, Node. Do this first.
+   + Node (via mise), PostgreSQL + PostGIS. Do this first.
 2. **[`docs/02-backend-setup.md`](docs/02-backend-setup.md)** — empty clone →
    running API. (Quickstart below.)
 3. **[`docs/03-mobile-setup.md`](docs/03-mobile-setup.md)** — empty clone →

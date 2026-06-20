@@ -17,9 +17,10 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 Universal rule in [`AGENTS.md`](../AGENTS.md) "VERSION & STABILITY".
 Mobile-specific:
 
-- **Node.js: latest stable line** (the project default — see
-  [`AGENTS.md`](../AGENTS.md) R10), even while it is a "Current" line not
-  yet promoted to LTS. Never a prerelease, never an EOL line.
+- **Node.js: `26.3.1`** — latest stable, **pinned exact** in
+  [`.mise.toml`](../.mise.toml) and CI (see [`AGENTS.md`](../AGENTS.md)
+  R10 + VERSION & STABILITY), even while it is a "Current" line not yet
+  promoted to LTS. Never a prerelease, never an EOL line.
 - **Expo SDK:** latest stable production release. **No SDK RCs, no
   preview tags, no Expo `canary`.** Wait for the GA before bumping.
 - **React Native:** latest stable. **No RN nightlies, no `0.x.x-rc` builds.**

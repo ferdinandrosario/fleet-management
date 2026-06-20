@@ -29,7 +29,7 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 ## Version & stability (web-admin delta)
 
 Universal rule in [`AGENTS.md`](../AGENTS.md) "VERSION & STABILITY".
-- **Node.js: latest stable line** (shared with mobile).
+- **Node.js: `26.3.1`** — pinned exact in [`.mise.toml`](../.mise.toml), shared with mobile.
 - React, Vite, shadcn/ui, Tremor, i18next: **latest stable**, never a
   prerelease.
 - **Audit before each release:** `npm audit --production` (expected:

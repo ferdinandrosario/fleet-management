@@ -23,9 +23,9 @@ module.exports = {
     "!src/test/**", // test-only helpers
   ],
   // Ratchet pins — the highest the suite currently clears (mobile/AGENTS.md).
-  // Branches at 95: the only uncovered branch is api.ts's BASE_URL env fallback,
-  // which can't trigger in tests (EXPO_PUBLIC_API_BASE_URL is always set).
+  // Branches < 100: a few defensive fallbacks (e.g. api.ts's BASE_URL env
+  // default) can't trigger in tests.
   coverageThreshold: {
-    global: { lines: 100, statements: 100, functions: 100, branches: 95 },
+    global: { lines: 100, statements: 100, functions: 100, branches: 96 },
   },
 };

@@ -41,7 +41,8 @@ Source of truth: `mobile/tailwind.config.js` (className styling) mirrored by
 
 ## Component inventory (Session 2)
 
-- **Primitives** (`src/components/ui/`): `Button` (variants: primary, danger, ghost).
+- **Primitives** (`src/components/ui/`): `Button` (primary/danger/ghost),
+  `TextField` (labeled input; label doubles as the a11y label).
 - **States** (`src/components/states/`): `LoadingState`, `EmptyState`,
   `ErrorState`, `OfflineState`, and the shared `StateMessage`.
 - **Composite**: `LanguagePicker` (first-run + settings).
@@ -50,12 +51,17 @@ Source of truth: `mobile/tailwind.config.js` (className styling) mirrored by
 
 | Screen | Feature folder | State |
 |---|---|---|
-| Welcome (unauthenticated landing + language picker) | `src/features/welcome/` | done |
-| Home (authenticated placeholder) | `src/features/home/` | done |
+| Welcome (landing: language + sign in / create account) | `src/features/welcome/` | done |
+| Login (business code + phone + password) | `src/features/auth/` | done |
+| Register (→ OTP) | `src/features/auth/` | done |
+| Otp (verify code → session) | `src/features/auth/` | done |
+| Home (authenticated placeholder + logout) | `src/features/home/` | done |
 
-Auth screens (register/OTP/login) land Session 3; role dashboards from Session 5.
-`App.tsx` shows the loading state while the session rehydrates, then routes to
-Welcome or Home by auth status.
+`App.tsx` shows the loading state while the session rehydrates, then swaps the
+**auth stack** (Welcome/Login/Register/Otp) for the **app stack** (Home) by auth
+status. Auth logic lives in `src/features/auth/` (`auth-client.ts` +
+`use-auth.ts` TanStack mutations); the session is held in the secure auth store.
+Role-based dashboards arrive from Session 5.
 
 ## Internationalization (6 locales)
 

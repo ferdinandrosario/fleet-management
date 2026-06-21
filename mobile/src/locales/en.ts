@@ -21,6 +21,23 @@ export const en = {
     title: "Choose your language",
     ...languageNames,
   },
+  auth: {
+    signInTitle: "Sign in",
+    registerTitle: "Create account",
+    verifyTitle: "Verify your phone",
+    businessCode: "Business code",
+    name: "Name",
+    phone: "Phone number",
+    password: "Password",
+    code: "Verification code",
+    signIn: "Sign in",
+    createAccount: "Create account",
+    verify: "Verify",
+    logout: "Log out",
+    toRegister: "New here? Create an account",
+    toLogin: "Have an account? Sign in",
+    failed: "Couldn't continue. Check your details and try again.",
+  },
 };
 
 export type Translations = typeof en;

@@ -39,7 +39,9 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Tenant resolution + isolation** — `X-Tenant` + token claim cross-check,
   per-request schema switch. → [feature/multi-tenancy.md](feature/multi-tenancy.md)
 - **Profile** — `GET/PATCH /api/v1/me`, Pundit default-deny. → [api.md](api.md), [roles.md](roles.md)
-- _Mobile auth screens: next._
+- **Mobile auth** — Welcome → Login/Register/OTP screens, token lifecycle in the
+  secure store, role-aware routing (auth stack ↔ app stack), logout. →
+  [design.md](design.md)
 
 ## Coming
 

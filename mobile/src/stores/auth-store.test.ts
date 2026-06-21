@@ -10,6 +10,13 @@ describe("auth store", () => {
     await useAuthStore.getState().signOut();
   });
 
+  it("setTenant pins and persists the tenant before authentication", async () => {
+    await useAuthStore.getState().setTenant("acme");
+    expect(useAuthStore.getState().tenant).toBe("acme");
+    expect(await SecureStore.getItemAsync("fm.tenant")).toBe("acme");
+    expect(useAuthStore.getState().status).toBe("unauthenticated");
+  });
+
   it("signIn persists the session to secure storage and marks authenticated", async () => {
     await useAuthStore.getState().signIn(session);
 

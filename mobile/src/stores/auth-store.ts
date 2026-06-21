@@ -23,6 +23,7 @@ type AuthState = {
   tenant: string | null;
   status: AuthStatus;
   restore: () => Promise<void>;
+  setTenant: (tenant: string) => Promise<void>;
   signIn: (session: Session) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -46,6 +47,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       tenant,
       status: accessToken ? "authenticated" : "unauthenticated",
     });
+  },
+
+  // Pin the tenant (business code) before login/register, so X-Tenant is sent.
+  // Persisted so it survives a restart even before the user is authenticated.
+  setTenant: async (tenant) => {
+    await SecureStore.setItemAsync(TENANT_KEY, tenant);
+    set({ tenant });
   },
 
   signIn: async ({ accessToken, refreshToken, tenant }) => {

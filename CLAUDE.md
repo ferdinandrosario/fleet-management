@@ -22,8 +22,8 @@ here. This file adds only the Claude-Code-specific wiring.
   - `no-todo.sh` — `PostToolUse`, **blocks** a just-edited code file
     that contains a `TODO`/`FIXME` comment (AGENTS.md "Universal forbidden").
   - `docs-with-code.sh` — `Stop`, **warns** when the tree has
-    `backend`/`mobile` changes but no `docs/` change (AGENTS.md
-    rule 5).
+    `backend`/`mobile`/`web-admin` changes but no `docs/` change
+    (AGENTS.md rule 5).
 - **Token-efficiency rules** (AGENTS.md rule 7) are spelled out in
   [`.claude/commands/token-efficiency.md`](.claude/commands/token-efficiency.md).
 

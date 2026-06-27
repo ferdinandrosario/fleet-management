@@ -112,6 +112,14 @@ docs disagree, fix it in the same change. Change history lives in git —
 write commit messages that carry the *why*. Full feature-doc checklist:
 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 
+**No new doc files on the agent's initiative.** Extend the existing
+canonical files (numbered `00`–`10`, per-feature pages, `FEATURES.md`,
+`CONTRIBUTING.md`) — do **not** create a new document in this repo
+unless the user explicitly asks for it. Sole exception:
+`.claude/skills/*/SKILL.md` may be added or updated freely. Updating
+existing docs/rules per rule 5 is unaffected; this only bars spawning
+new doc files unprompted.
+
 ## TEST COVERAGE (rule, every codebase)
 
 **Target: 100%** on every dimension the coverage tool measures

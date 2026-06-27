@@ -36,7 +36,8 @@ session-by-session — see the [documentation map](#documentation) and
 | [`docs/`](docs/) | Source of truth (numbered guides + per-feature files) | grows each session |
 
 Rules every contributor (human or agent) follows: [`AGENTS.md`](AGENTS.md)
-(canonical) + the nearest `<dir>/AGENTS.md`. Before sending a change, read
+(canonical) + the nearest `<dir>/AGENTS.md`; file naming in
+[`NAMING-CONVENTIONS.md`](NAMING-CONVENTIONS.md). Before sending a change, read
 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 
 ## Quickstart — backend

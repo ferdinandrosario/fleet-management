@@ -259,6 +259,14 @@ the agent's job** — `Gemfile` + `bundle install`, `package.json` + `npm i`.
 The test: *does it mutate the machine/OS or the repo?* Machine/OS → hand it
 to the user.
 
+## Skill sync
+
+The `.claude/skills/` here share a common core with the `agent-rules`
+template and the other apps built from it. Skills are the **one exception
+to copy-then-diverge**: when a shared skill changes in any copy, make the
+same change across the others in the same turn, so they never drift.
+App-specific rules (`AGENTS.md`, `<dir>/AGENTS.md`) still diverge freely.
+
 ## Per-codebase rules (nearest `AGENTS.md` wins)
 
 Each codebase has its own `AGENTS.md` with rules that apply only there.

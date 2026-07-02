@@ -85,18 +85,11 @@ Built session-by-session — see `docs/00-overview.md` for the build plan.
     each client, and guards every file attachment. See the VALIDATION
     section below for the full statement.
 
-## OUTPUT FORMAT (for substantive code changes)
+## OUTPUT FORMAT
 
-Use these sections **when a response delivers or modifies code.** For
-questions, lookups, and one-line fixes, skip the scaffolding and follow
-the terse rules in `.claude/commands/token-efficiency.md` instead — a
-trivial answer wearing five headers is the waste rule 7 forbids.
-
-1. **ASSUMPTIONS**
-2. **DESIGN DECISIONS**
-3. **IMPLEMENTATION**
-4. **DOCUMENTATION UPDATES**
-5. **VERIFICATION STEPS**
+State non-obvious assumptions and decisions inline, only when they'd
+surprise a reviewer. No section headers. No closing summary. The diff is
+the report. (Terse-output detail: `.claude/commands/token-efficiency.md`.)
 
 ## DOCUMENTATION (required on every change)
 

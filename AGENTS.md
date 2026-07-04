@@ -107,6 +107,10 @@ docs disagree, fix it in the same change. Change history lives in git —
 write commit messages that carry the *why*. Full feature-doc checklist:
 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 
+Suspect docs, scripts, or skills have drifted from the code? The
+`drift-audit` skill (`.claude/skills/drift-audit/`) runs the report-first
+audit → findings table → **STOP** → approved-fixes process.
+
 **No new doc files on the agent's initiative.** Extend the existing
 canonical files (numbered `00`–`10`, per-feature pages, `FEATURES.md`,
 `CONTRIBUTING.md`) — do **not** create a new document in this repo

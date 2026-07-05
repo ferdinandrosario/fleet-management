@@ -17,7 +17,7 @@ fetching, forms/a11y, testing.
 For **this project's binding rules** (stack, version delta, UI stack,
 forbidden list, approved libraries, API contract, folder layout, commands,
 env vars, testing/coverage policy), read
-[`../../../web-admin/AGENTS.md`](../../../web-admin/AGENTS.md) — it is the
+[`web-admin/AGENTS.md`](../../../web-admin/AGENTS.md) — it is the
 single source of truth and **overrides** the general best-practice skill on
 any conflict.
 

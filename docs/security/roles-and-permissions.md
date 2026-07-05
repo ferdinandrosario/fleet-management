@@ -29,5 +29,5 @@ forbidden. Session 3 (auth) surface:
 | Read another tenant's data | ❌ (impossible — schema isolation) | ❌ | ❌ | ❌ |
 
 Enforcement: `app/policies/` (`ApplicationPolicy` denies all; `UserPolicy` opens
-self-access). See [feature/auth.md](feature/auth.md) and
-[feature/security.md](feature/security.md).
+self-access). See [feature/auth.md](../feature/auth.md) and
+[threat-model.md](threat-model.md).

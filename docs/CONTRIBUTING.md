@@ -1,7 +1,7 @@
 # Contributing
 
 How to make a change here so it lands clean. The full rules are in
-[`../AGENTS.md`](../AGENTS.md) (canonical) and the nearest `<dir>/AGENTS.md`;
+[`AGENTS.md`](../AGENTS.md) (canonical) and the nearest `<dir>/AGENTS.md`;
 this is the short, practical checklist.
 
 ## The golden rules (why this repo feels strict)
@@ -26,14 +26,14 @@ This is the contract — change the left, update the right in the **same change*
 
 | If you changed… | Also update |
 |---|---|
-| user-visible behavior | `README.md`, `docs/00-overview.md`, `docs/05-architecture.md` |
+| user-visible behavior | `README.md`, `docs/README.md`, `docs/architecture/overview.md` |
 | an endpoint or feature surface | `docs/feature/<feature>.md`, `docs/FEATURES.md` |
-| `backend/` files | `docs/02-backend-setup.md` (+ the relevant feature doc) |
-| `mobile/` files | `docs/03-mobile-setup.md` (+ `docs/design.md`) |
-| an env var | `<codebase>` env table (`backend/AGENTS.md`) or `mobile/.env.example`, plus `docs/04-running-locally.md` |
-| a failure mode you hit | `docs/09-troubleshooting.md` |
+| `backend/` files | `docs/backend/setup.md` (+ the relevant feature doc) |
+| `mobile/` files | `docs/mobile/setup.md` (+ `docs/mobile/design.md`) |
+| an env var | `<codebase>` env table (`backend/AGENTS.md`) or `mobile/.env.example`, plus `docs/getting-started/running-locally.md` |
+| a failure mode you hit | `docs/troubleshooting/backend.md` |
 | a non-default library | the matching `<dir>/AGENTS.md` "Already-approved" table (what it does, why, where configured) |
-| a pinned tool/runtime version | run the version-bump audit; update **every** quoted copy (root configs, READMEs, numbered docs, CI) |
+| a pinned tool/runtime version | run the version-bump audit; update **every** quoted copy (root configs, READMEs, docs pages, CI) |
 
 ## Adding a feature end-to-end (typical flow)
 
@@ -41,7 +41,7 @@ This is the contract — change the left, update the right in the **same change*
    column; external ids are UUIDs) → service → serializer → thin controller,
    each with specs. Authorize with Pundit (default-deny), scope to the current
    tenant, paginate collections, strict params. Add the threat-model row in
-   `docs/feature/security.md` if relevant.
+   `docs/security/threat-model.md` if relevant.
 2. **Mobile, test-first.** Feature folder `src/features/<name>/` with a client
    (types mirroring the serializer field-by-field), TanStack Query hooks, and
    screens composed from owned primitives. Every user-facing string via `t()`.
@@ -83,4 +83,4 @@ tooling does not push or open PRs on its own. Keep backend and mobile in
   envelope, DB, approved gems, env vars.
 - [`mobile/AGENTS.md`](../mobile/AGENTS.md) — RN/Expo rules, state/data, UI,
   testing, env vars.
-- [`docs/AGENTS.md`](AGENTS.md) — docs numbering + this checklist's source.
+- [`AGENTS.md`](AGENTS.md) — docs numbering + this checklist's source.

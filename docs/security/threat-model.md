@@ -1,4 +1,4 @@
-# Feature: Security (threat model + controls)
+# Threat model & controls
 
 Security is first-class on every change. This app handles money, PII
 (phone/location/photos), and strictly isolated multi-tenant data. Default-deny,
@@ -9,7 +9,7 @@ fast conflict, we choose secure.
 
 | # | Threat (OWASP) | Control | Status |
 |---|---|---|---|
-| T1 | Cross-tenant data access (API1 BOLA) — **highest risk** | schema switch + token-derived tenant + Pundit + UUID lookups | mechanism in place ([multi-tenancy](multi-tenancy.md)); data-isolation specs S3 |
+| T1 | Cross-tenant data access (API1 BOLA) — **highest risk** | schema switch + token-derived tenant + Pundit + UUID lookups | mechanism in place ([multi-tenancy](../feature/multi-tenancy.md)); data-isolation specs S3 |
 | T2 | Broken auth / token theft (API2) | short-lived JWT + rotating refresh + revocation; bcrypt; lockout | Session 3 |
 | T3 | OTP abuse / enumeration | hashed single-use OTP, short expiry, attempt/resend caps, throttling | rack-attack guards live; OTP S3 |
 | T4 | Broken authorization / priv-esc (API1/API5) | Pundit default-deny; role+tenant from token, not params; strict params | scaffolding live; policies S3+ |

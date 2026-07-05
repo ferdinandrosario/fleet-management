@@ -8,38 +8,48 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 > Standard: a future maintainer with zero memory of the chat must
 > rebuild the entire feature from `docs/feature/<feature>.md` alone.
 
-## Layout (do not reshape)
+## Layout (topic folders — one authoritative page per topic)
+
+`docs/` is organized by **topic folder**, not a flat numbered list. Each
+folder owns one area; a new contributor finds any topic within two or
+three levels. Reading order is navigation, not filename prefixes — the
+index is [`README.md`](README.md).
 
 ```
 docs/
-  00-overview.md           # what the app is, two-codebase diagram
-  01-prerequisites.md      # tool versions + install commands
-  02-backend-setup.md      # empty dir → running Rails API
-  03-mobile-setup.md       # empty dir → running mobile app
-  04-running-locally.md    # daily workflow across both codebases
-  05-architecture.md       # request flow, auth flow, why API-only
-  06-conventions.md        # code style, folder layout, error format
-  07-tuning.md             # formulas for every tunable runtime param
-  08-deployment.md         # env vars, Postgres in prod
-  09-troubleshooting.md    # symptom → fix per known failure mode
+  README.md                # overview + the build plan + the navigation table
   CONTRIBUTING.md          # feature-doc checklist (every PR)
   FEATURES.md              # one bullet per surface, by feature
+  getting-started/         # prerequisites.md, running-locally.md — fresh box → running app
+  backend/                 # setup.md — empty dir → running Rails API
+  mobile/                  # setup.md (empty dir → running app), design.md (UI/UX/i18n)
+  architecture/            # overview.md — request flow, layers, envelope, isolation
+  api/                     # reference.md — the versioned JSON API contract
+  security/                # threat-model.md, roles-and-permissions.md
+  troubleshooting/         # backend.md — symptom → fix per known failure mode
   feature/                 # per-feature canonical references (one file each)
-    <feature>.md           # source of truth per feature
+    <feature>.md           # auth, multi-tenancy, … — source of truth per feature
 ```
 
-- Numbered files **00–09** are the linear top-to-bottom guide. Don't
-  renumber. Don't insert a new number — extend an existing file or add
-  a per-feature canonical file instead.
+Folders that appear as their subject lands (Sessions 4+): `development/`
+(conventions), `operations/` (tuning), `deployment/`, and `web-admin/`
+docs — each added under its own folder, listed in
+[`README.md`](README.md) at that point.
+
+- **One authoritative page per topic — keep it DRY.** A topic has exactly
+  one home; don't duplicate its content, cross-link to it. Extend the page
+  that owns a topic rather than spawn a near-duplicate. A new top-level
+  topic → a new folder, added to the [`README.md`](README.md)
+  navigation table in the same change.
 - **Per-feature canonical files live under `docs/feature/`** and are the
   source of truth for that feature. Endpoints / data model / reminders /
   threat model / env vars / how-to-extend all live there. Add a new
   feature as `docs/feature/<name>.md` — don't drop feature files back into
   the `docs/` root.
 
-Each numbered guide and feature file is authored **in the same change as
-the code it documents** (universal rule 5). The structure above is the
-contract; a page exists once its subject does.
+Each guide and feature file is authored **in the same change as the code
+it documents** (universal rule 5). The structure above is the contract; a
+page exists once its subject does.
 
 ## Required for every doc-touching change
 
@@ -48,15 +58,15 @@ the right in the same change:
 
 | If you changed… | You must also update |
 |---|---|
-| user-visible behavior | `README.md`, `docs/00-overview.md`, `docs/05-architecture.md` |
-| an endpoint or feature surface | `docs/feature/<feature>.md`, `docs/FEATURES.md` |
-| `backend/` files | `docs/02-backend-setup.md` |
-| `mobile/` files | `docs/03-mobile-setup.md` |
-| an env var | `<codebase>/.env.example`, `docs/04-running-locally.md`, `docs/08-deployment.md` |
-| a failure mode | `docs/09-troubleshooting.md` |
-| a tunable runtime parameter | `docs/07-tuning.md` (with the **formula** and the value at **all three load tiers** — basic / mid / heavy — not just one value) |
+| user-visible behavior | `README.md`, `docs/README.md`, `docs/architecture/overview.md` |
+| an endpoint or feature surface | `docs/feature/<feature>.md`, `docs/api/reference.md`, `docs/FEATURES.md` |
+| `backend/` files | `docs/backend/setup.md` |
+| `mobile/` files | `docs/mobile/setup.md` |
+| an env var | `<codebase>/.env.example`, `docs/getting-started/running-locally.md`, `docs/deployment/` (when it lands) |
+| a failure mode | `docs/troubleshooting/backend.md` |
+| a tunable runtime parameter | `docs/operations/tuning.md` (when it lands) — with the **formula** and the value at **all three load tiers** — basic / mid / heavy — not just one value |
 | a non-default lib | matching `<surface>/AGENTS.md` "Already-approved" |
-| **a pinned tool/runtime version** (Ruby, Rails, Node, Postgres, Expo SDK, React Native, React, Ubuntu) | run the **version-bump audit grep** in the "Verification ritual" below; update **every** match (root configs, `README.md`, `docs/01-prerequisites.md`, `docs/08-deployment.md`, every `docs/feature/<feature>.md` that quotes it, CI workflows) in the same PR |
+| **a pinned tool/runtime version** (Ruby, Rails, Node, Postgres, Expo SDK, React Native, React, Ubuntu) | run the **version-bump audit grep** in the "Verification ritual" below; update **every** match (root configs, `README.md`, `docs/getting-started/prerequisites.md`, every `docs/feature/<feature>.md` that quotes it, CI workflows) in the same PR |
 
 Change history lives in **git**, not in a doc: the commit message carries
 the one-paragraph *why* and the verification command + real output. There
@@ -115,8 +125,11 @@ Docs-specific:
 
 ## Forbidden
 
-- **Renumbering 00–09 files.** They're linked from `README.md` and every
-  onboarding doc. Renumbering breaks every external reference.
+- **Moving or renaming a page without updating every inbound reference
+  in the same change.** Pages are linked from `README.md`, sibling docs,
+  code comments, and CI config. Use `git mv`, then repoint every reference
+  (`git grep 'docs/<old>'` catches prose and code comments too) — all in
+  one commit, per the rename ritual in [`NAMING-CONVENTIONS.md`](../NAMING-CONVENTIONS.md).
 - **Hand-rolled tables of contents.** GitHub renders headings
   automatically; a static TOC just rots.
 - **Hard-coded inventory counts in prose** ("eleven features", "the ten
@@ -135,9 +148,9 @@ Docs-specific:
 rg -i 'no auth|no users|no sessions' docs/ README.md
 # (expected: zero matches, OR every match is inside a quote/example)
 
-# 2. Every new env var appears in its three places
-rg 'EXPO_PUBLIC_NEW_VAR' mobile/.env.example docs/04-running-locally.md docs/08-deployment.md
-# (expected: one hit in each)
+# 2. Every new env var appears in its documented places
+rg 'EXPO_PUBLIC_NEW_VAR' mobile/.env.example docs/getting-started/running-locally.md
+# (expected: one hit in each; add docs/deployment/ once that folder lands)
 
 # 3. Version-bump audit — run after every pinned-version change.
 #    Replace OLD with the previous version string (e.g. 4.0.3, 26, 8.1.2).

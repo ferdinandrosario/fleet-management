@@ -1,7 +1,7 @@
 name: Mobile CI
 
 # Blocking gates: typecheck, ESLint, and Jest with the coverage threshold
-# (mobile/jest.config.js). Matches the local commands in docs/03-mobile-setup.md.
+# (mobile/jest.config.js). Matches the local commands in docs/mobile/setup.md.
 
 on:
   push:

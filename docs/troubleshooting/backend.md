@@ -1,4 +1,4 @@
-# 09 — Troubleshooting
+# Backend troubleshooting
 
 Symptom → cause → fix, per known failure mode. Add a row the first time a
 failure mode is hit (universal rule 5).

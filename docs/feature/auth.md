@@ -1,8 +1,8 @@
 # Feature: Auth & onboarding
 
 Phone + password authentication for tenant users (customer/driver/owner_admin),
-with OTP phone verification and rotating JWTs. Endpoints: see [api.md](../api.md);
-roles: see [roles.md](../roles.md).
+with OTP phone verification and rotating JWTs. Endpoints: see [api/reference.md](../api/reference.md);
+roles: see [security/roles-and-permissions.md](../security/roles-and-permissions.md).
 
 ## Why custom JWT (not devise-jwt)
 
@@ -55,7 +55,7 @@ specific actions. `AuthenticatedController` runs `after_action :verify_authorize
 verified token (`Current.user` / `Current.tenant`), never from params (e.g.
 self-registration forces `role: customer`).
 
-## Threat-model coverage (updates [security.md](security.md))
+## Threat-model coverage (updates [security/threat-model.md](../security/threat-model.md))
 
 - **T2 broken auth / token theft** — short access + rotating refresh + family
   revocation on reuse. ✅

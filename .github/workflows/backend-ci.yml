@@ -3,7 +3,7 @@ name: Backend CI
 # Every gate here is blocking: the job fails (red) if tests drop below 100%
 # line coverage, RuboCop finds an offense, Brakeman finds a vulnerability, or
 # bundler-audit finds a vulnerable gem. Matches the local commands in
-# docs/02-backend-setup.md.
+# docs/backend/setup.md.
 
 on:
   push:

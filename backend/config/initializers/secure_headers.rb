@@ -1,4 +1,4 @@
-# Security response headers (OWASP hardening, docs/feature/security.md).
+# Security response headers (OWASP hardening, docs/security/threat-model.md).
 #
 # This is a JSON API — it serves no HTML, scripts, styles, frames, or
 # images of its own. So the Content-Security-Policy is locked all the way

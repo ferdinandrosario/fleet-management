@@ -1,8 +1,8 @@
-# 02 — Backend setup
+# Backend setup
 
 From a fresh clone to a running, fully-tested Rails API. All commands run
 from `backend/`. Ruby resolves to 4.0.5 via mise (see
-[`01-prerequisites.md`](01-prerequisites.md)).
+[`getting-started/prerequisites.md`](../getting-started/prerequisites.md)).
 
 ## 1. Install gems
 
@@ -26,7 +26,7 @@ Database names are set in `config/database.yml` (`fleet_management_*`), adapter
 `postgis`. The schema is dumped to `db/structure.sql` (not `schema.rb`) because
 PostGIS needs SQL format; `db:test:prepare` loads it into the test DB. PostGIS +
 btree_gist are installed in the **public** schema — see
-[multi-tenancy](feature/multi-tenancy.md).
+[multi-tenancy](../feature/multi-tenancy.md).
 
 Verify PostGIS and the public-schema tables:
 
@@ -112,4 +112,4 @@ bin/rubocop -a     # autofix
 Boot or bundler errors (e.g. `undefined method 'filter_map'`, or a gem
 "Could not find … required by Gemfile.lock") almost always mean a shell
 fell back to system Ruby instead of mise's 4.0.5 — see
-[`09-troubleshooting.md`](09-troubleshooting.md).
+[`troubleshooting/backend.md`](../troubleshooting/backend.md).

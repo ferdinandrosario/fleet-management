@@ -6,27 +6,27 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 ## Platform foundation (Session 1)
 
 - **Health** — `GET /api/v1/health` returns the standard envelope; framework
-  `/up` for load balancers. (`docs/02-backend-setup.md`)
+  `/up` for load balancers. (`docs/backend/setup.md`)
 - **Multi-tenancy** — schema-per-tenant (ros-apartment), PostGIS in public,
   tenant provisioning rake tasks, isolation mechanism. → [feature/multi-tenancy.md](feature/multi-tenancy.md)
 - **Security baseline** — secure_headers/CSP, strict CORS, rack-attack
   throttles, force_ssl, AR encryption, log filtering, Pundit default-deny
-  scaffolding. → [feature/security.md](feature/security.md)
+  scaffolding. → [security/threat-model.md](security/threat-model.md)
 - **Internationalization** — Rails I18n, six locales (en/ta/ml/te/mr/hi),
-  Accept-Language resolution. (`docs/05-architecture.md`)
+  Accept-Language resolution. (`docs/architecture/overview.md`)
 - **Public-schema models** — SuperAdmin, Owner (tenant), Subscription,
   TenantRegistry. → [feature/multi-tenancy.md](feature/multi-tenancy.md)
 
 ## Mobile foundation (Session 2)
 
 - **App shell** — Expo + React Navigation auth gate (Welcome ↔ Home by session
-  status), TanStack Query + SafeArea providers. → [design.md](design.md)
+  status), TanStack Query + SafeArea providers. → [mobile/design.md](mobile/design.md)
 - **Styling** — NativeWind v4 + design tokens; owned `Button` primitive;
-  loading/empty/error/offline state views. → [design.md](design.md)
+  loading/empty/error/offline state views. → [mobile/design.md](mobile/design.md)
 - **i18n** — i18next, 6 locales (en/ta/ml/te/mr/hi), device detection, runtime
-  language picker. → [design.md](design.md)
+  language picker. → [mobile/design.md](mobile/design.md)
 - **API client** — one typed fetch transport, standard envelope, auth +
-  `X-Tenant` + `Accept-Language` headers. (`docs/03-mobile-setup.md`)
+  `X-Tenant` + `Accept-Language` headers. (`docs/mobile/setup.md`)
 - **Secure session** — tokens in Keychain/Keystore (expo-secure-store), restore
   on launch. (`mobile/src/stores/auth-store.ts`)
 
@@ -38,10 +38,10 @@ One bullet per shipped surface, by feature. Canonical detail lives in
   logout revokes. → [feature/auth.md](feature/auth.md)
 - **Tenant resolution + isolation** — `X-Tenant` + token claim cross-check,
   per-request schema switch. → [feature/multi-tenancy.md](feature/multi-tenancy.md)
-- **Profile** — `GET/PATCH /api/v1/me`, Pundit default-deny. → [api.md](api.md), [roles.md](roles.md)
+- **Profile** — `GET/PATCH /api/v1/me`, Pundit default-deny. → [api/reference.md](api/reference.md), [security/roles-and-permissions.md](security/roles-and-permissions.md)
 - **Mobile auth** — Welcome → Login/Register/OTP screens, token lifecycle in the
   secure store, role-aware routing (auth stack ↔ app stack), logout. →
-  [design.md](design.md)
+  [mobile/design.md](mobile/design.md)
 
 ## Coming
 

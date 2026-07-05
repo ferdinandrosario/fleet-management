@@ -1,4 +1,4 @@
-# 01 — Prerequisites
+# Prerequisites
 
 Tool versions are pinned (latest stable; OS is latest Ubuntu LTS). The
 **manifest is the source of truth** — `backend/.ruby-version`,
@@ -12,7 +12,7 @@ version-bump audit (`AGENTS.md` → VERSION & STABILITY) keeps them honest.
 | **Ruby** | 4.0.5 | backend runtime (pinned `backend/.ruby-version`) | `ruby -v` → `ruby 4.0.5` |
 | **Rails** | 8.1.3 | backend framework (pinned `= 8.1.3` in Gemfile) | `bin/rails -v` → `Rails 8.1.3` |
 | **PostgreSQL** | 18.x | primary database | `psql --version` → `psql (PostgreSQL) 18.x` |
-| **PostGIS** | 3.6.x | geospatial discovery (installed in the public schema — see [multi-tenancy](feature/multi-tenancy.md)) | `psql -d fleet_management_development -c 'SELECT postgis_version();'` |
+| **PostGIS** | 3.6.x | geospatial discovery (installed in the public schema — see [multi-tenancy](../feature/multi-tenancy.md)) | `psql -d fleet_management_development -c 'SELECT postgis_version();'` |
 | **Node.js** | 26.3.1 (pinned `.mise.toml`) | mobile (Expo) + web-admin tooling | `node -v` → `v26.3.1` |
 | **mise** | latest | pins/activates Ruby (and Node) per directory | `mise --version` |
 
@@ -22,7 +22,7 @@ version-bump audit (`AGENTS.md` → VERSION & STABILITY) keeps them honest.
 > 26.3.1 repo-wide. Confirm with
 > `cd backend && ruby -v` → `ruby 4.0.5`. **If it prints `2.6.x`, mise isn't
 > activated** — that's the most common setup failure; see
-> [`09-troubleshooting.md`](09-troubleshooting.md).
+> [`troubleshooting/backend.md`](../troubleshooting/backend.md).
 
 ## macOS install (Homebrew)
 
@@ -48,12 +48,12 @@ node -v                 # v26.3.1
 ```
 
 PostgreSQL + PostGIS are **system installs** — see
-[`AGENTS.md`](../AGENTS.md) "System-level installs". Repo dependency
+[`AGENTS.md`](../../AGENTS.md) "System-level installs". Repo dependency
 manifests (`bundle install`, `npm install`) are part of setup, covered in
 the per-codebase setup pages.
 
 ## Next
 
-- Backend: [`02-backend-setup.md`](02-backend-setup.md)
-- Mobile: [`03-mobile-setup.md`](03-mobile-setup.md)
-- Then run them together: [`04-running-locally.md`](04-running-locally.md)
+- Backend: [`backend/setup.md`](../backend/setup.md)
+- Mobile: [`mobile/setup.md`](../mobile/setup.md)
+- Then run them together: [`running-locally.md`](running-locally.md)

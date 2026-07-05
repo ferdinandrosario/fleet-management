@@ -76,7 +76,7 @@ Role-based dashboards arrive from Session 5.
   supported, else `en`. The Zustand `language-store` switches at runtime and
   (Session 3) persists to the user's profile.
 - **Backend parity:** the backend localizes its own messages via Rails I18n with
-  the same six locales (`docs/feature/security.md`, `docs/05-architecture.md`).
+  the same six locales (`docs/security/threat-model.md`, `docs/architecture/overview.md`).
 - **Non-English copy is best-effort, PENDING professional review** (deferred paid
   item) — English is authoritative.
 

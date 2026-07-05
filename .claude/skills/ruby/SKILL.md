@@ -12,7 +12,7 @@ Ferdy's apps, see the user-level `ruby` skill at
 
 For **this project's binding rules** (stack, version delta, layer rules,
 approved gems/libraries, API contract, folder layout, commands, env vars),
-read [`../../../backend/AGENTS.md`](../../../backend/AGENTS.md) — it is the single source of truth and
+read [`backend/AGENTS.md`](../../../backend/AGENTS.md) — it is the single source of truth and
 **overrides** the general best-practice skill on any conflict.
 
 Universal rules: [`AGENTS.md`](../../../AGENTS.md).

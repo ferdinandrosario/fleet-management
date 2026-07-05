@@ -1,4 +1,4 @@
-# 00 — Overview
+# Fleet Management docs
 
 ## What this is
 
@@ -63,16 +63,24 @@ mocked/sandboxed until the final session.
 
 ## Where to go next
 
-Follow the numbered guides in order:
+`docs/` is organized by **topic folder** — reading order is this table, not
+filename prefixes. Set up a fresh box top-to-bottom, or jump to a topic:
 
-1. [`01-prerequisites.md`](01-prerequisites.md) — install the tools
-2. [`02-backend-setup.md`](02-backend-setup.md) — run the API
-3. [`03-mobile-setup.md`](03-mobile-setup.md) — run the mobile app
-4. [`04-running-locally.md`](04-running-locally.md) — daily workflow (both together)
-5. [`05-architecture.md`](05-architecture.md) — how it fits together
+| You want to… | Read |
+|---|---|
+| Install the tools | [getting-started/prerequisites.md](getting-started/prerequisites.md) |
+| Run the API | [backend/setup.md](backend/setup.md) |
+| Run the mobile app | [mobile/setup.md](mobile/setup.md) |
+| Run both together (daily workflow) | [getting-started/running-locally.md](getting-started/running-locally.md) |
+| Understand how it fits together | [architecture/overview.md](architecture/overview.md) |
+| Read the API contract | [api/reference.md](api/reference.md) |
+| Follow the UI / UX / i18n design system | [mobile/design.md](mobile/design.md) |
+| See roles & the permission matrix | [security/roles-and-permissions.md](security/roles-and-permissions.md) |
+| Check the threat model & controls | [security/threat-model.md](security/threat-model.md) |
+| Build / extend / debug a feature | [feature/auth.md](feature/auth.md), [feature/multi-tenancy.md](feature/multi-tenancy.md) |
+| Diagnose a failure | [troubleshooting/backend.md](troubleshooting/backend.md) |
+| Add a feature (the doc checklist) | [CONTRIBUTING.md](CONTRIBUTING.md) |
 
-Then: [`design.md`](design.md) (UI/UX/i18n), the per-feature references under
-[`feature/`](feature/), and [`CONTRIBUTING.md`](CONTRIBUTING.md) before your
-first change. Rules: [`../AGENTS.md`](../AGENTS.md). `06`–`08` are added when
-their subject lands (conventions, tuning, deployment); `09-troubleshooting.md`
-already exists for known failure modes.
+Cross-agent rules: [`AGENTS.md`](../AGENTS.md). New topic areas
+(`development/` conventions, `operations/` tuning, `deployment/`) are added
+under their own folder when their subject lands (Sessions 4+).

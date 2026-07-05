@@ -28,7 +28,7 @@ docs/      → source of truth
 This is a **multi-tenant commercial-vehicle booking SaaS for India**
 (tractors, JCBs, heavy vehicles, buses). Schema-per-tenant isolation
 (`ros-apartment`), Razorpay payments, 6-locale i18n (en/ta/ml/te/mr/hi).
-Built session-by-session — see `docs/00-overview.md` for the build plan.
+Built session-by-session — see `docs/README.md` for the build plan.
 
 ## ABSOLUTE RULES (apply to every response)
 
@@ -101,20 +101,23 @@ Include exact commands, file paths, and expected outputs.
 
 (Precise · concise · complete — the test in rule 11 above.)
 
-`docs/` is the source of truth, numbered `00`–`10` plus per-feature
-canonical files under `docs/feature/` and `FEATURES.md`. If code and
-docs disagree, fix it in the same change. Change history lives in git —
-write commit messages that carry the *why*. Full feature-doc checklist:
-[`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
+`docs/` is the source of truth, organized by **topic folder**
+(`getting-started/`, `backend/`, `mobile/`, `architecture/`, `api/`,
+`security/`, `troubleshooting/`, …) plus per-feature canonical files under
+`docs/feature/` and `FEATURES.md`; the index is [`docs/README.md`](docs/README.md).
+If code and docs disagree, fix it in the same change. Change history lives
+in git — write commit messages that carry the *why*. Full feature-doc
+checklist: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 
 Suspect docs, scripts, or skills have drifted from the code? The
 `drift-audit` skill (`.claude/skills/drift-audit/`) runs the report-first
 audit → findings table → **STOP** → approved-fixes process.
 
 **No new doc files on the agent's initiative.** Extend the existing
-canonical files (numbered `00`–`10`, per-feature pages, `FEATURES.md`,
+canonical files (the topic-folder pages, per-feature pages, `FEATURES.md`,
 `CONTRIBUTING.md`) — do **not** create a new document in this repo
-unless the user explicitly asks for it. Sole exception:
+unless the user explicitly asks for it. A genuinely new topic area gets a
+new folder, but only on the user's request. Sole exception:
 `.claude/skills/*/SKILL.md` may be added or updated freely. Updating
 existing docs/rules per rule 5 is unaffected; this only bars spawning
 new doc files unprompted.
@@ -274,7 +277,7 @@ matching `.claude/skills/<dir>/SKILL.md`, which redirects to it.
 - [`backend/AGENTS.md`](backend/AGENTS.md) — Rails API rules
 - [`mobile/AGENTS.md`](mobile/AGENTS.md) — Expo + RN rules
 - [`web-admin/AGENTS.md`](web-admin/AGENTS.md) — React (Vite) admin rules (scaffolded Session 10)
-- [`docs/AGENTS.md`](docs/AGENTS.md) — `docs/`-only changes (numbering, feature checklist)
+- [`docs/AGENTS.md`](docs/AGENTS.md) — `docs/`-only changes (topic-folder layout, feature checklist)
 
 ## Agent-specific entry points
 

@@ -1,4 +1,4 @@
-# 05 — Architecture
+# Architecture
 
 ## Shape
 
@@ -59,8 +59,8 @@ REST responses can't drift. Validation errors carry `error.fields`.
 ## Multi-tenancy & security
 
 The two cross-cutting concerns have their own canonical docs:
-[multi-tenancy](feature/multi-tenancy.md) (schema-per-tenant, isolation,
-runbook) and [security](feature/security.md) (threat model + controls).
+[multi-tenancy](../feature/multi-tenancy.md) (schema-per-tenant, isolation,
+runbook) and [security](../security/threat-model.md) (threat model + controls).
 
 ## Internationalization
 

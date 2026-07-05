@@ -8,23 +8,23 @@ Tamil, Malayalam, Telugu, Marathi, Hindi).
 
 Security-first, test-first (100% backend line coverage), docs-first. Built
 session-by-session — see the [documentation map](#documentation) and
-[`docs/00-overview.md`](docs/00-overview.md).
+[`docs/README.md`](docs/README.md).
 
 ## New here? Start in this order
 
-1. **[`docs/01-prerequisites.md`](docs/01-prerequisites.md)** — install Ruby
+1. **[`docs/getting-started/prerequisites.md`](docs/getting-started/prerequisites.md)** — install Ruby
    + Node (via mise), PostgreSQL + PostGIS. Do this first.
-2. **[`docs/02-backend-setup.md`](docs/02-backend-setup.md)** — empty clone →
+2. **[`docs/backend/setup.md`](docs/backend/setup.md)** — empty clone →
    running API. (Quickstart below.)
-3. **[`docs/03-mobile-setup.md`](docs/03-mobile-setup.md)** — empty clone →
+3. **[`docs/mobile/setup.md`](docs/mobile/setup.md)** — empty clone →
    running mobile app.
-4. **[`docs/04-running-locally.md`](docs/04-running-locally.md)** — the daily
+4. **[`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md)** — the daily
    workflow: run backend + mobile together, the edit→test loop.
 
 > **#1 gotcha:** if a command fails with `bundler`/Ruby errors, your shell is
 > using macOS's system Ruby 2.6 instead of the project's 4.0.5. Make sure mise
 > is activated (`cd backend && ruby -v` must print `ruby 4.0.5`). Details:
-> [`docs/09-troubleshooting.md`](docs/09-troubleshooting.md).
+> [`docs/troubleshooting/backend.md`](docs/troubleshooting/backend.md).
 
 ## Monorepo layout
 
@@ -33,7 +33,7 @@ session-by-session — see the [documentation map](#documentation) and
 | [`backend/`](backend/) | Rails 8.1 API (Ruby 4.0.5, PostgreSQL + PostGIS) | **running** — health endpoint, multi-tenancy, security baseline, public models |
 | [`mobile/`](mobile/) | Expo / React Native app (customer · driver · owner) | **running** — nav, NativeWind, i18n, API client, secure session |
 | [`web-admin/`](web-admin/) | React (Vite) admin SPA (super-admin · owner reporting) | rules only — built Session 10 |
-| [`docs/`](docs/) | Source of truth (numbered guides + per-feature files) | grows each session |
+| [`docs/`](docs/) | Source of truth (topic folders + per-feature files) | grows each session |
 
 Rules every contributor (human or agent) follows: [`AGENTS.md`](AGENTS.md)
 (canonical) + the nearest `<dir>/AGENTS.md`; file naming in
@@ -42,8 +42,8 @@ Rules every contributor (human or agent) follows: [`AGENTS.md`](AGENTS.md)
 
 ## Quickstart — backend
 
-Prerequisites: [`docs/01-prerequisites.md`](docs/01-prerequisites.md). Full
-walkthrough + expected output: [`docs/02-backend-setup.md`](docs/02-backend-setup.md).
+Prerequisites: [`docs/getting-started/prerequisites.md`](docs/getting-started/prerequisites.md). Full
+walkthrough + expected output: [`docs/backend/setup.md`](docs/backend/setup.md).
 
 ```bash
 cd backend
@@ -58,7 +58,7 @@ curl -s localhost:3000/api/v1/health
 
 ## Quickstart — mobile
 
-Full walkthrough: [`docs/03-mobile-setup.md`](docs/03-mobile-setup.md).
+Full walkthrough: [`docs/mobile/setup.md`](docs/mobile/setup.md).
 
 ```bash
 cd mobile
@@ -68,7 +68,7 @@ npx expo start        # Metro on :8081 — press i (iOS) · a (Android) · w (we
 
 The app opens on the **Welcome** screen (app name + language picker). Point it
 at your running backend with `EXPO_PUBLIC_API_BASE_URL` — see
-[`docs/04-running-locally.md`](docs/04-running-locally.md).
+[`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md).
 
 ## Quality gates (what CI runs)
 
@@ -95,19 +95,19 @@ blocks (red CI on any failure).
 
 | Page | What it covers | Status |
 |---|---|---|
-| [`docs/00-overview.md`](docs/00-overview.md) | what the app is, the codebases, the session plan | ✅ |
-| [`docs/01-prerequisites.md`](docs/01-prerequisites.md) | tool versions + install/verify | ✅ |
-| [`docs/02-backend-setup.md`](docs/02-backend-setup.md) | empty clone → running API | ✅ |
-| [`docs/03-mobile-setup.md`](docs/03-mobile-setup.md) | empty clone → running mobile app | ✅ |
-| [`docs/04-running-locally.md`](docs/04-running-locally.md) | daily workflow across both codebases | ✅ |
-| `docs/05-architecture.md` | request flow, layers, why API-only | ✅ |
-| `docs/06-conventions.md` | code style + folder + error format | _added when first needed_ |
-| `docs/07-tuning.md` | runtime tunables (formulas, load tiers) | _added when a tunable lands_ |
-| `docs/08-deployment.md` | env vars, prod Postgres, deploy | _added in the deploy session_ |
-| [`docs/09-troubleshooting.md`](docs/09-troubleshooting.md) | symptom → fix per known failure mode | ✅ |
-| [`docs/api.md`](docs/api.md) | endpoint reference (params, sample req/res, roles) | ✅ |
-| [`docs/roles.md`](docs/roles.md) | roles + permission matrix (default-deny) | ✅ |
-| [`docs/design.md`](docs/design.md) | UI libs, UX, tokens, i18n, component/screen inventory | ✅ |
+| [`docs/README.md`](docs/README.md) | what the app is, the codebases, the session plan | ✅ |
+| [`docs/getting-started/prerequisites.md`](docs/getting-started/prerequisites.md) | tool versions + install/verify | ✅ |
+| [`docs/backend/setup.md`](docs/backend/setup.md) | empty clone → running API | ✅ |
+| [`docs/mobile/setup.md`](docs/mobile/setup.md) | empty clone → running mobile app | ✅ |
+| [`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md) | daily workflow across both codebases | ✅ |
+| `docs/architecture/overview.md` | request flow, layers, why API-only | ✅ |
+| `docs/development/conventions.md` | code style + folder + error format | _added when first needed_ |
+| `docs/operations/tuning.md` | runtime tunables (formulas, load tiers) | _added when a tunable lands_ |
+| `docs/deployment/` | env vars, prod Postgres, deploy | _added in the deploy session_ |
+| [`docs/troubleshooting/backend.md`](docs/troubleshooting/backend.md) | symptom → fix per known failure mode | ✅ |
+| [`docs/api/reference.md`](docs/api/reference.md) | endpoint reference (params, sample req/res, roles) | ✅ |
+| [`docs/security/roles-and-permissions.md`](docs/security/roles-and-permissions.md) | roles + permission matrix (default-deny) | ✅ |
+| [`docs/mobile/design.md`](docs/mobile/design.md) | UI libs, UX, tokens, i18n, component/screen inventory | ✅ |
 | [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | the per-change checklist | ✅ |
 | [`docs/FEATURES.md`](docs/FEATURES.md) | one bullet per shipped surface | ✅ |
 | [`docs/feature/`](docs/feature/) | per-feature canonical references (multi-tenancy, security, …) | grows |

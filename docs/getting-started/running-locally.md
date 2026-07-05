@@ -1,7 +1,7 @@
-# 04 — Running locally
+# Running locally
 
-The day-to-day workflow once you've done [`01-prerequisites`](01-prerequisites.md),
-[`02-backend-setup`](02-backend-setup.md), and [`03-mobile-setup`](03-mobile-setup.md).
+The day-to-day workflow once you've done [`prerequisites.md`](prerequisites.md),
+[`backend/setup.md`](../backend/setup.md), and [`mobile/setup.md`](../mobile/setup.md).
 You run the backend and the mobile app at the same time, in **separate
 terminals** (we don't use a process orchestrator on purpose).
 
@@ -99,7 +99,7 @@ psql -d postgres -c "DROP DATABASE IF EXISTS fleet_management_development WITH (
 ## Tenants (multi-tenant dev)
 
 The public-schema models exist; per-tenant business data starts in Session 5.
-Useful commands today (see [`feature/multi-tenancy.md`](feature/multi-tenancy.md)):
+Useful commands today (see [`feature/multi-tenancy.md`](../feature/multi-tenancy.md)):
 
 ```bash
 bin/rails tenants:list            # => No tenants provisioned yet.
@@ -109,5 +109,5 @@ bin/rails "tenants:create[acme]"  # create an isolated tenant schema
 ## When something breaks
 
 Most local failures are the mise / system-Ruby mix-up or a stale Metro cache —
-both are in [`09-troubleshooting.md`](09-troubleshooting.md). Quick checks:
+both are in [`troubleshooting/backend.md`](../troubleshooting/backend.md). Quick checks:
 `cd backend && ruby -v` must say `4.0.5`; `npx expo start --clear` clears Metro.

@@ -5,20 +5,20 @@ Serves the mobile app and web admin over one JSON API.
 
 **This file is a pointer — the real guides live in [`../docs/`](../docs/):**
 
-- Install tools: [`docs/01-prerequisites.md`](../docs/01-prerequisites.md)
+- Install tools: [`docs/getting-started/prerequisites.md`](../docs/getting-started/prerequisites.md)
 - Empty clone → running API (with expected output):
-  [`docs/02-backend-setup.md`](../docs/02-backend-setup.md)
+  [`docs/backend/setup.md`](../docs/backend/setup.md)
 - Rules for changing this code: [`AGENTS.md`](AGENTS.md) (Rails layer rules,
   API envelope, testing, version policy)
-- How it fits together: [`docs/05-architecture.md`](../docs/05-architecture.md),
+- How it fits together: [`docs/architecture/overview.md`](../docs/architecture/overview.md),
   [`docs/feature/multi-tenancy.md`](../docs/feature/multi-tenancy.md),
-  [`docs/feature/security.md`](../docs/feature/security.md)
+  [`docs/security/threat-model.md`](../docs/security/threat-model.md)
 
 ## Quickstart
 
 Ruby is managed by **mise** — make sure it's activated so `ruby -v` prints
 `4.0.5` inside this folder (otherwise you'll hit macOS's system Ruby 2.6; see
-[`docs/09-troubleshooting.md`](../docs/09-troubleshooting.md)).
+[`docs/troubleshooting/backend.md`](../docs/troubleshooting/backend.md)).
 
 ```bash
 bundle install        # install gems

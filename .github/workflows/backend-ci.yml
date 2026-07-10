@@ -38,6 +38,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install PostgreSQL 18 client (pg_dump must match the server)
+        # The postgis/postgis:18-3.6 service runs Postgres 18, but the runner
+        # image ships an older client, and pg_dump aborts with "server version
+        # mismatch" when the test-schema check re-dumps db/structure.sql
+        # (schema_format is :sql — config/application.rb). PGDG provides the
+        # matching client; Debian's pg_wrapper then dispatches /usr/bin/pg_dump
+        # to the newest installed version. Same PGDG recipe as the Ubuntu
+        # install in docs/getting-started/prerequisites.md.
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install --no-install-recommends -y postgresql-client-18
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:

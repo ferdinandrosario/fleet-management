@@ -44,8 +44,7 @@ jobs:
         # mismatch" when the test-schema check re-dumps db/structure.sql
         # (schema_format is :sql — config/application.rb). PGDG provides the
         # matching client; Debian's pg_wrapper then dispatches /usr/bin/pg_dump
-        # to the newest installed version. Same PGDG recipe as the Ubuntu
-        # install in docs/getting-started/prerequisites.md.
+        # to the newest installed version.
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y postgresql-common

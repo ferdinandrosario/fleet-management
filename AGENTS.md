@@ -30,6 +30,25 @@ This is a **multi-tenant commercial-vehicle booking SaaS for India**
 (`ros-apartment`), Razorpay payments, 6-locale i18n (en/ta/ml/te/mr/hi).
 Built session-by-session — see `docs/README.md` for the build plan.
 
+## PROJECT LAYOUT (standard structure, every repo from the template)
+
+Every project stamped from the `agent-rules` template carries the same
+top-level structure — this repo's instance of it:
+
+- `AGENTS.md` — this canonical ruleset, plus one `AGENTS.md` per
+  codebase (`backend/`, `mobile/`, `web-admin/`, `docs/`).
+- `.claude/skills/` — the shared skill set, kept in lockstep across
+  repos (see "Skill & rule sync").
+- `backend/` — all backend (API) code.
+- `web-admin/` — all front-end (browser) code; this app's rename of the
+  standard `web/`, named for what the client is (super-admin + owner SPA).
+- `mobile/` — all mobile source code.
+- `docs/` — all documentation, grouped by use: topic folders plus
+  `feature/` pages (the DOCUMENTATION section below defines the grouping).
+
+Code never lives at the repo root: every source file belongs to exactly
+one codebase directory, and each codebase carries its own `AGENTS.md`.
+
 ## ABSOLUTE RULES (apply to every response)
 
 1. **No invented requirements** — don't assume a fact you haven't
@@ -261,13 +280,17 @@ the agent's job** — `Gemfile` + `bundle install`, `package.json` + `npm i`.
 The test: *does it mutate the machine/OS or the repo?* Machine/OS → hand it
 to the user.
 
-## Skill sync
+## Skill & rule sync
 
-The `.claude/skills/` here share a common core with the `agent-rules`
-template and the other apps built from it. Skills are the **one exception
-to copy-then-diverge**: when a shared skill changes in any copy, make the
-same change across the others in the same turn, so they never drift.
-App-specific rules (`AGENTS.md`, `<dir>/AGENTS.md`) still diverge freely.
+The `.claude/skills/` here and the **universal rules** in this
+`AGENTS.md` share a common core with the `agent-rules` template and the
+other apps built from it. Both are exceptions to copy-then-diverge:
+when a shared skill — or a universal rule/section (PROJECT LAYOUT, an
+ABSOLUTE RULE, …) — changes in any copy, make the same change across
+the others in the same turn, so they never drift. Nothing propagates
+automatically — the sync is a discipline, not a mechanism. App-specific
+rules (the `## STACK` pins, `<dir>/AGENTS.md`, per-app wording of a
+universal section) still diverge freely.
 
 ## Per-codebase rules (nearest `AGENTS.md` wins)
 

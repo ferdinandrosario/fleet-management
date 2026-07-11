@@ -51,7 +51,7 @@ Source of truth: `mobile/tailwind.config.js` (className styling) mirrored by
 
 | Screen | Feature folder | State |
 |---|---|---|
-| Welcome (landing: language + sign in / create account) | `src/features/welcome/` | done |
+| Welcome (landing: brand + tagline, one value-prop card per role — book / drive / manage, language + sign in / create account; copy under the `welcome.*` locale keys) | `src/features/welcome/` | done |
 | Login (business code + phone + password) | `src/features/auth/` | done |
 | Register (→ OTP) | `src/features/auth/` | done |
 | Otp (verify code → session) | `src/features/auth/` | done |

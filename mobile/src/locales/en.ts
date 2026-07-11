@@ -21,6 +21,15 @@ export const en = {
     title: "Choose your language",
     ...languageNames,
   },
+  welcome: {
+    tagline: "Book vehicles, run trips, and manage your fleet — in your language.",
+    bookTitle: "Book in minutes",
+    bookBody: "Request a vehicle and get confirmed fast — no phone calls.",
+    driveTitle: "Drive with clarity",
+    driveBody: "Trips, statuses, and earnings in one place for every driver.",
+    manageTitle: "Run the whole fleet",
+    manageBody: "Owners see vehicles, drivers, and bookings at a glance.",
+  },
   auth: {
     signInTitle: "Sign in",
     registerTitle: "Create account",

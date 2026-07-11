@@ -34,9 +34,9 @@ npx expo start
 # => Metro waiting on exp://… ; press i (iOS) · a (Android) · w (web)
 ```
 
-The app opens on the **Welcome** screen (app name + language picker) when
-signed out, or **Home** when a session is restored from secure storage. Auth
-screens arrive in Session 3.
+The app opens on the **Welcome** screen (brand + tagline, three persona
+value-prop cards, language picker, sign in / create account) when signed
+out, or **Home** when a session is restored from secure storage.
 
 ## 4. Quality gates (what CI runs)
 

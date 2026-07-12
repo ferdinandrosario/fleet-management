@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colorScheme } from "nativewind";
 
-import { resolveScheme, THEME_MODES, useThemeStore } from "./theme-store";
+import { THEME_MODES, useThemeStore } from "./theme-store";
 
 // NativeWind's imperative API is mocked so apply() can be asserted without a
 // real RN runtime; `vars` passes its input through so blackThemeVars stays a
@@ -61,13 +61,5 @@ describe("theme store", () => {
     await AsyncStorage.setItem("fm.theme", "neon");
     await useThemeStore.getState().restore();
     expect(useThemeStore.getState().mode).toBe("system");
-  });
-
-  it("resolveScheme maps explicit modes and defers system to the OS", () => {
-    expect(resolveScheme("light")).toBe("light");
-    expect(resolveScheme("dark")).toBe("dark");
-    expect(resolveScheme("black")).toBe("dark");
-    // jest's RN preset reports no OS scheme -> light.
-    expect(resolveScheme("system")).toBe("light");
   });
 });

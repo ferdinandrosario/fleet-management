@@ -2,6 +2,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
+import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
 import { View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -16,7 +17,7 @@ import { bootstrap } from "./src/lib/bootstrap";
 import type { AppStackParamList, AuthStackParamList } from "./src/navigation/types";
 import { palette } from "./src/theme/tokens";
 import { useAuthStore } from "./src/stores/auth-store";
-import { blackThemeVars, resolveScheme, useThemeStore } from "./src/stores/theme-store";
+import { blackThemeVars, useThemeStore } from "./src/stores/theme-store";
 
 // Wire i18n + the API client once, before anything renders.
 bootstrap();
@@ -58,11 +59,14 @@ export default function App() {
     void restoreTheme();
   }, [restore, restoreTheme]);
 
-  // Non-className surfaces follow the resolved scheme: navigation's
+  // Non-className surfaces follow the applied scheme: navigation's
   // background (kills the white flash between screens in dark), the status
   // bar icons, and — in black mode — the root View that re-anchors
-  // --surface to true #000 for every descendant.
-  const scheme = resolveScheme(themeMode);
+  // --surface to true #000 for every descendant. NativeWind's reactive
+  // hook (not Appearance.getColorScheme()) so an OS light↔dark flip while
+  // the mode is "system" re-renders these along with every className.
+  const { colorScheme } = useColorScheme();
+  const scheme = colorScheme === "dark" ? "dark" : "light";
   const navTheme = scheme === "dark" ? DarkTheme : DefaultTheme;
   const navBackground =
     themeMode === "black" ? "#000000" : palette(scheme).surface;

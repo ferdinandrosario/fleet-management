@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colorScheme, vars } from "nativewind";
-import { Appearance } from "react-native";
 import { create } from "zustand";
 
 // Global theme state (light / dark / black / system), following the
@@ -33,13 +32,11 @@ function apply(mode: ThemeMode): void {
   colorScheme.set(mode === "black" ? "dark" : mode);
 }
 
-// The concrete scheme a mode renders as — for non-className APIs
-// (StatusBar, navigation theme, spinners). "system" defers to the OS,
-// which only knows light/dark, so black is always an explicit choice.
-export function resolveScheme(mode: ThemeMode): "light" | "dark" {
-  if (mode === "system") return Appearance.getColorScheme() === "dark" ? "dark" : "light";
-  return mode === "light" ? "light" : "dark";
-}
+// Non-className APIs (StatusBar, navigation theme, spinners) read the
+// APPLIED scheme reactively via NativeWind's useColorScheme() hook — not a
+// helper here — so an OS light↔dark flip while the mode is "system"
+// re-renders them along with every className. "system" can never resolve
+// to black: the OS only knows light/dark, so black is always explicit.
 
 type ThemeState = {
   mode: ThemeMode;

@@ -26,18 +26,35 @@ loading / empty / error / offline / content — never a blank view.
 
 ## Design tokens
 
-Source of truth: `mobile/tailwind.config.js` (className styling) mirrored by
-`mobile/src/theme/tokens.ts` (programmatic use — StatusBar, navigation theme).
+Source of truth: HSL variables in `mobile/global.css` (light `:root`, dark
+`.dark:root`), expanded by `mobile/tailwind.config.js` (className styling)
+and mirrored as hexes by `mobile/src/theme/tokens.ts` (`palettes.light` /
+`palettes.dark` + `palette(scheme)` — programmatic use: StatusBar,
+navigation theme, spinners). Keep the three in sync.
 
-| Token | Value | Use |
-|---|---|---|
-| `brand` / `brand-light` / `brand-dark` | `#0F6E56` / `#1D9E75` / `#085041` | primary actions, headings |
-| `success` / `danger` / `warning` (+ `-bg`) | green / red / amber | status feedback |
-| `surface` / `surface-muted` | white / `#f1f5f9` | backgrounds |
-| `ink` / `ink-muted` / `ink-inverse` | `#0f172a` / `#475569` / white | text |
-| `line` | `#e2e8f0` | borders |
-| `rounded-card` | 12px | cards, buttons |
-| `min-h-touch` / `min-w-touch` | 48px | touch targets |
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `brand` / `brand-light` / `brand-dark` | `#0F6E56` / `#1D9E75` / `#085041` | `#1D9E75` / `#3EBD94` / `#0F6E56` | primary actions, headings |
+| `success` / `danger` / `warning` (+ `-bg`) | green / red / amber 600s, pale tints | 500s (brighter), deep tints | status feedback |
+| `surface` / `surface-muted` | white / `#f1f5f9` | `#0f172a` / `#1e293b` | backgrounds |
+| `ink` / `ink-muted` / `ink-inverse` | `#0f172a` / `#475569` / white | `#f8fafc` / `#94a3b8` / white | text |
+| `line` | `#e2e8f0` | `#334155` | borders |
+| `rounded-card` | 12px | — | cards, buttons |
+| `min-h-touch` / `min-w-touch` | 48px | — | touch targets |
+
+### Theme modes (product decision 2026-07-12)
+
+The default stays the sunlight-first light palette; **Dark** and **AMOLED
+Black** are opt-in via `ThemeToggle` (`src/components/theme-toggle.tsx`,
+mounted on Welcome and Home), cycling **Light → Dark → Black → System**.
+State lives in `src/stores/theme-store.ts` (Zustand + AsyncStorage under
+`fm.theme`; `system` clears the key and follows the OS). Black is a
+variant of dark, not a third palette: NativeWind's scheme only knows
+light/dark, so black rides the dark scheme and `App.tsx` re-anchors
+`--surface` to true black (`#000`, unlit pixels on OLED panels) by
+putting `blackThemeVars` on the root View; cards keep their dark values
+and float above the canvas. `App.tsx` also derives the navigation
+background and StatusBar style from `resolveScheme(mode)`.
 
 ## Component inventory (Session 2)
 

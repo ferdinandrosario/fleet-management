@@ -23,6 +23,9 @@ One bullet per shipped surface, by feature. Canonical detail lives in
   status), TanStack Query + SafeArea providers. → [mobile/design.md](mobile/design.md)
 - **Styling** — NativeWind v4 + design tokens; owned `Button` primitive;
   loading/empty/error/offline state views. → [mobile/design.md](mobile/design.md)
+- **Theming** — four-state Light / Dark / AMOLED Black / System toggle
+  (light stays the sunlight-first default; Black renders a true-`#000`
+  canvas for OLED screens), persisted per device. → [mobile/design.md](mobile/design.md)
 - **i18n** — i18next, 6 locales (en/ta/ml/te/mr/hi), device detection, runtime
   language picker. → [mobile/design.md](mobile/design.md)
 - **API client** — one typed fetch transport, standard envelope, auth +

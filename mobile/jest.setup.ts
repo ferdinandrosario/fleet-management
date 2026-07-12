@@ -21,3 +21,8 @@ jest.mock("expo-secure-store", () => {
 jest.mock("expo-localization", () => ({
   getLocales: () => [{ languageCode: "en", languageTag: "en-US" }],
 }));
+
+// AsyncStorage is native — the official in-memory mock backs the theme store.
+jest.mock("@react-native-async-storage/async-storage", () =>
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
+);

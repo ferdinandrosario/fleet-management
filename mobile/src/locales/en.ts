@@ -21,6 +21,13 @@ export const en = {
     title: "Choose your language",
     ...languageNames,
   },
+  theme: {
+    title: "Theme",
+    light: "Light",
+    dark: "Dark",
+    black: "Black",
+    system: "System",
+  },
   welcome: {
     tagline: "Book vehicles, run trips, and manage your fleet — in your language.",
     bookTitle: "Book in minutes",

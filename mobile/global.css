@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Theme variables — HSL components, expanded by tailwind.config.js via
+ * hsl(var(--*)). Light stays the sunlight-first, high-contrast field
+ * palette; dark (opt-in via the theme toggle, product decision
+ * 2026-07-12) shifts surfaces to slate and brightens the brand ramp one
+ * step so it stays legible. `src/theme/tokens.ts` mirrors these hexes
+ * for programmatic (non-className) use — keep the three in sync.
+ *
+ * AMOLED black has NO block here: it rides `.dark:root` and re-anchors
+ * --surface to true black at runtime via `blackThemeVars` in
+ * src/stores/theme-store.ts (applied on the root View in App.tsx).
+ */
+@layer base {
+  :root {
+    --brand: 165 76% 25%;
+    --brand-light: 161 69% 37%;
+    --brand-dark: 168 82% 17%;
+    --success: 142 76% 36%;
+    --success-bg: 141 84% 93%;
+    --danger: 0 72% 51%;
+    --danger-bg: 0 93% 94%;
+    --warning: 32 95% 44%;
+    --warning-bg: 48 96% 89%;
+    --surface: 0 0% 100%;
+    --surface-muted: 210 40% 96%;
+    --ink: 222 47% 11%;
+    --ink-muted: 215 19% 35%;
+    --ink-inverse: 0 0% 100%;
+    --line: 214 32% 91%;
+  }
+
+  .dark:root {
+    --brand: 161 69% 37%;
+    --brand-light: 160 51% 49%;
+    --brand-dark: 165 76% 25%;
+    --success: 142 71% 45%;
+    --success-bg: 145 80% 10%;
+    --danger: 0 84% 60%;
+    --danger-bg: 0 75% 15%;
+    --warning: 38 92% 50%;
+    --warning-bg: 21 92% 14%;
+    --surface: 222 47% 11%;
+    --surface-muted: 217 33% 17%;
+    --ink: 210 40% 98%;
+    --ink-muted: 215 20% 65%;
+    --ink-inverse: 0 0% 100%;
+    --line: 215 25% 27%;
+  }
+}

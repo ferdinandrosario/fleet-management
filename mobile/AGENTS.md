@@ -37,7 +37,7 @@ Mobile-specific:
 - **Functional components + hooks. No class components.** Local UI state is
   `useState` / `useEffect`. **Server state is TanStack Query** (caching,
   pagination, lazy fetch — the approved Session 0 stack). **Global app state
-  (auth status, language) is a light store (Zustand)** — small, no Redux.
+  (auth status, language, theme) is a set of small Zustand stores** — no Redux.
   Owned UI primitives under `src/components/ui/` stay hand-shaped.
 - **Data fetching: TanStack Query over the shared `fetch` client
   `src/lib/api.ts`.** `request` / `upload` / `querystring`, the envelope
@@ -65,7 +65,8 @@ Mobile-specific:
   `src/features/<name>/api.ts`, `src/features/<name>/format.ts`).
 - Any third-party **HTTP** client (axios/SWR/ky) — the transport is the shared
   `src/lib/api.ts` fetch wrapper, used as TanStack Query's `queryFn`. Redux or a
-  second global store beyond the one Zustand store.
+  global-state library beyond Zustand (one small store per concern:
+  auth, language, theme).
 - Editing `src/components/ui/*` from inside a feature folder. If you need a
   new variant, extend the primitive's `cva` map.
 - Duplicating fetch plumbing in a feature client — `src/lib/api.ts` is the
@@ -85,10 +86,11 @@ future maintainer never reverse-engineers an unexplained dependency.
 | Library | What / why | Mock (tests) |
 |---|---|---|
 | `@tanstack/react-query` | server-state cache + pagination + lazy fetch (approved S0); wraps the shared fetch client | MSW intercepts the underlying `fetch` |
-| `zustand` | one light global store (auth status, language) — no Redux | plain (store reset per test) |
+| `zustand` | small global stores (auth status, language, theme) — no Redux | plain (store reset per test) |
 | `nativewind` + `tailwindcss@3.4.17` | Tailwind styling for RN; Tailwind v3 pinned (NativeWind v4 caveat) | n/a |
 | `i18next` + `react-i18next` + `expo-localization` | 6-locale i18n + device locale detection | init with test resources |
 | `expo-secure-store` | tokens in Keychain/Keystore, never AsyncStorage | jest mock module |
+| `@react-native-async-storage/async-storage` | non-sensitive UI prefs only (theme choice); secrets stay in secure-store | official in-memory mock |
 | `@react-navigation/native` + `native-stack` | navigation — `App.tsx` is the router shell + auth gate (folder layout) | jest-expo handles native deps |
 | `clsx` + `tailwind-merge` + `class-variance-authority` | the `cn()` helper + `cva` variant maps for owned primitives | n/a (pure) |
 

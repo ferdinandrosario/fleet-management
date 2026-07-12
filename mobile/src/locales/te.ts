@@ -20,6 +20,13 @@ export const te: Translations = {
     title: "మీ భాషను ఎంచుకోండి",
     ...languageNames,
   },
+  theme: {
+    title: "థీమ్",
+    light: "లైట్",
+    dark: "డార్క్",
+    black: "నలుపు",
+    system: "సిస్టమ్",
+  },
   welcome: {
     tagline: "వాహనాలను బుక్ చేయండి, ట్రిప్పులు నడపండి, మీ ఫ్లీట్‌ను నిర్వహించండి — మీ భాషలో.",
     bookTitle: "నిమిషాల్లో బుకింగ్",

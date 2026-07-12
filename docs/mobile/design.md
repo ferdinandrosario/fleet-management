@@ -53,8 +53,10 @@ variant of dark, not a third palette: NativeWind's scheme only knows
 light/dark, so black rides the dark scheme and `App.tsx` re-anchors
 `--surface` to true black (`#000`, unlit pixels on OLED panels) by
 putting `blackThemeVars` on the root View; cards keep their dark values
-and float above the canvas. `App.tsx` also derives the navigation
-background and StatusBar style from `resolveScheme(mode)`.
+and float above the canvas. Non-className surfaces (navigation
+background, StatusBar style, spinner color) read the applied scheme
+reactively via NativeWind's `useColorScheme()` hook, so an OS
+light↔dark flip under `system` re-renders them with every className.
 
 ## Component inventory (Session 2)
 

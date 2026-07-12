@@ -21,6 +21,13 @@ export const hi: Translations = {
     title: "अपनी भाषा चुनें",
     ...languageNames,
   },
+  theme: {
+    title: "थीम",
+    light: "हल्का",
+    dark: "गहरा",
+    black: "काला",
+    system: "सिस्टम",
+  },
   welcome: {
     tagline: "वाहन बुक करें, ट्रिप चलाएँ और अपना फ़्लीट संभालें — आपकी भाषा में।",
     bookTitle: "मिनटों में बुकिंग",

@@ -1,8 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { LoadingState } from "./src/components/states/loading-state";
@@ -13,7 +14,9 @@ import { HomeScreen } from "./src/features/home/home-screen";
 import { WelcomeScreen } from "./src/features/welcome/welcome-screen";
 import { bootstrap } from "./src/lib/bootstrap";
 import type { AppStackParamList, AuthStackParamList } from "./src/navigation/types";
+import { palette } from "./src/theme/tokens";
 import { useAuthStore } from "./src/stores/auth-store";
+import { blackThemeVars, resolveScheme, useThemeStore } from "./src/stores/theme-store";
 
 // Wire i18n + the API client once, before anything renders.
 bootstrap();
@@ -44,26 +47,47 @@ function AppNavigator() {
 export default function App() {
   const status = useAuthStore((state) => state.status);
   const restore = useAuthStore((state) => state.restore);
+  const themeMode = useThemeStore((state) => state.mode);
+  const restoreTheme = useThemeStore((state) => state.restore);
 
-  // Rehydrate the session from secure storage on launch.
+  // Rehydrate the session from secure storage — and the theme choice from
+  // AsyncStorage — on launch, so the loading state already renders in the
+  // chosen scheme.
   useEffect(() => {
     restore();
-  }, [restore]);
+    void restoreTheme();
+  }, [restore, restoreTheme]);
+
+  // Non-className surfaces follow the resolved scheme: navigation's
+  // background (kills the white flash between screens in dark), the status
+  // bar icons, and — in black mode — the root View that re-anchors
+  // --surface to true #000 for every descendant.
+  const scheme = resolveScheme(themeMode);
+  const navTheme = scheme === "dark" ? DarkTheme : DefaultTheme;
+  const navBackground =
+    themeMode === "black" ? "#000000" : palette(scheme).surface;
 
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
-          {status === "loading" ? (
-            <LoadingState />
-          ) : status === "authenticated" ? (
-            <AppNavigator />
-          ) : (
-            <AuthNavigator />
-          )}
-        </NavigationContainer>
-        <StatusBar style="dark" />
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    <View className="flex-1" style={themeMode === "black" ? blackThemeVars : undefined}>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer
+            theme={{
+              ...navTheme,
+              colors: { ...navTheme.colors, background: navBackground },
+            }}
+          >
+            {status === "loading" ? (
+              <LoadingState />
+            ) : status === "authenticated" ? (
+              <AppNavigator />
+            ) : (
+              <AuthNavigator />
+            )}
+          </NavigationContainer>
+          <StatusBar style={scheme === "dark" ? "light" : "dark"} />
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </View>
   );
 }

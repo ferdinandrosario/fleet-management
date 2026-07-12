@@ -1,3 +1,5 @@
+import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+
 // Expo public env vars are read at module load (mobile/AGENTS.md "Testing"),
 // so set them here, before any module captures them.
 process.env.EXPO_PUBLIC_API_BASE_URL = "http://localhost:3000";
@@ -23,6 +25,6 @@ jest.mock("expo-localization", () => ({
 }));
 
 // AsyncStorage is native — the official in-memory mock backs the theme store.
-jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
-);
+// The `mock` prefix lets babel-plugin-jest-hoist allow the out-of-scope
+// reference inside the hoisted factory.
+jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage);

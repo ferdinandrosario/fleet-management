@@ -124,6 +124,44 @@ ALTER SEQUENCE public.owners_id_seq OWNED BY public.owners.id;
 
 
 --
+-- Name: plans; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.plans (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying NOT NULL,
+    tier integer DEFAULT 0 NOT NULL,
+    price_paise integer DEFAULT 0 NOT NULL,
+    "interval" integer DEFAULT 0 NOT NULL,
+    limits jsonb DEFAULT '{}'::jsonb NOT NULL,
+    razorpay_plan_id character varying,
+    active boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: plans_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.plans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: plans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.plans_id_seq OWNED BY public.plans.id;
+
+
+--
 -- Name: refresh_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -178,7 +216,8 @@ CREATE TABLE public.subscriptions (
     status integer DEFAULT 0 NOT NULL,
     razorpay_subscription_id character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    plan_id bigint
 );
 
 
@@ -319,6 +358,13 @@ ALTER TABLE ONLY public.owners ALTER COLUMN id SET DEFAULT nextval('public.owner
 
 
 --
+-- Name: plans id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plans ALTER COLUMN id SET DEFAULT nextval('public.plans_id_seq'::regclass);
+
+
+--
 -- Name: refresh_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -375,6 +421,14 @@ ALTER TABLE ONLY public.one_time_passwords
 
 ALTER TABLE ONLY public.owners
     ADD CONSTRAINT owners_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: plans plans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plans
+    ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
 
 
 --
@@ -454,6 +508,27 @@ CREATE UNIQUE INDEX index_owners_on_uuid ON public.owners USING btree (uuid);
 
 
 --
+-- Name: index_plans_on_active; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_plans_on_active ON public.plans USING btree (active);
+
+
+--
+-- Name: index_plans_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_plans_on_name ON public.plans USING btree (name);
+
+
+--
+-- Name: index_plans_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_plans_on_uuid ON public.plans USING btree (uuid);
+
+
+--
 -- Name: index_refresh_tokens_on_family; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -479,6 +554,13 @@ CREATE INDEX index_refresh_tokens_on_user_id ON public.refresh_tokens USING btre
 --
 
 CREATE UNIQUE INDEX index_subscriptions_on_owner_id ON public.subscriptions USING btree (owner_id);
+
+
+--
+-- Name: index_subscriptions_on_plan_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_plan_id ON public.subscriptions USING btree (plan_id);
 
 
 --
@@ -560,6 +642,14 @@ ALTER TABLE ONLY public.refresh_tokens
 
 
 --
+-- Name: subscriptions fk_rails_63d3df128b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT fk_rails_63d3df128b FOREIGN KEY (plan_id) REFERENCES public.plans(id);
+
+
+--
 -- Name: tenant_registries fk_rails_7bbfaabe01; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -587,9 +677,11 @@ ALTER TABLE ONLY public.one_time_passwords
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "public", "public";
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260616000010'),
+('20260616000009'),
 ('20260616000008'),
 ('20260616000007'),
 ('20260616000006'),

@@ -7,7 +7,7 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 
 ## Stack
 
-- Ruby 4.0.5, Rails 8.1.3 (pinned `= 8.1.3` in `backend/Gemfile`), API-only.
+- Ruby 4.0.6, Rails 8.1.3 (pinned `= 8.1.3` in `backend/Gemfile`), API-only.
 - **PostgreSQL only.** No SQLite, no MySQL, no swapping.
 - **Rails defaults only:** Solid Queue (jobs), Solid Cache (cache),
   Solid Cable (websockets), Propshaft (assets).

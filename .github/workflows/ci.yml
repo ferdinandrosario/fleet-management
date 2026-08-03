@@ -1,0 +1,98 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-ci:
+    name: Backend API Tests & Security Audits
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: fleet_management_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '4.0.6'
+          working-directory: 'backend'
+          bundler-cache: true
+
+      - name: Setup Database Structure
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:password@localhost:5432/fleet_management_test
+          AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
+          AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
+          AR_ENCRYPTION_KEY_DERIVATION_SALT: dev_only_key_derivation_salt_not_secret
+          JWT_SECRET_KEY: test_jwt_secret_key_000000000000000000
+        run: |
+          bundle exec rails db:prepare
+        working-directory: backend
+
+      - name: Run RSpec Test Suite with 100% Coverage Gate
+        env:
+          RAILS_ENV: test
+          COVERAGE: full
+          DATABASE_URL: postgres://postgres:password@localhost:5432/fleet_management_test
+          AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
+          AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
+          AR_ENCRYPTION_KEY_DERIVATION_SALT: dev_only_key_derivation_salt_not_secret
+          JWT_SECRET_KEY: test_jwt_secret_key_000000000000000000
+        run: |
+          bundle exec rspec
+        working-directory: backend
+
+      - name: Run Security Scanner (Brakeman)
+        run: |
+          bundle exec brakeman -q
+        working-directory: backend
+
+      - name: Run Code Linter (RuboCop)
+        run: |
+          bin/rubocop
+        working-directory: backend
+
+  web-admin-ci:
+    name: Web Admin TypeScript Build & Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26.5.1'
+          cache: 'npm'
+          cache-dependency-path: 'web-admin/package-lock.json'
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: web-admin
+
+      - name: Run Typecheck
+        run: npm run typecheck
+        working-directory: web-admin
+
+      - name: Production Build
+        run: npm run build
+        working-directory: web-admin

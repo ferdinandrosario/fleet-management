@@ -1,6 +1,6 @@
 # Backend — Fleet Management API
 
-Rails 8.1 API-only app (Ruby 4.0.5, PostgreSQL + PostGIS, schema-per-tenant).
+Rails 8.1.3 API-only app (Ruby 4.0.6, PostgreSQL + PostGIS, schema-per-tenant).
 Serves the mobile app and web admin over one JSON API.
 
 **This file is a pointer — the real guides live in [`../docs/`](../docs/):**
@@ -17,7 +17,7 @@ Serves the mobile app and web admin over one JSON API.
 ## Quickstart
 
 Ruby is managed by **mise** — make sure it's activated so `ruby -v` prints
-`4.0.5` inside this folder (otherwise you'll hit macOS's system Ruby 2.6; see
+`4.0.6` inside this folder (otherwise you'll hit macOS's system Ruby 2.6; see
 [`docs/troubleshooting/backend.md`](../docs/troubleshooting/backend.md)).
 
 ```bash

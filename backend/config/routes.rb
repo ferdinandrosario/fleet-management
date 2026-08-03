@@ -45,6 +45,17 @@ Rails.application.routes.draw do
         resources :availabilities, controller: "vehicle_availabilities", only: [ :index, :create, :destroy ]
         resources :pricing_rules, only: [ :index, :create, :destroy ]
       end
+
+      # Discovery & Search (Session 6).
+      get "discovery/vehicles", to: "discovery#vehicles"
+
+      # Bookings & Payments (Session 6).
+      resources :bookings, only: [ :index, :show, :create ] do
+        member do
+          post :pay_advance
+          patch :cancel
+        end
+      end
     end
   end
 end

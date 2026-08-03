@@ -12,5 +12,8 @@ en:
     phone_unverified: "Please verify your phone number first."
     otp_invalid: "Invalid or expired code."
     plan_limit_exceeded: "Plan resource limit reached."
+    booking_failed: "Could not create vehicle booking."
+    payment_failed: "Advance payment verification failed."
+    cannot_cancel_completed: "Completed booking cannot be cancelled."
   health:
     status: "ok"

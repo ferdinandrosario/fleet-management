@@ -61,6 +61,13 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Tiered Discounts & Pricing Rules** — `GET/POST/DELETE /api/v1/vehicles/:id/pricing_rules`, configure duration-based rate overrides or percentage discounts. → [feature/vehicles.md](feature/vehicles.md)
 - **Instant Rental Quote Engine** — `GET /api/v1/vehicles/:id/quote?hours=X&days=Y`, `PricingCalculatorService` computes base rates and applies discount rules. → [feature/vehicles.md](feature/vehicles.md)
 
+## Discovery, Booking & Payments (Session 6)
+
+- **Location Proximity Vehicle Search** — `GET /api/v1/discovery/vehicles`, PostGIS spatial search filtering by latitude/longitude, radius_km, category, and date range availability. → [feature/bookings.md](feature/bookings.md)
+- **Reservation Booking Lifecycle** — `GET/POST /api/v1/bookings`, `GET/PATCH /api/v1/bookings/:id`, creates reservations in `pending_payment` status and calculates advance deposit requirements. → [feature/bookings.md](feature/bookings.md)
+- **Advance Token Payment Verification** — `POST /api/v1/bookings/:id/pay_advance`, `PaymentVerificationService` verifies payment token and promotes booking to `confirmed` status. → [feature/bookings.md](feature/bookings.md)
+- **Reservation Cancellation** — `PATCH /api/v1/bookings/:id/cancel`, cancels active bookings and handles deposit refund status. → [feature/bookings.md](feature/bookings.md)
+
 ## Coming
 
-discovery & booking (S6) · driver execution (S7) · reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).
+driver execution (S7) · reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).

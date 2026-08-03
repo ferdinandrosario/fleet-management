@@ -55,6 +55,51 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: bookings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bookings (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    vehicle_id bigint NOT NULL,
+    customer_id bigint NOT NULL,
+    driver_id bigint,
+    start_time timestamp(6) without time zone NOT NULL,
+    end_time timestamp(6) without time zone NOT NULL,
+    pickup_address character varying,
+    pickup_latitude numeric(10,6),
+    pickup_longitude numeric(10,6),
+    status integer DEFAULT 0 NOT NULL,
+    payment_status integer DEFAULT 0 NOT NULL,
+    total_cents integer DEFAULT 0 NOT NULL,
+    advance_cents integer DEFAULT 0 NOT NULL,
+    razorpay_order_id character varying,
+    razorpay_payment_id character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: bookings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.bookings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bookings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.bookings_id_seq OWNED BY public.bookings.id;
+
+
+--
 -- Name: one_time_passwords; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -433,7 +478,10 @@ CREATE TABLE public.vehicles (
     status integer DEFAULT 0 NOT NULL,
     specs jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    latitude numeric(10,6),
+    longitude numeric(10,6),
+    address character varying
 );
 
 
@@ -454,6 +502,13 @@ CREATE SEQUENCE public.vehicles_id_seq
 --
 
 ALTER SEQUENCE public.vehicles_id_seq OWNED BY public.vehicles.id;
+
+
+--
+-- Name: bookings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bookings ALTER COLUMN id SET DEFAULT nextval('public.bookings_id_seq'::regclass);
 
 
 --
@@ -539,6 +594,14 @@ ALTER TABLE ONLY public.vehicles ALTER COLUMN id SET DEFAULT nextval('public.veh
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: bookings bookings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT bookings_pkey PRIMARY KEY (id);
 
 
 --
@@ -642,6 +705,62 @@ ALTER TABLE ONLY public.vehicles
 --
 
 CREATE INDEX idx_vehicle_avail_lookup ON public.vehicle_availabilities USING btree (vehicle_id, start_time, end_time);
+
+
+--
+-- Name: index_bookings_on_customer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_customer_id ON public.bookings USING btree (customer_id);
+
+
+--
+-- Name: index_bookings_on_driver_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_driver_id ON public.bookings USING btree (driver_id);
+
+
+--
+-- Name: index_bookings_on_payment_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_payment_status ON public.bookings USING btree (payment_status);
+
+
+--
+-- Name: index_bookings_on_razorpay_order_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_razorpay_order_id ON public.bookings USING btree (razorpay_order_id);
+
+
+--
+-- Name: index_bookings_on_start_time_and_end_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_start_time_and_end_time ON public.bookings USING btree (start_time, end_time);
+
+
+--
+-- Name: index_bookings_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_status ON public.bookings USING btree (status);
+
+
+--
+-- Name: index_bookings_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_bookings_on_uuid ON public.bookings USING btree (uuid);
+
+
+--
+-- Name: index_bookings_on_vehicle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bookings_on_vehicle_id ON public.bookings USING btree (vehicle_id);
 
 
 --
@@ -834,6 +953,13 @@ CREATE INDEX index_vehicles_on_category ON public.vehicles USING btree (category
 
 
 --
+-- Name: index_vehicles_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vehicles_on_latitude_and_longitude ON public.vehicles USING btree (latitude, longitude);
+
+
+--
 -- Name: index_vehicles_on_registration_number; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -903,11 +1029,35 @@ ALTER TABLE ONLY public.one_time_passwords
 
 
 --
+-- Name: bookings fk_rails_dafb5f2e40; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT fk_rails_dafb5f2e40 FOREIGN KEY (customer_id) REFERENCES public.users(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: bookings fk_rails_e2a1710035; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT fk_rails_e2a1710035 FOREIGN KEY (driver_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: vehicle_availabilities fk_rails_ebe45553c7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.vehicle_availabilities
     ADD CONSTRAINT fk_rails_ebe45553c7 FOREIGN KEY (vehicle_id) REFERENCES public.vehicles(id) ON DELETE CASCADE;
+
+
+--
+-- Name: bookings fk_rails_ec8ddc3246; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT fk_rails_ec8ddc3246 FOREIGN KEY (vehicle_id) REFERENCES public.vehicles(id) ON DELETE RESTRICT;
 
 
 --
@@ -917,6 +1067,7 @@ ALTER TABLE ONLY public.vehicle_availabilities
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260616000012'),
 ('20260616000011'),
 ('20260616000010'),
 ('20260616000009'),

@@ -12,5 +12,8 @@ hi:
     phone_unverified: "कृपया पहले अपना फ़ोन नंबर सत्यापित करें।"
     otp_invalid: "अमान्य या समय-समाप्त कोड।"
     plan_limit_exceeded: "प्लान संसाधन सीमा समाप्त हो गई है।"
+    booking_failed: "वाहन बुकिंग नहीं बनाई जा सकी।"
+    payment_failed: "अग्रिम भुगतान सत्यापन विफल रहा।"
+    cannot_cancel_completed: "पूर्ण बुकिंग रद्द नहीं की जा सकती।"
   health:
     status: "ठीक है"

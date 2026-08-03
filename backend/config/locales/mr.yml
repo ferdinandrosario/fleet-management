@@ -11,5 +11,9 @@ mr:
     invalid_token: "अवैध किंवा कालबाह्य टोकन."
     phone_unverified: "कृपया प्रथम तुमचा फोन नंबर सत्यापित करा."
     otp_invalid: "अवैध किंवा कालबाह्य कोड."
+    plan_limit_exceeded: "प्लॅन रिसोर्स मर्यादा पूर्ण झाली आहे."
+    booking_failed: "वाहन बुकिंग तयार करता आले नाही."
+    payment_failed: "आगाऊ पेमेंट पडताळणी अयशस्वी झाली."
+    cannot_cancel_completed: "पूर्ण झालेले बुकिंग रद्द करता येत नाही."
   health:
     status: "ठीक आहे"

@@ -99,6 +99,13 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Security & Linter Audit** — `Brakeman` verified 0 security warnings across 25 controllers & 18 models; `RuboCop` audited 213 files with 0 offenses.
 - **Pure Ruby High-Performance CSV Exporter** — Memory-efficient CSV generation for booking analytics exports.
 
-## Coming
+## Paid Integrations & Production Go-Live (Session 12)
 
-paid integrations & go-live (S12).
+- **Razorpay Payments & Webhook Verification** — HMAC-SHA256 signature verification architecture for 20% advance token deposits. → [feature/paid-integrations-and-go-live.md](feature/paid-integrations-and-go-live.md)
+- **SMS OTP Provider Integration** — Fast2SMS / Msg91 HTTPS API integration for 6-digit phone verification. → [feature/paid-integrations-and-go-live.md](feature/paid-integrations-and-go-live.md)
+- **ActiveStorage Object Storage** — S3-compatible cloud storage adapter for proof-of-work vehicle photos. → [feature/paid-integrations-and-go-live.md](feature/paid-integrations-and-go-live.md)
+- **Production Container Topology** — Health checks, Puma server, and PostgreSQL/PostGIS multi-tenant schema isolation. → [feature/paid-integrations-and-go-live.md](feature/paid-integrations-and-go-live.md)
+
+---
+
+All 12 sessions of the build plan are fully implemented and verified! 🎉

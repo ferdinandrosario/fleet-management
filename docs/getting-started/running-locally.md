@@ -104,8 +104,13 @@ When migrations or seeds get into a weird state, rebuild from scratch:
 
 ```bash
 cd backend
-bin/rails db:drop db:prepare      # drop, recreate, migrate dev + test
+bin/rails db:drop db:prepare db:seed      # drop, recreate, migrate dev + test, seed demo data
 ```
+
+Seeding creates:
+- **Plans**: `basic`, `pro`, `enterprise`
+- **SuperAdmin**: `admin@fleet.example.com` / `adminsecret123`
+- **Demo Tenant (`demo_tenant`)**: Owner `Demo Fleet Services`, user `+919876543210` / `password123`
 
 If `db:drop` complains about open connections, stop the server (and any
 `rails console`) first, or force it:

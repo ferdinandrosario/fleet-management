@@ -1,4 +1,4 @@
-import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+import mockAsyncStorage from "@react-native-async-storage/async-storage/jest";
 
 // Expo public env vars are read at module load (mobile/AGENTS.md "Testing"),
 // so set them here, before any module captures them.

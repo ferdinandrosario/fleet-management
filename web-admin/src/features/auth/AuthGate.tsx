@@ -13,12 +13,12 @@ interface AuthGateProps {
 
 export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
   const { loginOwner, loginSuperAdmin } = useAuth();
-  const [activeRole, setActiveRole] = useState<'owner' | 'super_admin'>(isDemoRoute ? 'super_admin' : 'owner');
+  const [activeRole, setActiveRole] = useState<'owner' | 'super_admin'>('owner');
 
-  // Form State - Pre-filled on /demo route
+  // Form State - Pre-filled on /demo route based on activeRole
   const [phone, setPhone] = useState<string>(isDemoRoute ? '+919876543210' : '');
   const [email, setEmail] = useState<string>(isDemoRoute ? 'admin@fleet.example.com' : '');
-  const [password, setPassword] = useState<string>(isDemoRoute ? 'adminsecret123' : '');
+  const [password, setPassword] = useState<string>(isDemoRoute ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : '');
   const [tenantSlug, setTenantSlug] = useState<string>('demo_tenant');
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,15 +31,25 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
     setLocale(loc);
   };
 
+  const handleRoleSwitch = (role: 'owner' | 'super_admin') => {
+    setActiveRole(role);
+    setErrorMessage(null);
+    if (isDemoRoute) {
+      if (role === 'owner') {
+        setPhone('+919876543210');
+        setPassword('password123');
+        setTenantSlug('demo_tenant');
+      } else {
+        setEmail('admin@fleet.example.com');
+        setPassword('adminsecret123');
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
-
-    if (isDemoRoute && activeRole === 'owner') {
-      setErrorMessage('Access Denied: The /demo portal is restricted to Super Admin operators.');
-      return;
-    }
 
     if (activeRole === 'owner') {
       if (!phone.trim() || !password.trim() || !tenantSlug.trim()) {
@@ -104,11 +114,11 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
             FM
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-100">
-            {isDemoRoute ? 'Super Admin Demo Portal' : t('auth_title')}
+            {isDemoRoute ? 'Fleet Management Demo Portal' : t('auth_title')}
           </h1>
           <p className="text-xs text-slate-400 max-w-xs mx-auto">
             {isDemoRoute
-              ? 'Restricted platform super admin demo access'
+              ? 'Pre-filled demo credentials for Fleet Owner & Super Admin'
               : t('auth_subtitle')}
           </p>
         </div>
@@ -117,10 +127,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
         <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
           <button
             type="button"
-            onClick={() => {
-              setActiveRole('owner');
-              setErrorMessage(null);
-            }}
+            onClick={() => handleRoleSwitch('owner')}
             className={`py-2 rounded-lg font-medium transition-all ${
               activeRole === 'owner'
                 ? 'bg-blue-600 text-white shadow-sm'
@@ -131,10 +138,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setActiveRole('super_admin');
-              setErrorMessage(null);
-            }}
+            onClick={() => handleRoleSwitch('super_admin')}
             className={`py-2 rounded-lg font-medium transition-all ${
               activeRole === 'super_admin'
                 ? 'bg-blue-600 text-white shadow-sm'
@@ -150,7 +154,9 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
           {isDemoRoute && (
             <div className="p-3 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-xl text-xs flex items-center gap-2">
               <Zap className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Demo credentials pre-filled for Super Admin portal.</span>
+              <span>
+                Demo credentials pre-filled for {activeRole === 'owner' ? 'Fleet Owner' : 'Super Admin'} portal.
+              </span>
             </div>
           )}
 

@@ -4,7 +4,7 @@ export type Locale = 'en' | 'ta' | 'ml' | 'te' | 'mr' | 'hi';
 
 const translations: Record<Locale, Record<string, string>> = {
   en: {
-    app_title: "Commercial Vehicle SaaS Admin",
+    app_title: "Fleet Management",
     super_admin_dashboard: "Super Admin Platform Dashboard",
     owner_dashboard: "Fleet Owner Analytics",
     total_revenue: "Total Fleet Revenue",
@@ -24,7 +24,7 @@ const translations: Record<Locale, Record<string, string>> = {
     status_error: "Error"
   },
   hi: {
-    app_title: "वाणिज्यिक वाहन सास व्यवस्थापक",
+    app_title: "फ़्लीट मैनेजमेंट (Fleet Management)",
     super_admin_dashboard: "सुपर व्यवस्थापक प्लेटफ़ॉर्म डैशबोर्ड",
     owner_dashboard: "बेड़ा मालिक विश्लेषण",
     total_revenue: "कुल बेड़ा राजस्व",
@@ -44,7 +44,7 @@ const translations: Record<Locale, Record<string, string>> = {
     status_error: "त्रुटि"
   },
   ta: {
-    app_title: "வணிக வாகன சாஸ் நிர்வாகி",
+    app_title: "ஃப்ளீட் மேனேஜ்மென்ட் (Fleet Management)",
     super_admin_dashboard: "சூப்பர் நிர்வாகி தள டாஷ்போர்டு",
     owner_dashboard: "வாகன உரிமையாளர் பகுப்பாய்வு",
     total_revenue: "மொத்த வருவாய்",
@@ -64,7 +64,7 @@ const translations: Record<Locale, Record<string, string>> = {
     status_error: "பிழை"
   },
   ml: {
-    app_title: "വാണിജ്യ വാഹന സാസ് അഡ്മിൻ",
+    app_title: "ഫ്ലീറ്റ് മാനേജ്‌മെന്റ് (Fleet Management)",
     super_admin_dashboard: "സൂപ്പർ അഡ്മിൻ ഡാഷ്‌ബോർഡ്",
     owner_dashboard: "ഫ്ലീറ്റ് ഉടമ വിശകലനം",
     total_revenue: "ആകെ വരുമാനം",
@@ -84,7 +84,7 @@ const translations: Record<Locale, Record<string, string>> = {
     status_error: "പിശക്"
   },
   te: {
-    app_title: "వాణిజ్య వాహన సాస్ అడ్మిన్",
+    app_title: "ఫ్లీట్ మేనేజ్‌మెంట్ (Fleet Management)",
     super_admin_dashboard: "సూపర్ అడ్మిన్ డాష్‌బోర్డ్",
     owner_dashboard: "వాహన యజమాని విశ్లేషణ",
     total_revenue: "మొత్తం రాబడి",
@@ -104,7 +104,7 @@ const translations: Record<Locale, Record<string, string>> = {
     status_error: "లోపం"
   },
   mr: {
-    app_title: "व्यावसायिक वाहन सास ॲडमिन",
+    app_title: "फ्लिट मॅनेजमेंट (Fleet Management)",
     super_admin_dashboard: "सुपर ॲडमिन प्लॅटफॉर्म डॅशबोर्ड",
     owner_dashboard: "ताफा मालक विश्लेषण",
     total_revenue: "एकूण महसूल",

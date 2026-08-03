@@ -12,15 +12,16 @@ export const ThemeToggle: React.FC = () => {
   ];
 
   return (
-    <div className="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/80 text-xs">
+    <div className="flex bg-[var(--input-bg)] p-1 rounded-xl border border-[var(--border-color)] text-xs">
       {themes.map((t) => (
         <button
           key={t.id}
+          type="button"
           onClick={() => setTheme(t.id)}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all ${
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
             theme === t.id
-              ? 'bg-blue-600 text-white font-medium shadow-sm'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-[var(--primary-accent)] text-white font-medium shadow-sm'
+              : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
           }`}
           title={`Switch to ${t.label} theme`}
         >

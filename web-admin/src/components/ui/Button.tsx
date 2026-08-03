@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
     primary:
       'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 border border-blue-400/30',
     secondary:
-      'bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700',
+      'bg-[var(--input-bg)] text-[var(--text-main)] hover:border-[var(--primary-accent)] border border-[var(--border-color)]',
     danger:
       'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg hover:from-red-500 hover:to-rose-500 border border-red-400/30',
     outline:

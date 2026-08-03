@@ -96,7 +96,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
         <select
           value={currentLocaleState}
           onChange={(e) => handleLocaleChange(e.target.value as Locale)}
-          className="bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500 cursor-pointer"
+          className="bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--primary-accent)] rounded-xl px-3 py-1.5 text-xs text-[var(--text-main)] focus:outline-none cursor-pointer font-medium"
         >
           <option value="en">English (EN)</option>
           <option value="hi">हिंदी (HI)</option>

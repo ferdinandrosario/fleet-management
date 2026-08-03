@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Download, AlertCircle, Star } from 'lucide-react';
+import { Download, AlertCircle, Star, Plus } from 'lucide-react';
 import { StatBox } from '../../components/ui/StatBox';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { FleetRevenueChart } from '../../components/ui/FleetRevenueChart';
 import { DataTable, TableColumn } from '../../components/ui/DataTable';
+import { AddVehicleModal, VehicleData } from './AddVehicleModal';
 import { apiRequest } from '../../lib/api';
 import { t } from '../../lib/i18n';
 
@@ -19,17 +20,7 @@ interface OwnerMetrics {
   vehicle_utilization_pct: number;
 }
 
-interface VehicleItem {
-  id: string;
-  name: string;
-  category: string;
-  registration: string;
-  status: 'active' | 'in_service' | 'on_trip' | 'inactive';
-  rate: string;
-  driver: string;
-}
-
-const mockFleetVehicles: VehicleItem[] = [
+const mockFleetVehicles: VehicleData[] = [
   {
     id: 'veh_1',
     name: 'Mahindra 575 DI Tractor',
@@ -80,6 +71,8 @@ const defaultOwnerMetrics: OwnerMetrics = {
 
 export const OwnerDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState<OwnerMetrics | null>(null);
+  const [vehicles, setVehicles] = useState<VehicleData[]>(mockFleetVehicles);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -94,6 +87,24 @@ export const OwnerDashboard: React.FC = () => {
         setMetrics(defaultOwnerMetrics);
         setError(null);
       }
+
+      // Load vehicles list from backend if available
+      const vehiclesRes = await apiRequest('/api/v1/vehicles');
+      if (vehiclesRes.status === 'success' && vehiclesRes.data?.vehicles) {
+        const mapped: VehicleData[] = vehiclesRes.data.vehicles.map((v: any) => ({
+          id: v.uuid || v.id,
+          name: v.name,
+          category: v.category,
+          registration: v.registration_number,
+          status: v.status === 'available' ? 'active' : v.status,
+          rate: `₹${(v.hourly_rate_cents / 100).toLocaleString('en-IN')}/hr`,
+          driver: 'Unassigned',
+        }));
+        if (mapped.length > 0) {
+          setVehicles(mapped);
+        }
+      }
+
       setLoading(false);
     }
 
@@ -105,7 +116,22 @@ export const OwnerDashboard: React.FC = () => {
     window.open(`${baseUrl}/api/v1/reports/bookings_csv`, '_blank');
   };
 
-  const getStatusBadge = (status: VehicleItem['status']) => {
+  const handleVehicleCreated = (newVehicle: VehicleData) => {
+    setVehicles((prev) => [newVehicle, ...prev]);
+    setMetrics((prev) => {
+      if (!prev) return null;
+      const total = prev.total_vehicles_count + 1;
+      const active = prev.active_vehicles_count + 1;
+      return {
+        ...prev,
+        total_vehicles_count: total,
+        active_vehicles_count: active,
+        vehicle_utilization_pct: Math.round((active / total) * 100),
+      };
+    });
+  };
+
+  const getStatusBadge = (status: VehicleData['status']) => {
     switch (status) {
       case 'active':
         return <Badge variant="success">Available</Badge>;
@@ -118,7 +144,7 @@ export const OwnerDashboard: React.FC = () => {
     }
   };
 
-  const vehicleColumns: TableColumn<VehicleItem>[] = [
+  const vehicleColumns: TableColumn<VehicleData>[] = [
     {
       header: 'Vehicle Name',
       accessor: (row) => (
@@ -164,7 +190,15 @@ export const OwnerDashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button onClick={handleExportCsv} variant="primary" className="flex items-center gap-1.5">
+          <Button
+            onClick={() => setIsAddModalOpen(true)}
+            variant="primary"
+            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white"
+          >
+            <Plus className="w-4 h-4" />
+            <span>{t('add_vehicle')}</span>
+          </Button>
+          <Button onClick={handleExportCsv} variant="outline" className="flex items-center gap-1.5">
             <Download className="w-4 h-4" />
             <span>{t('export_csv')}</span>
           </Button>
@@ -256,15 +290,32 @@ export const OwnerDashboard: React.FC = () => {
               Live status across tractors, JCB excavators, cranes, harvesters, and commercial buses
             </p>
           </div>
-          <Badge variant="neutral">{metrics?.total_vehicles_count || 4} Total Vehicles</Badge>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => setIsAddModalOpen(true)}
+              variant="primary"
+              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-xs px-3 py-1.5"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>{t('add_vehicle')}</span>
+            </Button>
+            <Badge variant="neutral">{metrics?.total_vehicles_count || vehicles.length} Total Vehicles</Badge>
+          </div>
         </div>
         <DataTable
           columns={vehicleColumns}
-          data={mockFleetVehicles}
+          data={vehicles}
           searchPlaceholder="Search vehicles or drivers..."
           searchKey="name"
         />
       </Card>
+
+      {/* Add Vehicle Modal */}
+      <AddVehicleModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onVehicleCreated={handleVehicleCreated}
+      />
     </div>
   );
 };

@@ -44,6 +44,15 @@ jobs:
       - name: Setup Database Structure
         env:
           RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: password
+          PGPORT: 5432
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: fleet_management_test
           DATABASE_URL: postgres://postgres:password@localhost:5432/fleet_management_test
           AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
           AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
@@ -56,6 +65,15 @@ jobs:
       - name: Run RSpec Test Suite with 100% Coverage Gate
         env:
           RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: password
+          PGPORT: 5432
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: fleet_management_test
           COVERAGE: full
           DATABASE_URL: postgres://postgres:password@localhost:5432/fleet_management_test
           AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
@@ -86,7 +104,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '26'
+          node-version: '22'
 
       - name: Install Dependencies
         run: npm ci

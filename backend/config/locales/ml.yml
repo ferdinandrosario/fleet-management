@@ -19,5 +19,6 @@ ml:
     job_start_failed: "ജോലി ആരംഭിക്കാൻ കഴിഞ്ഞില്ല."
     job_finish_failed: "ജോലി പൂർത്തിയാക്കാൻ കഴിഞ്ഞില്ല."
     gps_ping_failed: "ജിപിഎസ് ലൊക്കേഷൻ രേഖപ്പെടുത്താൻ കഴിഞ്ഞില്ല."
+    review_creation_failed: "അവലോകനം സമർപ്പിക്കാൻ കഴിഞ്ഞില്ല."
   health:
     status: "ശരി"

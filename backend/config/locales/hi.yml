@@ -19,5 +19,6 @@ hi:
     job_start_failed: "कार्य प्रारंभ नहीं किया जा सका।"
     job_finish_failed: "कार्य समाप्त नहीं किया जा सका।"
     gps_ping_failed: "जीपीएस स्थान नहीं सहेजा जा सका।"
+    review_creation_failed: "समीक्षा सबमिट नहीं की जा सकी।"
   health:
     status: "ठीक है"

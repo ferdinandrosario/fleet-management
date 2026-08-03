@@ -55,8 +55,8 @@ mocked/sandboxed until the final session.
 | 5 | Vehicles, availability, pricing, discounts (owner) — **done** |
 | 6 | Discovery + booking + payment (customer) — **done** |
 | 7 | Driver work execution + GPS tracking — **done** |
-| 8 | Completion photos + reviews + rating aggregation — **next** |
-| 9 | Leave, payroll, notifications |
+| 8 | Completion photos + reviews + rating aggregation — **done** |
+| 9 | Leave, payroll, notifications — **next** |
 | 10 | Reporting, dashboards, exports + web admin |
 | 11 | Hardening pass (security/perf/coverage/i18n) |
 | 12 | Paid integrations + go-live |

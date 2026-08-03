@@ -19,5 +19,6 @@ mr:
     job_start_failed: "काम सुरू करता आले नाही."
     job_finish_failed: "काम पूर्ण करता आले नाही."
     gps_ping_failed: "जीपीएस स्थान नोंदवता आले नाही."
+    review_creation_failed: "पुनरावलोकन सबमिट करता आले नाही."
   health:
     status: "ठीक आहे"

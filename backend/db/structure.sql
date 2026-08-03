@@ -322,6 +322,44 @@ ALTER SEQUENCE public.refresh_tokens_id_seq OWNED BY public.refresh_tokens.id;
 
 
 --
+-- Name: reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reviews (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    booking_id bigint NOT NULL,
+    vehicle_id bigint NOT NULL,
+    customer_id bigint NOT NULL,
+    driver_id bigint,
+    rating integer NOT NULL,
+    comment text,
+    completion_photo_url character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.reviews_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.reviews_id_seq OWNED BY public.reviews.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -522,7 +560,9 @@ CREATE TABLE public.vehicles (
     updated_at timestamp(6) without time zone NOT NULL,
     latitude numeric(10,6),
     longitude numeric(10,6),
-    address character varying
+    address character varying,
+    average_rating numeric(3,2) DEFAULT 0.0 NOT NULL,
+    reviews_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -592,6 +632,13 @@ ALTER TABLE ONLY public.pricing_rules ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.refresh_tokens ALTER COLUMN id SET DEFAULT nextval('public.refresh_tokens_id_seq'::regclass);
+
+
+--
+-- Name: reviews id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews ALTER COLUMN id SET DEFAULT nextval('public.reviews_id_seq'::regclass);
 
 
 --
@@ -698,6 +745,14 @@ ALTER TABLE ONLY public.pricing_rules
 
 ALTER TABLE ONLY public.refresh_tokens
     ADD CONSTRAINT refresh_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -932,6 +987,48 @@ CREATE INDEX index_refresh_tokens_on_user_id ON public.refresh_tokens USING btre
 
 
 --
+-- Name: index_reviews_on_booking_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_reviews_on_booking_id ON public.reviews USING btree (booking_id);
+
+
+--
+-- Name: index_reviews_on_customer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_customer_id ON public.reviews USING btree (customer_id);
+
+
+--
+-- Name: index_reviews_on_driver_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_driver_id ON public.reviews USING btree (driver_id);
+
+
+--
+-- Name: index_reviews_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_reviews_on_uuid ON public.reviews USING btree (uuid);
+
+
+--
+-- Name: index_reviews_on_vehicle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_vehicle_id ON public.reviews USING btree (vehicle_id);
+
+
+--
+-- Name: index_reviews_on_vehicle_id_and_rating; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_vehicle_id_and_rating ON public.reviews USING btree (vehicle_id, rating);
+
+
+--
 -- Name: index_subscriptions_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1089,6 +1186,14 @@ ALTER TABLE ONLY public.pricing_rules
 
 
 --
+-- Name: reviews fk_rails_62e13c78fd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT fk_rails_62e13c78fd FOREIGN KEY (vehicle_id) REFERENCES public.vehicles(id) ON DELETE CASCADE;
+
+
+--
 -- Name: subscriptions fk_rails_63d3df128b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1097,11 +1202,27 @@ ALTER TABLE ONLY public.subscriptions
 
 
 --
+-- Name: reviews fk_rails_74e2428a18; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT fk_rails_74e2428a18 FOREIGN KEY (customer_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: tenant_registries fk_rails_7bbfaabe01; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tenant_registries
     ADD CONSTRAINT fk_rails_7bbfaabe01 FOREIGN KEY (owner_id) REFERENCES public.owners(id);
+
+
+--
+-- Name: reviews fk_rails_817678ad8d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT fk_rails_817678ad8d FOREIGN KEY (driver_id) REFERENCES public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -1118,6 +1239,14 @@ ALTER TABLE ONLY public.subscriptions
 
 ALTER TABLE ONLY public.one_time_passwords
     ADD CONSTRAINT fk_rails_afd10ae0cb FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: reviews fk_rails_ba7db97e35; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT fk_rails_ba7db97e35 FOREIGN KEY (booking_id) REFERENCES public.bookings(id) ON DELETE CASCADE;
 
 
 --
@@ -1167,6 +1296,7 @@ ALTER TABLE ONLY public.bookings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260616000014'),
 ('20260616000013'),
 ('20260616000012'),
 ('20260616000011'),

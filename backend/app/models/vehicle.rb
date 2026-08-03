@@ -6,6 +6,7 @@ class Vehicle < ApplicationRecord
   has_many :vehicle_availabilities, dependent: :destroy
   has_many :pricing_rules, dependent: :destroy
   has_many :bookings, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   enum :category, {
     tractor: 0, jcb: 1, heavy_vehicle: 2, bus: 3, crane: 4, harvester: 5
@@ -31,6 +32,15 @@ class Vehicle < ApplicationRecord
 
   scope :available_only, -> { where(status: :available) }
   scope :by_category, ->(cat) { where(category: cat) if cat.present? }
+
+  # Recalculates average rating and review count from submitted reviews
+  def update_rating_stats!
+    stats = reviews.select("COUNT(*) as count, AVG(rating) as avg").take
+    cnt = stats&.count.to_i
+    avg = cnt.positive? ? stats.avg.to_f.round(2) : 0.0
+
+    update_columns(reviews_count: cnt, average_rating: avg)
+  end
 
   # Calculates distance in kilometers between vehicle location and target coordinates using Haversine formula
   def distance_to(target_lat, target_lng)

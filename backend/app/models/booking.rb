@@ -7,6 +7,7 @@ class Booking < ApplicationRecord
   belongs_to :customer, class_name: "User"
   belongs_to :driver, class_name: "User", optional: true
   has_many :gps_pings, dependent: :destroy
+  has_one :review, dependent: :destroy
 
   enum :status, {
     pending_payment: 0, confirmed: 1, in_progress: 2, completed: 3, cancelled: 4

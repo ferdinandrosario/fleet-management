@@ -19,5 +19,6 @@ en:
     job_start_failed: "Could not start job execution."
     job_finish_failed: "Could not finish job execution."
     gps_ping_failed: "Could not record GPS location ping."
+    review_creation_failed: "Could not submit review."
   health:
     status: "ok"

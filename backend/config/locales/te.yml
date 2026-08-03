@@ -19,5 +19,6 @@ te:
     job_start_failed: "పని ప్రారంభించబడలేదు."
     job_finish_failed: "పని పూర్తి కాలేదు."
     gps_ping_failed: "జిపిఎస్ స్థానం నమోదు చేయబడలేదు."
+    review_creation_failed: "సమీక్ష సమర్పించబడలేదు."
   health:
     status: "సరే"

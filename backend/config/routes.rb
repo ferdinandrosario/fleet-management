@@ -37,10 +37,11 @@ Rails.application.routes.draw do
         resources :subscriptions, only: [ :show, :update ]
       end
 
-      # Vehicles, Availability & Pricing Rules (Session 5).
+      # Vehicles, Availability, Pricing Rules & Reviews (Session 5 & 8).
       resources :vehicles, only: [ :index, :show, :create, :update, :destroy ] do
         member do
           get :quote
+          get :reviews, to: "reviews#vehicle_reviews"
         end
         resources :availabilities, controller: "vehicle_availabilities", only: [ :index, :create, :destroy ]
         resources :pricing_rules, only: [ :index, :create, :destroy ]
@@ -49,7 +50,7 @@ Rails.application.routes.draw do
       # Discovery & Search (Session 6).
       get "discovery/vehicles", to: "discovery#vehicles"
 
-      # Bookings, Payments, Driver Execution & Real-Time Tracking (Session 6 & 7).
+      # Bookings, Payments, Driver Execution, GPS & Reviews (Session 6, 7 & 8).
       resources :bookings, only: [ :index, :show, :create ] do
         member do
           post :pay_advance
@@ -63,6 +64,9 @@ Rails.application.routes.draw do
           # Session 7 real-time GPS telemetry tracking
           post :gps_pings, to: "gps_tracking#create"
           get :tracking, to: "gps_tracking#show"
+
+          # Session 8 reviews & completion proof photos
+          post :review, to: "reviews#create"
         end
       end
     end

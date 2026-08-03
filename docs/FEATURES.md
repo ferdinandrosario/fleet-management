@@ -75,6 +75,12 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Real-Time GPS Telemetry Ingestion** — `POST /api/v1/bookings/:id/gps_pings`, `GpsTrackingService` ingests live driver location pings and updates vehicle map coordinates. → [feature/driver-execution.md](feature/driver-execution.md)
 - **Live Location Tracking Trail** — `GET /api/v1/bookings/:id/tracking`, returns real-time driver coordinates and chronological route history. → [feature/driver-execution.md](feature/driver-execution.md)
 
+## Completion Photos, Reviews & Rating Aggregation (Session 8)
+
+- **Booking Review & Proof Photo Submission** — `POST /api/v1/bookings/:id/review`, `ReviewService` validates completed booking and records rating, comment, and proof photo. → [feature/reviews.md](feature/reviews.md)
+- **Automatic Rating Score Aggregation** — `Vehicle#update_rating_stats!` updates vehicle `average_rating` and `reviews_count` on review submission. → [feature/reviews.md](feature/reviews.md)
+- **Vehicle Review Listing** — `GET /api/v1/vehicles/:id/reviews`, returns paginated customer feedback and aggregate rating summary. → [feature/reviews.md](feature/reviews.md)
+
 ## Coming
 
-reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).
+leave/payroll/notifications (S9) · reporting & web admin (S10).

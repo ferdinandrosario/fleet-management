@@ -22,15 +22,15 @@ session-by-session — see the [documentation map](#documentation) and
    workflow: run backend + mobile together, the edit→test loop.
 
 > **#1 gotcha:** if a command fails with `bundler`/Ruby errors, your shell is
-> using macOS's system Ruby 2.6 instead of the project's 4.0.5. Make sure mise
-> is activated (`cd backend && ruby -v` must print `ruby 4.0.5`). Details:
+> using macOS's system Ruby 2.6 instead of the project's 4.0.6. Make sure mise
+> is activated (`cd backend && ruby -v` must print `ruby 4.0.6`). Details:
 > [`docs/troubleshooting/backend.md`](docs/troubleshooting/backend.md).
 
 ## Monorepo layout
 
 | Dir | What | Status |
 |---|---|---|
-| [`backend/`](backend/) | Rails 8.1 API (Ruby 4.0.5, PostgreSQL + PostGIS) | **running** — health endpoint, multi-tenancy, security baseline, public models |
+| [`backend/`](backend/) | Rails 8.1.3 API (Ruby 4.0.6, PostgreSQL + PostGIS) | **running** — health endpoint, multi-tenancy, security baseline, public models |
 | [`mobile/`](mobile/) | Expo / React Native app (customer · driver · owner) | **running** — nav, NativeWind, i18n, API client, secure session |
 | [`web-admin/`](web-admin/) | React (Vite) admin SPA (super-admin · owner reporting) | rules only — built Session 10 |
 | [`docs/`](docs/) | Source of truth (topic folders + per-feature files) | grows each session |

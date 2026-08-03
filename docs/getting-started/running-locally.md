@@ -110,4 +110,4 @@ bin/rails "tenants:create[acme]"  # create an isolated tenant schema
 
 Most local failures are the mise / system-Ruby mix-up or a stale Metro cache —
 both are in [`troubleshooting/backend.md`](../troubleshooting/backend.md). Quick checks:
-`cd backend && ruby -v` must say `4.0.5`; `npx expo start --clear` clears Metro.
+`cd backend && ruby -v` must say `4.0.6`; `npx expo start --clear` clears Metro.

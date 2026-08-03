@@ -19,7 +19,7 @@ Prioritize **simplicity, maintainability, and clarity over cleverness**.
 ## STACK
 
 ```
-backend/   → Rails 8.1.3 API (Ruby 4.0.5, PostgreSQL + PostGIS, Rails defaults only — Solid Queue, Cache, Cable, Propshaft)
+backend/   → Rails 8.1.3 API (Ruby 4.0.6, PostgreSQL + PostGIS, Rails defaults only — Solid Queue, Cache, Cable, Propshaft)
 mobile/    → React Native 0.85 + Expo SDK 56 (TypeScript, React 19.2) — NativeWind v4 + react-native-reusables
 web-admin/ → React + TypeScript (Vite) — shadcn/ui + Tremor; super-admin + owner reporting, built Session 10
 docs/      → source of truth
@@ -181,7 +181,7 @@ Applies to every dependency, OS, and CI runner across `backend/`,
   alpha/beta/rc/nightly/canary/preview/experimental/deprecated/EOL.
 - **Pin deliberately, per manifest.** `Gemfile` pins exact (`= x.y.z`);
   `.ruby-version` / `backend/.ruby-version` pin exact; `.mise.toml`
-  pins Ruby and Node exact (both `4.0.5` / `26.3.1`). `package.json` stays inside one
+  pins Ruby and Node exact (both `4.0.6` / `26.5.1`). `package.json` stays inside one
   pinned major — mobile uses the exact / tilde pins its Expo SDK
   requires — and the lockfile holds the exact resolution. Upgrade
   deliberately — one tool per PR, reason in the PR description.

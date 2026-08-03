@@ -1,7 +1,7 @@
 # Backend setup
 
 From a fresh clone to a running, fully-tested Rails API. All commands run
-from `backend/`. Ruby resolves to 4.0.5 via mise (see
+from `backend/`. Ruby resolves to 4.0.6 via mise (see
 [`getting-started/prerequisites.md`](../getting-started/prerequisites.md)).
 
 ## 1. Install gems
@@ -111,5 +111,5 @@ bin/rubocop -a     # autofix
 
 Boot or bundler errors (e.g. `undefined method 'filter_map'`, or a gem
 "Could not find … required by Gemfile.lock") almost always mean a shell
-fell back to system Ruby instead of mise's 4.0.5 — see
+fell back to system Ruby instead of mise's 4.0.6 — see
 [`troubleshooting/backend.md`](../troubleshooting/backend.md).

@@ -77,7 +77,7 @@ tenant-scoped model in Session 3.
 
 ## Operations / runbook
 
-Ruby is via mise (`cd backend`; `ruby -v` ⇒ `ruby 4.0.5`). Commands:
+Ruby is via mise (`cd backend`; `ruby -v` ⇒ `ruby 4.0.6`). Commands:
 
 ```bash
 # List provisioned tenants

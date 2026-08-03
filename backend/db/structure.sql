@@ -76,7 +76,11 @@ CREATE TABLE public.bookings (
     razorpay_order_id character varying,
     razorpay_payment_id character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    start_meter_reading numeric(10,2),
+    end_meter_reading numeric(10,2),
+    job_started_at timestamp(6) without time zone,
+    job_finished_at timestamp(6) without time zone
 );
 
 
@@ -97,6 +101,43 @@ CREATE SEQUENCE public.bookings_id_seq
 --
 
 ALTER SEQUENCE public.bookings_id_seq OWNED BY public.bookings.id;
+
+
+--
+-- Name: gps_pings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.gps_pings (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    booking_id bigint NOT NULL,
+    driver_id bigint NOT NULL,
+    latitude numeric(10,6) NOT NULL,
+    longitude numeric(10,6) NOT NULL,
+    speed_kmh numeric(5,2) DEFAULT 0.0,
+    recorded_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: gps_pings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.gps_pings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: gps_pings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.gps_pings_id_seq OWNED BY public.gps_pings.id;
 
 
 --
@@ -512,6 +553,13 @@ ALTER TABLE ONLY public.bookings ALTER COLUMN id SET DEFAULT nextval('public.boo
 
 
 --
+-- Name: gps_pings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gps_pings ALTER COLUMN id SET DEFAULT nextval('public.gps_pings_id_seq'::regclass);
+
+
+--
 -- Name: one_time_passwords id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -602,6 +650,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.bookings
     ADD CONSTRAINT bookings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: gps_pings gps_pings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gps_pings
+    ADD CONSTRAINT gps_pings_pkey PRIMARY KEY (id);
 
 
 --
@@ -761,6 +817,34 @@ CREATE UNIQUE INDEX index_bookings_on_uuid ON public.bookings USING btree (uuid)
 --
 
 CREATE INDEX index_bookings_on_vehicle_id ON public.bookings USING btree (vehicle_id);
+
+
+--
+-- Name: index_gps_pings_on_booking_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gps_pings_on_booking_id ON public.gps_pings USING btree (booking_id);
+
+
+--
+-- Name: index_gps_pings_on_booking_id_and_recorded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gps_pings_on_booking_id_and_recorded_at ON public.gps_pings USING btree (booking_id, recorded_at);
+
+
+--
+-- Name: index_gps_pings_on_driver_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gps_pings_on_driver_id ON public.gps_pings USING btree (driver_id);
+
+
+--
+-- Name: index_gps_pings_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_gps_pings_on_uuid ON public.gps_pings USING btree (uuid);
 
 
 --
@@ -981,6 +1065,14 @@ CREATE UNIQUE INDEX index_vehicles_on_uuid ON public.vehicles USING btree (uuid)
 
 
 --
+-- Name: gps_pings fk_rails_19ea08e02b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gps_pings
+    ADD CONSTRAINT fk_rails_19ea08e02b FOREIGN KEY (driver_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: refresh_tokens fk_rails_279e9a0091; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1029,6 +1121,14 @@ ALTER TABLE ONLY public.one_time_passwords
 
 
 --
+-- Name: gps_pings fk_rails_c2f25445bb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gps_pings
+    ADD CONSTRAINT fk_rails_c2f25445bb FOREIGN KEY (booking_id) REFERENCES public.bookings(id) ON DELETE CASCADE;
+
+
+--
 -- Name: bookings fk_rails_dafb5f2e40; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1067,6 +1167,7 @@ ALTER TABLE ONLY public.bookings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260616000013'),
 ('20260616000012'),
 ('20260616000011'),
 ('20260616000010'),

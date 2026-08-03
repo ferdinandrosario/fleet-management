@@ -49,11 +49,20 @@ Rails.application.routes.draw do
       # Discovery & Search (Session 6).
       get "discovery/vehicles", to: "discovery#vehicles"
 
-      # Bookings & Payments (Session 6).
+      # Bookings, Payments, Driver Execution & Real-Time Tracking (Session 6 & 7).
       resources :bookings, only: [ :index, :show, :create ] do
         member do
           post :pay_advance
           patch :cancel
+
+          # Session 7 driver work execution
+          post :assign_driver, to: "driver_jobs#assign_driver"
+          post :start_job, to: "driver_jobs#start_job"
+          post :finish_job, to: "driver_jobs#finish_job"
+
+          # Session 7 real-time GPS telemetry tracking
+          post :gps_pings, to: "gps_tracking#create"
+          get :tracking, to: "gps_tracking#show"
         end
       end
     end

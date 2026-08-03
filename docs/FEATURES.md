@@ -68,6 +68,13 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Advance Token Payment Verification** — `POST /api/v1/bookings/:id/pay_advance`, `PaymentVerificationService` verifies payment token and promotes booking to `confirmed` status. → [feature/bookings.md](feature/bookings.md)
 - **Reservation Cancellation** — `PATCH /api/v1/bookings/:id/cancel`, cancels active bookings and handles deposit refund status. → [feature/bookings.md](feature/bookings.md)
 
+## Driver Work Execution & GPS Tracking (Session 7)
+
+- **Driver Job Assignment** — `POST /api/v1/bookings/:id/assign_driver`, `JobExecutionService` assigns verified driver users to active bookings. → [feature/driver-execution.md](feature/driver-execution.md)
+- **Meter Reading Job Lifecycle** — `POST /api/v1/bookings/:id/start_job`, `POST /api/v1/bookings/:id/finish_job`, records odometer/hour meter readings and manages `in_progress` → `completed` states. → [feature/driver-execution.md](feature/driver-execution.md)
+- **Real-Time GPS Telemetry Ingestion** — `POST /api/v1/bookings/:id/gps_pings`, `GpsTrackingService` ingests live driver location pings and updates vehicle map coordinates. → [feature/driver-execution.md](feature/driver-execution.md)
+- **Live Location Tracking Trail** — `GET /api/v1/bookings/:id/tracking`, returns real-time driver coordinates and chronological route history. → [feature/driver-execution.md](feature/driver-execution.md)
+
 ## Coming
 
-driver execution (S7) · reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).
+reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).

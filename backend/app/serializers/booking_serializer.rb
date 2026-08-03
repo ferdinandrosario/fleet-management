@@ -1,4 +1,4 @@
-# Serializes vehicle booking reservations (Session 6).
+# Serializes vehicle booking reservations (Session 6 & 7).
 module BookingSerializer
   module_function
 
@@ -23,6 +23,10 @@ module BookingSerializer
       payment_status: booking.payment_status,
       total_cents: booking.total_cents,
       advance_cents: booking.advance_cents,
+      start_meter_reading: booking.start_meter_reading,
+      end_meter_reading: booking.end_meter_reading,
+      job_started_at: booking.job_started_at&.iso8601,
+      job_finished_at: booking.job_finished_at&.iso8601,
       razorpay_order_id: booking.razorpay_order_id,
       created_at: booking.created_at.iso8601
     }

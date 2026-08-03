@@ -54,8 +54,8 @@ mocked/sandboxed until the final session.
 | 4 | Tenants, owners, subscriptions, plan limits (super admin) — **done** |
 | 5 | Vehicles, availability, pricing, discounts (owner) — **done** |
 | 6 | Discovery + booking + payment (customer) — **done** |
-| 7 | Driver work execution + GPS tracking — **next** |
-| 8 | Completion photos + reviews + rating aggregation |
+| 7 | Driver work execution + GPS tracking — **done** |
+| 8 | Completion photos + reviews + rating aggregation — **next** |
 | 9 | Leave, payroll, notifications |
 | 10 | Reporting, dashboards, exports + web admin |
 | 11 | Hardening pass (security/perf/coverage/i18n) |

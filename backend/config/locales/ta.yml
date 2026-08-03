@@ -15,5 +15,9 @@ ta:
     booking_failed: "வாகன முன்பதிவை உருவாக்க முடியவில்லை."
     payment_failed: "முன்பணச் சரிபார்ப்பு தோல்வியடைந்தது."
     cannot_cancel_completed: "நிறைவடைந்த முன்பதிவை ரத்து செய்ய முடியாது."
+    driver_assignment_failed: "ஓட்டுநரை நியமிக்க முடியவில்லை."
+    job_start_failed: "பணியைத் தொடங்க முடியவில்லை."
+    job_finish_failed: "பணியை முடிக்க முடியவில்லை."
+    gps_ping_failed: "ஜிபிஎஸ் இருப்பிடத்தைப் பதிவு செய்ய முடியவில்லை."
   health:
     status: "சரி"

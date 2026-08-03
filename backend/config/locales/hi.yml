@@ -15,5 +15,9 @@ hi:
     booking_failed: "वाहन बुकिंग नहीं बनाई जा सकी।"
     payment_failed: "अग्रिम भुगतान सत्यापन विफल रहा।"
     cannot_cancel_completed: "पूर्ण बुकिंग रद्द नहीं की जा सकती।"
+    driver_assignment_failed: "ड्राइवर असाइन नहीं किया जा सका।"
+    job_start_failed: "कार्य प्रारंभ नहीं किया जा सका।"
+    job_finish_failed: "कार्य समाप्त नहीं किया जा सका।"
+    gps_ping_failed: "जीपीएस स्थान नहीं सहेजा जा सका।"
   health:
     status: "ठीक है"

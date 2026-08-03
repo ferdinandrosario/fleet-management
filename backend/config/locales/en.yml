@@ -15,5 +15,9 @@ en:
     booking_failed: "Could not create vehicle booking."
     payment_failed: "Advance payment verification failed."
     cannot_cancel_completed: "Completed booking cannot be cancelled."
+    driver_assignment_failed: "Could not assign driver to booking."
+    job_start_failed: "Could not start job execution."
+    job_finish_failed: "Could not finish job execution."
+    gps_ping_failed: "Could not record GPS location ping."
   health:
     status: "ok"

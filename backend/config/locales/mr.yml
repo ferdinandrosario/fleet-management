@@ -15,5 +15,9 @@ mr:
     booking_failed: "वाहन बुकिंग तयार करता आले नाही."
     payment_failed: "आगाऊ पेमेंट पडताळणी अयशस्वी झाली."
     cannot_cancel_completed: "पूर्ण झालेले बुकिंग रद्द करता येत नाही."
+    driver_assignment_failed: "ड्रायव्हर नियुक्त करता आला नाही."
+    job_start_failed: "काम सुरू करता आले नाही."
+    job_finish_failed: "काम पूर्ण करता आले नाही."
+    gps_ping_failed: "जीपीएस स्थान नोंदवता आले नाही."
   health:
     status: "ठीक आहे"

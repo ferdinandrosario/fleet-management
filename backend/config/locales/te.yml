@@ -15,5 +15,9 @@ te:
     booking_failed: "వాహన బుకింగ్ సృష్టించబడలేదు."
     payment_failed: "అడ్వాన్స్ చెల్లింపు ధృవీకరణ విఫలమైంది."
     cannot_cancel_completed: "పూర్తయిన బుకింగ్‌ను రద్దు చేయడం సాధ్యపడదు."
+    driver_assignment_failed: "డ్రైవర్‌ను కేటాయించడం సాధ్యపడలేదు."
+    job_start_failed: "పని ప్రారంభించబడలేదు."
+    job_finish_failed: "పని పూర్తి కాలేదు."
+    gps_ping_failed: "జిపిఎస్ స్థానం నమోదు చేయబడలేదు."
   health:
     status: "సరే"

@@ -6,6 +6,7 @@ class Booking < ApplicationRecord
   belongs_to :vehicle
   belongs_to :customer, class_name: "User"
   belongs_to :driver, class_name: "User", optional: true
+  has_many :gps_pings, dependent: :destroy
 
   enum :status, {
     pending_payment: 0, confirmed: 1, in_progress: 2, completed: 3, cancelled: 4
@@ -19,6 +20,8 @@ class Booking < ApplicationRecord
   validates :end_time, presence: true
   validates :total_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :advance_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :start_meter_reading, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :end_meter_reading, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validate :end_time_after_start_time
 
   scope :active, -> { where(status: [ :pending_payment, :confirmed, :in_progress ]) }

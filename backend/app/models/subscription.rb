@@ -5,6 +5,7 @@ class Subscription < ApplicationRecord
   include HasPublicUuid
 
   belongs_to :owner
+  belongs_to :plan
 
   enum :status, {
     incomplete: 0, trialing: 1, active: 2, past_due: 3, canceled: 4

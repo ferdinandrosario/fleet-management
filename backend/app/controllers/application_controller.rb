@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include Pundit::Authorization
+  include Pagy::Method
   # Pagination (pagy) is wired into the base controller with the first
   # collection endpoint (Session 4), against pagy's installed API.
 

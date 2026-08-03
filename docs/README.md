@@ -50,9 +50,9 @@ mocked/sandboxed until the final session.
 | 0 | Plan, tradeoffs, threat model (no code) — **done** |
 | 1 | Backend foundation + TDD harness + security baseline — **done** |
 | 2 | Mobile foundation (nav, i18n, secure storage, API client) — **done** |
-| 3 | Auth & onboarding (OTP, JWT, Pundit) — **next** |
-| 4 | Tenants, owners, subscriptions, plan limits (super admin) |
-| 5 | Vehicles, availability, pricing, discounts (owner) |
+| 3 | Auth & onboarding (OTP, JWT, Pundit) — **done** |
+| 4 | Tenants, owners, subscriptions, plan limits (super admin) — **done** |
+| 5 | Vehicles, availability, pricing, discounts (owner) — **next** |
 | 6 | Discovery + booking + payment (customer) |
 | 7 | Driver work execution + GPS tracking |
 | 8 | Completion photos + reviews + rating aggregation |

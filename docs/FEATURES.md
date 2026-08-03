@@ -46,8 +46,13 @@ One bullet per shipped surface, by feature. Canonical detail lives in
   secure store, role-aware routing (auth stack ↔ app stack), logout. →
   [mobile/design.md](mobile/design.md)
 
+## Tenants, Subscriptions & Plan Limits (Session 4)
+
+- **SuperAdmin Auth & Management** — `POST /api/v1/super_admin/login`, Bearer JWT access tokens for public-schema platform operators. → [feature/subscriptions.md](feature/subscriptions.md)
+- **End-to-End Tenant Provisioning** — `TenantProvisioningService` creates Owner + Registry + Subscription in public schema, creates PostgreSQL schema (`Apartment::Tenant.create`), and initializes `owner_admin` User inside the tenant schema. → [feature/subscriptions.md](feature/subscriptions.md)
+- **Plan Limits Enforcement** — `PlanLimitService` checks and enforces resource caps defined in `Plan#limits`. → [feature/subscriptions.md](feature/subscriptions.md)
+- **SuperAdmin APIs** — Paginated owner list/show/status updates, subscription plan CRUD, and owner subscription management (`GET/POST/PATCH /api/v1/super_admin/*`). → [feature/subscriptions.md](feature/subscriptions.md)
+
 ## Coming
 
-tenants/subscriptions/plan limits (S4) · vehicles &
-pricing (S5) · discovery & booking (S6) · driver execution (S7) · reviews (S8)
-· leave/payroll/notifications (S9) · reporting & web admin (S10).
+vehicles & pricing (S5) · discovery & booking (S6) · driver execution (S7) · reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).

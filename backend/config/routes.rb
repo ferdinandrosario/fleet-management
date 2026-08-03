@@ -24,6 +24,18 @@ Rails.application.routes.draw do
       # The authenticated user's own account.
       get "me", to: "profile#show"
       patch "me", to: "profile#update"
+
+      # Super admin platform operations (Session 4).
+      namespace :super_admin do
+        post "login", to: "sessions#create"
+        resources :owners, only: [ :index, :show, :create ] do
+          member do
+            patch :status, to: "owners#update_status"
+          end
+        end
+        resources :plans, only: [ :index, :show, :create, :update ]
+        resources :subscriptions, only: [ :show, :update ]
+      end
     end
   end
 end

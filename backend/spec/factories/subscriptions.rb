@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :subscription do
     owner
-    status { :incomplete }
+    plan
+    status { :active }
   end
 end

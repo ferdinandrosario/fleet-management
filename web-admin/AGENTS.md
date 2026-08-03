@@ -5,8 +5,8 @@ Canonical ruleset for `web-admin/`. Agents that resolve the nearest
 tree; Claude Code reaches it via `.claude/skills/web-admin/SKILL.md`.
 Universal rules: [`AGENTS.md`](../AGENTS.md).
 
-> **Status: Scaffolded with full Theme System & UI Component Library.** The web admin
-> features a multi-mode theme provider (Dark Fleet, Light, Obsidian), status badges,
+> **Status: Scaffolded with full Auth Gate, Theme System & UI Component Library.** The web admin
+> features an in-memory Authentication Gate (`AuthGate`), multi-mode theme provider (Dark Fleet, Light, Obsidian), status badges,
 > interactive revenue charts, searchable data tables, and owner/super-admin dashboards.
 
 ## Stack
@@ -97,7 +97,10 @@ web-admin/
   index.html
   src/
     components/ui/    # shadcn owned source — composed, not edited from features
-    features/<name>/  # pages + <name>-client.ts per feature
+    features/
+      auth/           # AuthGate, AuthContext, auth-client
+      owner-admin/    # Owner fleet analytics dashboard
+      super-admin/    # Super admin platform dashboard
     lib/api.ts        # shared fetch client (envelope + auth + X-Tenant)
     lib/i18n.ts       # i18next init + locale resources
     main.tsx          # app shell + router + auth gate

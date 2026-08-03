@@ -35,14 +35,18 @@ Owner Admin / Super Admin
 
 | Method | Endpoint | Description |
 |---|---|---|
+| `POST` | `/api/v1/auth/login` | Fleet owner / driver session authentication (returns JWT access_token) |
+| `POST` | `/api/v1/super_admin/login` | Super admin operator authentication (returns JWT access_token) |
+| `DELETE` | `/api/v1/auth/logout` | Revoke session refresh tokens and logout user |
 | `GET` | `/api/v1/reports/dashboard` | Fetch owner fleet analytics dashboard |
 | `GET` | `/api/v1/reports/bookings_csv` | Download CSV export file of booking records |
 | `GET` | `/api/v1/super_admin/dashboard` | Fetch super admin platform metrics dashboard |
 
-## Web Admin Design System & Theme Provider
+## Web Admin Design System, Theme Provider & Authentication
 
-The `web-admin/` application implements a full-featured theme system and UI component suite:
+The `web-admin/` application implements a full-featured theme system, authentication gate, and UI component suite:
 
+- **Authentication Gate (`AuthGate`)**: Restricts unauthenticated access to `http://localhost:3001/` dashboards. Supports Fleet Owner login (phone + password + tenant slug) and Super Admin login (email + password). Tokens are kept in memory only (`setAuthToken`), fulfilling the security requirement preventing XSS local storage exposure.
 - **Theme Modes**: Supports `Dark Fleet` (`--bg-primary: #0b0f19`), `Light` (`--bg-primary: #f8fafc`), and `Obsidian` (`--bg-primary: #050508`) modes via `ThemeProvider` (`src/lib/theme.tsx`) and `ThemeToggle` (`src/components/ui/ThemeToggle.tsx`).
 - **Status Badges**: `Badge.tsx` provides semantic pills following canonical status rules: Emerald Green for `active`/`success`/`paid`, Warm Amber for `warning`/`in_service`/`pending`, Crimson Red for `danger`/`overdue`/`inactive`, and Indigo Blue for `info`/`on_trip`.
 - **Analytics Visualizations**: `FleetRevenueChart.tsx` renders interactive SVG bar charts displaying weekly revenue trends and job volume.

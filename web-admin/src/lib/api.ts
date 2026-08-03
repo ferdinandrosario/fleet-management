@@ -7,6 +7,8 @@ export const setAuthToken = (token: string | null) => {
   inMemoryToken = token;
 };
 
+export const getAuthToken = () => inMemoryToken;
+
 export const setTenantSlug = (slug: string | null) => {
   currentTenant = slug;
 };

@@ -6,22 +6,23 @@ import { OwnerDashboard } from './features/owner-admin/OwnerDashboard';
 import { ThemeProvider } from './lib/theme';
 import { ThemeToggle } from './components/ui/ThemeToggle';
 import { setLocale, Locale, t } from './lib/i18n';
-import { setTenantSlug } from './lib/api';
+import { AuthProvider, useAuth } from './features/auth/AuthContext';
+import { AuthGate } from './features/auth/AuthGate';
+import { Badge } from './components/ui/Badge';
+import { Button } from './components/ui/Button';
 
-const AppContent: React.FC = () => {
-  const [view, setView] = useState<'owner' | 'super_admin'>('owner');
+const DashboardContent: React.FC = () => {
+  const { isAuthenticated, user, role, tenantSlug, setTenant, logout } = useAuth();
   const [currentLocale, setCurrentLocaleState] = useState<Locale>('en');
-  const [tenantInput, setTenantInput] = useState<string>('demo_tenant');
 
   const handleLocaleChange = (loc: Locale) => {
     setCurrentLocaleState(loc);
     setLocale(loc);
   };
 
-  const handleTenantChange = (slug: string) => {
-    setTenantInput(slug);
-    setTenantSlug(slug);
-  };
+  if (!isAuthenticated) {
+    return <AuthGate />;
+  }
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] flex flex-col transition-colors duration-250">
@@ -37,40 +38,24 @@ const AppContent: React.FC = () => {
           </div>
         </div>
 
-        {/* View Switcher, Tenant & Controls */}
+        {/* User Info, Tenant & Controls */}
         <div className="flex items-center flex-wrap gap-3">
-          {/* Admin Mode Switcher */}
-          <div className="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/80 text-xs">
-            <button
-              onClick={() => setView('owner')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                view === 'owner'
-                  ? 'bg-blue-600 text-white font-medium shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Fleet Owner
-            </button>
-            <button
-              onClick={() => setView('super_admin')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                view === 'super_admin'
-                  ? 'bg-blue-600 text-white font-medium shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Super Admin
-            </button>
+          {/* Authenticated User Badge */}
+          <div className="flex items-center gap-2 bg-slate-800/80 px-3 py-1 rounded-xl border border-slate-700/80 text-xs">
+            <Badge variant={role === 'super_admin' ? 'info' : 'success'}>
+              {role === 'super_admin' ? t('role_super_admin') : t('role_fleet_owner')}
+            </Badge>
+            <span className="text-slate-300 font-medium">{user?.phone || user?.email || user?.name}</span>
           </div>
 
-          {/* Tenant Slug Input */}
-          {view === 'owner' && (
+          {/* Tenant Slug Input for Fleet Owner */}
+          {role === 'owner' && (
             <div className="flex items-center gap-1.5 text-xs bg-slate-800/60 border border-slate-700/80 px-2.5 py-1 rounded-xl">
               <span className="text-[var(--text-muted)]">Tenant:</span>
               <input
                 type="text"
-                value={tenantInput}
-                onChange={(e) => handleTenantChange(e.target.value)}
+                value={tenantSlug}
+                onChange={(e) => setTenant(e.target.value)}
                 className="bg-transparent text-slate-200 font-mono w-24 focus:outline-none text-xs"
                 placeholder="tenant_slug"
               />
@@ -93,12 +78,17 @@ const AppContent: React.FC = () => {
             <option value="te">తెలుగు (TE)</option>
             <option value="mr">मराठी (MR)</option>
           </select>
+
+          {/* Logout Button */}
+          <Button onClick={logout} variant="secondary" className="text-xs px-3 py-1.5">
+            🚪 {t('logout')}
+          </Button>
         </div>
       </header>
 
       {/* Main Content Body */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 animate-fade-in">
-        {view === 'owner' ? <OwnerDashboard /> : <SuperAdminDashboard />}
+        {role === 'owner' ? <OwnerDashboard /> : <SuperAdminDashboard />}
       </main>
 
       {/* Footer */}
@@ -110,9 +100,11 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  <ThemeProvider>
-    <AppContent />
-  </ThemeProvider>
+  <AuthProvider>
+    <ThemeProvider>
+      <DashboardContent />
+    </ThemeProvider>
+  </AuthProvider>
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

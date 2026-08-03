@@ -1,7 +1,7 @@
 # Mobile setup
 
 From a fresh clone to the running Expo app + green test suite. All commands run
-from `mobile/`. Node is pinned to 26.3.1 (root `.mise.toml`); see
+from `mobile/`. Node is pinned to 26.5.1 (root `.mise.toml`); see
 [`getting-started/prerequisites.md`](../getting-started/prerequisites.md).
 
 ## 1. Install dependencies

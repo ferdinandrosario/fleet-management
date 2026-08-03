@@ -15,10 +15,10 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
   const { loginOwner, loginSuperAdmin } = useAuth();
   const [activeRole, setActiveRole] = useState<'owner' | 'super_admin'>(isDemoRoute ? 'super_admin' : 'owner');
 
-  // Form State
-  const [phone, setPhone] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  // Form State - Pre-filled on /demo route
+  const [phone, setPhone] = useState<string>(isDemoRoute ? '+919876543210' : '');
+  const [email, setEmail] = useState<string>(isDemoRoute ? 'admin@fleet.example.com' : '');
+  const [password, setPassword] = useState<string>(isDemoRoute ? 'adminsecret123' : '');
   const [tenantSlug, setTenantSlug] = useState<string>('demo_tenant');
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,18 +29,6 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
   const handleLocaleChange = (loc: Locale) => {
     setCurrentLocaleState(loc);
     setLocale(loc);
-  };
-
-  const handleQuickFillDemo = () => {
-    setErrorMessage(null);
-    if (activeRole === 'owner') {
-      setPhone('+919876543210');
-      setPassword('password123');
-      setTenantSlug('demo_tenant');
-    } else {
-      setEmail('admin@fleet.example.com');
-      setPassword('adminsecret123');
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -159,6 +147,13 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
 
         {/* Auth Form Card */}
         <Card className="space-y-5">
+          {isDemoRoute && (
+            <div className="p-3 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-xl text-xs flex items-center gap-2">
+              <Zap className="w-4 h-4 text-amber-400 shrink-0" />
+              <span>Demo credentials pre-filled for Super Admin portal.</span>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             {activeRole === 'owner' ? (
               <>
@@ -231,20 +226,6 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
               )}
             </Button>
           </form>
-
-          {/* Quick Demo Fill Helper - ONLY shown on /demo route */}
-          {isDemoRoute && (
-            <div className="pt-2 border-t border-slate-800 text-center space-y-2">
-              <button
-                type="button"
-                onClick={handleQuickFillDemo}
-                className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium cursor-pointer inline-flex items-center gap-1.5"
-              >
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-                <span>{t('demo_autofill')}</span>
-              </button>
-            </div>
-          )}
         </Card>
       </div>
     </div>

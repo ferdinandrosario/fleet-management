@@ -12,7 +12,7 @@ recovery, efficiency — lives in the user-level `git` skill
 checkout, in your home directory; versioned in the `agent-rules`
 template's `user-skills/git/`). **Read it before nontrivial git work.**
 
-This repo's binding rules — ABSOLUTE RULE 8 plus the "Git workflow"
+This repo's binding rules — ABSOLUTE RULE 8 and ABSOLUTE RULE 14 (pre-push verification mandatory, zero CI failures on main) plus the "Git workflow"
 section in [`AGENTS.md`](../../../AGENTS.md) — **override** the generic
 skill on any conflict.
 

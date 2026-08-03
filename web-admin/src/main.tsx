@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { AuthGate } from './features/auth/AuthGate';
 import { Badge } from './components/ui/Badge';
 import { Button } from './components/ui/Button';
+import { LogOut } from 'lucide-react';
 
 const DashboardContent: React.FC = () => {
   const { isAuthenticated, user, role, tenantSlug, setTenant, logout } = useAuth();
@@ -80,8 +81,9 @@ const DashboardContent: React.FC = () => {
           </select>
 
           {/* Logout Button */}
-          <Button onClick={logout} variant="secondary" className="text-xs px-3 py-1.5">
-            🚪 {t('logout')}
+          <Button onClick={logout} variant="secondary" className="text-xs px-3 py-1.5 flex items-center gap-1.5">
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{t('logout')}</span>
           </Button>
         </div>
       </header>

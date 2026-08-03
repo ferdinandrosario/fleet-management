@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Download, AlertCircle, Star } from 'lucide-react';
 import { StatBox } from '../../components/ui/StatBox';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -95,13 +96,13 @@ export const OwnerDashboard: React.FC = () => {
   const getStatusBadge = (status: VehicleItem['status']) => {
     switch (status) {
       case 'active':
-        return <Badge variant="success">● Ready</Badge>;
+        return <Badge variant="success">Available</Badge>;
       case 'on_trip':
-        return <Badge variant="info">⚡ On Assignment</Badge>;
+        return <Badge variant="info">On Assignment</Badge>;
       case 'in_service':
-        return <Badge variant="warning">🔧 Servicing</Badge>;
+        return <Badge variant="warning">In Maintenance</Badge>;
       case 'inactive':
-        return <Badge variant="danger">⛔ Inactive</Badge>;
+        return <Badge variant="danger">Inactive</Badge>;
     }
   };
 
@@ -151,15 +152,19 @@ export const OwnerDashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button onClick={handleExportCsv} variant="primary">
-            📥 {t('export_csv')}
+          <Button onClick={handleExportCsv} variant="primary" className="flex items-center gap-1.5">
+            <Download className="w-4 h-4" />
+            <span>{t('export_csv')}</span>
           </Button>
         </div>
       </div>
 
       {error && (
         <div className="p-4 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-sm flex items-center justify-between">
-          <span>⚠️ {error}</span>
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <span>{error}</span>
+          </div>
           <span className="text-xs text-rose-400/80">Check tenant API connection</span>
         </div>
       )}
@@ -183,7 +188,12 @@ export const OwnerDashboard: React.FC = () => {
         />
         <StatBox
           title={t('average_rating')}
-          value={`${metrics?.average_vehicle_rating || 5.0} ★`}
+          value={
+            <span className="flex items-center gap-1">
+              <span>{metrics?.average_vehicle_rating || 5.0}</span>
+              <Star className="w-4 h-4 text-amber-400 fill-amber-400 inline" />
+            </span>
+          }
           subtitle="Customer satisfaction score"
         />
       </div>

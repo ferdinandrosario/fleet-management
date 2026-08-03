@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AlertCircle, CheckCircle2, Zap } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -186,7 +187,7 @@ export const AuthGate: React.FC = () => {
             {/* Error Message */}
             {errorMessage && (
               <div className="p-3 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-xs flex items-center gap-2">
-                <span>⚠️</span>
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
@@ -194,7 +195,7 @@ export const AuthGate: React.FC = () => {
             {/* Success Message */}
             {successMessage && (
               <div className="p-3 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 rounded-xl text-xs flex items-center gap-2">
-                <span>✅</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>{successMessage}</span>
               </div>
             )}
@@ -221,9 +222,10 @@ export const AuthGate: React.FC = () => {
             <button
               type="button"
               onClick={handleQuickFillDemo}
-              className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium cursor-pointer"
+              className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium cursor-pointer inline-flex items-center gap-1.5"
             >
-              ⚡ {t('demo_autofill')}
+              <Zap className="w-3.5 h-3.5 text-amber-400" />
+              <span>{t('demo_autofill')}</span>
             </button>
           </div>
         </Card>

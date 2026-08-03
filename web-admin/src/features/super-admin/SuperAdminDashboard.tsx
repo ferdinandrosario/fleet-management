@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { AlertCircle } from 'lucide-react';
 import { StatBox } from '../../components/ui/StatBox';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -116,13 +117,13 @@ export const SuperAdminDashboard: React.FC = () => {
       accessor: (row) => {
         switch (row.status) {
           case 'active':
-            return <Badge variant="success">● Active Tenant</Badge>;
+            return <Badge variant="success">Active</Badge>;
           case 'trial':
-            return <Badge variant="info">⏳ Trial Period</Badge>;
+            return <Badge variant="info">Trial</Badge>;
           case 'past_due':
-            return <Badge variant="danger">⚠️ Payment Overdue</Badge>;
+            return <Badge variant="danger">Past Due</Badge>;
           case 'suspended':
-            return <Badge variant="neutral">⛔ Suspended</Badge>;
+            return <Badge variant="neutral">Suspended</Badge>;
         }
       },
     },
@@ -158,8 +159,9 @@ export const SuperAdminDashboard: React.FC = () => {
       </div>
 
       {error && (
-        <div className="p-4 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-sm">
-          ⚠️ {error}
+        <div className="p-4 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-sm flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 

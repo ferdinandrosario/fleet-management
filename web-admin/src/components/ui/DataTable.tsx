@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Search } from 'lucide-react';
 import { Input } from './Input';
 
 export interface TableColumn<T> {
@@ -38,7 +39,7 @@ export function DataTable<T extends { id: string | number }>({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
-              icon="🔍"
+              icon={<Search className="w-3.5 h-3.5 text-slate-400" />}
             />
           </div>
           <span className="text-xs text-slate-400 font-medium">{filteredData.length} records</span>

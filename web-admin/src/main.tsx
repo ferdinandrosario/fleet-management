@@ -10,19 +10,58 @@ import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { AuthGate } from './features/auth/AuthGate';
 import { Badge } from './components/ui/Badge';
 import { Button } from './components/ui/Button';
-import { LogOut } from 'lucide-react';
+import { LogOut, ShieldAlert, Zap } from 'lucide-react';
 
 const DashboardContent: React.FC = () => {
   const { isAuthenticated, user, role, tenantSlug, setTenant, logout } = useAuth();
   const [currentLocale, setCurrentLocaleState] = useState<Locale>('en');
+  const [currentPath, setCurrentPath] = useState<string>(window.location.pathname);
+
+  React.useEffect(() => {
+    const handlePopState = () => setCurrentPath(window.location.pathname);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (path: string) => {
+    window.history.pushState({}, '', path);
+    setCurrentPath(path);
+  };
 
   const handleLocaleChange = (loc: Locale) => {
     setCurrentLocaleState(loc);
     setLocale(loc);
   };
 
+  const isDemoRoute = currentPath === '/demo';
+
   if (!isAuthenticated) {
-    return <AuthGate />;
+    return <AuthGate isDemoRoute={isDemoRoute} />;
+  }
+
+  // Access Control: Only Super Admin can access /demo
+  if (isDemoRoute && role !== 'super_admin') {
+    return (
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] flex flex-col justify-center items-center px-4 py-12">
+        <div className="max-w-md w-full p-6 bg-slate-900 border border-rose-500/30 rounded-2xl space-y-4 text-center">
+          <div className="w-12 h-12 mx-auto rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+            <ShieldAlert className="w-6 h-6" />
+          </div>
+          <h2 className="text-xl font-bold text-slate-100">Access Denied</h2>
+          <p className="text-xs text-slate-400">
+            The <code className="text-rose-400 font-mono">/demo</code> portal is restricted exclusively to authenticated Super Admin platform operators.
+          </p>
+          <div className="pt-2 flex justify-center gap-3">
+            <Button onClick={() => navigate('/')} variant="primary" className="text-xs">
+              Go to Main Portal
+            </Button>
+            <Button onClick={logout} variant="secondary" className="text-xs">
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -34,7 +73,15 @@ const DashboardContent: React.FC = () => {
             FM
           </div>
           <div>
-            <h1 className="font-bold text-base text-[var(--text-main)] leading-tight">{t('app_title')}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-base text-[var(--text-main)] leading-tight">{t('app_title')}</h1>
+              {isDemoRoute && (
+                <Badge variant="info">
+                  <Zap className="w-3 h-3 inline mr-1" />
+                  /demo Portal
+                </Badge>
+              )}
+            </div>
             <p className="text-xs text-[var(--text-muted)]">Fleet Management · India</p>
           </div>
         </div>
@@ -94,8 +141,26 @@ const DashboardContent: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--border-color)] py-4 text-center text-xs text-[var(--text-muted)]">
-        Fleet Management SaaS Platform · Schema-per-tenant (`ros-apartment`) · Razorpay · 6 Locales
+      <footer className="border-t border-[var(--border-color)] py-4 text-center text-xs text-[var(--text-muted)] flex flex-col sm:flex-row items-center justify-between px-6 gap-2">
+        <span>Fleet Management SaaS Platform · Schema-per-tenant (`ros-apartment`) · Razorpay · 6 Locales</span>
+        <div>
+          {isDemoRoute ? (
+            <button
+              onClick={() => navigate('/')}
+              className="text-blue-400 hover:underline cursor-pointer"
+            >
+              Main Portal (/)
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/demo')}
+              className="text-blue-400 hover:underline cursor-pointer flex items-center gap-1"
+            >
+              <Zap className="w-3 h-3 text-amber-400" />
+              <span>Super Admin /demo Portal</span>
+            </button>
+          )}
+        </div>
       </footer>
     </div>
   );

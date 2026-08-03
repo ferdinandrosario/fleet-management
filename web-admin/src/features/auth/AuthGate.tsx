@@ -7,9 +7,13 @@ import { Input } from '../../components/ui/Input';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import { t, setLocale, Locale, getLocale } from '../../lib/i18n';
 
-export const AuthGate: React.FC = () => {
+interface AuthGateProps {
+  isDemoRoute?: boolean;
+}
+
+export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
   const { loginOwner, loginSuperAdmin } = useAuth();
-  const [activeRole, setActiveRole] = useState<'owner' | 'super_admin'>('owner');
+  const [activeRole, setActiveRole] = useState<'owner' | 'super_admin'>(isDemoRoute ? 'super_admin' : 'owner');
 
   // Form State
   const [phone, setPhone] = useState<string>('');
@@ -43,6 +47,11 @@ export const AuthGate: React.FC = () => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
+
+    if (isDemoRoute && activeRole === 'owner') {
+      setErrorMessage('Access Denied: The /demo portal is restricted to Super Admin operators.');
+      return;
+    }
 
     if (activeRole === 'owner') {
       if (!phone.trim() || !password.trim() || !tenantSlug.trim()) {
@@ -106,8 +115,14 @@ export const AuthGate: React.FC = () => {
           <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-xl text-white shadow-xl shadow-blue-500/25">
             FM
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-100">{t('auth_title')}</h1>
-          <p className="text-xs text-slate-400 max-w-xs mx-auto">{t('auth_subtitle')}</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-100">
+            {isDemoRoute ? 'Super Admin Demo Portal' : t('auth_title')}
+          </h1>
+          <p className="text-xs text-slate-400 max-w-xs mx-auto">
+            {isDemoRoute
+              ? 'Restricted platform super admin demo access'
+              : t('auth_subtitle')}
+          </p>
         </div>
 
         {/* Role Selector Tabs */}
@@ -217,17 +232,19 @@ export const AuthGate: React.FC = () => {
             </Button>
           </form>
 
-          {/* Quick Demo Fill Helper */}
-          <div className="pt-2 border-t border-slate-800 text-center">
-            <button
-              type="button"
-              onClick={handleQuickFillDemo}
-              className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium cursor-pointer inline-flex items-center gap-1.5"
-            >
-              <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span>{t('demo_autofill')}</span>
-            </button>
-          </div>
+          {/* Quick Demo Fill Helper - ONLY shown on /demo route */}
+          {isDemoRoute && (
+            <div className="pt-2 border-t border-slate-800 text-center space-y-2">
+              <button
+                type="button"
+                onClick={handleQuickFillDemo}
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium cursor-pointer inline-flex items-center gap-1.5"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span>{t('demo_autofill')}</span>
+              </button>
+            </div>
+          )}
         </Card>
       </div>
     </div>

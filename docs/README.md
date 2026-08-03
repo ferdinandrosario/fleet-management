@@ -71,7 +71,8 @@ filename prefixes. Set up a fresh box top-to-bottom, or jump to a topic:
 | Install the tools | [getting-started/prerequisites.md](getting-started/prerequisites.md) |
 | Run the API | [backend/setup.md](backend/setup.md) |
 | Run the mobile app | [mobile/setup.md](mobile/setup.md) |
-| Run both together (daily workflow) | [getting-started/running-locally.md](getting-started/running-locally.md) |
+| Run the web admin app | [web-admin/AGENTS.md](../web-admin/AGENTS.md) |
+| Run services together (daily workflow) | [getting-started/running-locally.md](getting-started/running-locally.md) |
 | Understand how it fits together | [architecture/overview.md](architecture/overview.md) |
 | Read the API contract | [api/reference.md](api/reference.md) |
 | Follow the UI / UX / i18n design system | [mobile/design.md](mobile/design.md) |

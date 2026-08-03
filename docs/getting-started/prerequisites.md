@@ -56,4 +56,5 @@ the per-codebase setup pages.
 
 - Backend: [`backend/setup.md`](../backend/setup.md)
 - Mobile: [`mobile/setup.md`](../mobile/setup.md)
+- Web Admin: [`web-admin/AGENTS.md`](../../web-admin/AGENTS.md)
 - Then run them together: [`running-locally.md`](running-locally.md)

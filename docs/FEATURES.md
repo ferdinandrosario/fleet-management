@@ -92,6 +92,7 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Owner Fleet Analytics Dashboard** — `GET /api/v1/reports/dashboard`, `ReportingService` computes total revenue, job counts, active drivers, vehicle utilization rate, and fleet average rating. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
 - **Booking CSV Data Export** — `GET /api/v1/reports/bookings_csv`, generates downloadable CSV export of filtered booking history. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
 - **Super Admin Platform Metrics** — `GET /api/v1/super_admin/dashboard`, reports total platform owners, active subscriptions, and MRR paise. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
+- **Web Admin Design System & Theme Provider** — Multi-mode theme engine (`Dark Fleet`, `Light`, `Obsidian`) via `ThemeProvider` (`web-admin/src/lib/theme.tsx`), `ThemeToggle`, `Badge` status indicators (Emerald green active/success, Warm Amber servicing/pending, Crimson red inactive/overdue), `FleetRevenueChart` SVG weekly analytics, and `DataTable` searchable inventory listings. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
 
 ## Hardening Pass (Session 11)
 

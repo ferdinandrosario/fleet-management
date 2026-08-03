@@ -38,3 +38,13 @@ Owner Admin / Super Admin
 | `GET` | `/api/v1/reports/dashboard` | Fetch owner fleet analytics dashboard |
 | `GET` | `/api/v1/reports/bookings_csv` | Download CSV export file of booking records |
 | `GET` | `/api/v1/super_admin/dashboard` | Fetch super admin platform metrics dashboard |
+
+## Web Admin Design System & Theme Provider
+
+The `web-admin/` application implements a full-featured theme system and UI component suite:
+
+- **Theme Modes**: Supports `Dark Fleet` (`--bg-primary: #0b0f19`), `Light` (`--bg-primary: #f8fafc`), and `Obsidian` (`--bg-primary: #050508`) modes via `ThemeProvider` (`src/lib/theme.tsx`) and `ThemeToggle` (`src/components/ui/ThemeToggle.tsx`).
+- **Status Badges**: `Badge.tsx` provides semantic pills following canonical status rules: Emerald Green for `active`/`success`/`paid`, Warm Amber for `warning`/`in_service`/`pending`, Crimson Red for `danger`/`overdue`/`inactive`, and Indigo Blue for `info`/`on_trip`.
+- **Analytics Visualizations**: `FleetRevenueChart.tsx` renders interactive SVG bar charts displaying weekly revenue trends and job volume.
+- **Data Tables**: `DataTable.tsx` provides client-side searchable, paginated inventory and multitenant schema tables.
+

@@ -25,7 +25,7 @@ reach another tenant's data. This is the product's #1 security property.
 ```
 backend/    Rails 8.1.3 API (Ruby 4.0.6) · PostgreSQL + PostGIS · serves all clients
 mobile/     Expo / React Native · customer + driver + owner field ops
-web-admin/  React (Vite) · super-admin + owner reporting (built last, kept minimal)
+web-admin/  React 19 (Vite) · super-admin + owner reporting · Theme Provider (Dark Fleet, Light, Obsidian), SVG charts, status badges
 docs/       source of truth (this folder)
 ```
 

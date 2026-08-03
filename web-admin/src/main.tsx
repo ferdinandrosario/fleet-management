@@ -33,7 +33,7 @@ const AppContent: React.FC = () => {
           </div>
           <div>
             <h1 className="font-bold text-base text-[var(--text-main)] leading-tight">{t('app_title')}</h1>
-            <p className="text-xs text-[var(--text-muted)]">Commercial Vehicle SaaS · India</p>
+            <p className="text-xs text-[var(--text-muted)]">Fleet Management · India</p>
           </div>
         </div>
 
@@ -103,7 +103,7 @@ const AppContent: React.FC = () => {
 
       {/* Footer */}
       <footer className="border-t border-[var(--border-color)] py-4 text-center text-xs text-[var(--text-muted)]">
-        Commercial Vehicle SaaS Platform · Schema-per-tenant (`ros-apartment`) · Razorpay · 6 Locales
+        Fleet Management SaaS Platform · Schema-per-tenant (`ros-apartment`) · Razorpay · 6 Locales
       </footer>
     </div>
   );

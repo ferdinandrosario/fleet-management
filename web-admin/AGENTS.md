@@ -5,12 +5,9 @@ Canonical ruleset for `web-admin/`. Agents that resolve the nearest
 tree; Claude Code reaches it via `.claude/skills/web-admin/SKILL.md`.
 Universal rules: [`AGENTS.md`](../AGENTS.md).
 
-> **Status: rules-only, no code yet.** The web admin is **scaffolded in
-> Session 10** (super-admin tenant/billing management + owner revenue
-> reporting). It is kept intentionally minimal to respect the budget.
-> This file is the contract the scaffold must satisfy; the per-rule
-> ledgers (approved libs, env vars, coverage pins) fill in same-turn with
-> the code, exactly as `backend/` and `mobile/` do.
+> **Status: Scaffolded with full Theme System & UI Component Library.** The web admin
+> features a multi-mode theme provider (Dark Fleet, Light, Obsidian), status badges,
+> interactive revenue charts, searchable data tables, and owner/super-admin dashboards.
 
 ## Stack
 

@@ -11,5 +11,6 @@ en:
     invalid_token: "Invalid or expired token."
     phone_unverified: "Please verify your phone number first."
     otp_invalid: "Invalid or expired code."
+    plan_limit_exceeded: "Plan resource limit reached."
   health:
     status: "ok"

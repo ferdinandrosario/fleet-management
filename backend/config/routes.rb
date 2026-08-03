@@ -36,6 +36,15 @@ Rails.application.routes.draw do
         resources :plans, only: [ :index, :show, :create, :update ]
         resources :subscriptions, only: [ :show, :update ]
       end
+
+      # Vehicles, Availability & Pricing Rules (Session 5).
+      resources :vehicles, only: [ :index, :show, :create, :update, :destroy ] do
+        member do
+          get :quote
+        end
+        resources :availabilities, controller: "vehicle_availabilities", only: [ :index, :create, :destroy ]
+        resources :pricing_rules, only: [ :index, :create, :destroy ]
+      end
     end
   end
 end

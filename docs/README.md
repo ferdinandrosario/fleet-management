@@ -52,8 +52,8 @@ mocked/sandboxed until the final session.
 | 2 | Mobile foundation (nav, i18n, secure storage, API client) — **done** |
 | 3 | Auth & onboarding (OTP, JWT, Pundit) — **done** |
 | 4 | Tenants, owners, subscriptions, plan limits (super admin) — **done** |
-| 5 | Vehicles, availability, pricing, discounts (owner) — **next** |
-| 6 | Discovery + booking + payment (customer) |
+| 5 | Vehicles, availability, pricing, discounts (owner) — **done** |
+| 6 | Discovery + booking + payment (customer) — **next** |
 | 7 | Driver work execution + GPS tracking |
 | 8 | Completion photos + reviews + rating aggregation |
 | 9 | Leave, payroll, notifications |

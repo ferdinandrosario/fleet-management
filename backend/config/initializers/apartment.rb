@@ -24,6 +24,7 @@ Apartment.configure do |config|
     Owner
     Subscription
     TenantRegistry
+    Plan
   ]
 
   # Schemas always kept on the search path alongside the active tenant. `public`

@@ -162,6 +162,45 @@ ALTER SEQUENCE public.plans_id_seq OWNED BY public.plans.id;
 
 
 --
+-- Name: pricing_rules; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pricing_rules (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    vehicle_id bigint NOT NULL,
+    min_duration_hours integer DEFAULT 0 NOT NULL,
+    discount_percentage numeric(5,2) DEFAULT 0.0 NOT NULL,
+    override_hourly_rate_cents integer,
+    override_daily_rate_cents integer,
+    start_date date,
+    end_date date,
+    active boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pricing_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pricing_rules_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pricing_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pricing_rules_id_seq OWNED BY public.pricing_rules.id;
+
+
+--
 -- Name: refresh_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -344,6 +383,80 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: vehicle_availabilities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vehicle_availabilities (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    vehicle_id bigint NOT NULL,
+    start_time timestamp(6) without time zone NOT NULL,
+    end_time timestamp(6) without time zone NOT NULL,
+    reason integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: vehicle_availabilities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.vehicle_availabilities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vehicle_availabilities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.vehicle_availabilities_id_seq OWNED BY public.vehicle_availabilities.id;
+
+
+--
+-- Name: vehicles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vehicles (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying NOT NULL,
+    category integer DEFAULT 0 NOT NULL,
+    registration_number character varying NOT NULL,
+    model_year integer,
+    hourly_rate_cents integer DEFAULT 0 NOT NULL,
+    daily_rate_cents integer DEFAULT 0 NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
+    specs jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: vehicles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.vehicles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vehicles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.vehicles_id_seq OWNED BY public.vehicles.id;
+
+
+--
 -- Name: one_time_passwords id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -362,6 +475,13 @@ ALTER TABLE ONLY public.owners ALTER COLUMN id SET DEFAULT nextval('public.owner
 --
 
 ALTER TABLE ONLY public.plans ALTER COLUMN id SET DEFAULT nextval('public.plans_id_seq'::regclass);
+
+
+--
+-- Name: pricing_rules id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pricing_rules ALTER COLUMN id SET DEFAULT nextval('public.pricing_rules_id_seq'::regclass);
 
 
 --
@@ -400,6 +520,20 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: vehicle_availabilities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_availabilities ALTER COLUMN id SET DEFAULT nextval('public.vehicle_availabilities_id_seq'::regclass);
+
+
+--
+-- Name: vehicles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicles ALTER COLUMN id SET DEFAULT nextval('public.vehicles_id_seq'::regclass);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -429,6 +563,14 @@ ALTER TABLE ONLY public.owners
 
 ALTER TABLE ONLY public.plans
     ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pricing_rules pricing_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pricing_rules
+    ADD CONSTRAINT pricing_rules_pkey PRIMARY KEY (id);
 
 
 --
@@ -480,6 +622,29 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: vehicle_availabilities vehicle_availabilities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_availabilities
+    ADD CONSTRAINT vehicle_availabilities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: vehicles vehicles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicles
+    ADD CONSTRAINT vehicles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_vehicle_avail_lookup; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_vehicle_avail_lookup ON public.vehicle_availabilities USING btree (vehicle_id, start_time, end_time);
+
+
+--
 -- Name: index_one_time_passwords_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -526,6 +691,20 @@ CREATE UNIQUE INDEX index_plans_on_name ON public.plans USING btree (name);
 --
 
 CREATE UNIQUE INDEX index_plans_on_uuid ON public.plans USING btree (uuid);
+
+
+--
+-- Name: index_pricing_rules_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pricing_rules_on_uuid ON public.pricing_rules USING btree (uuid);
+
+
+--
+-- Name: index_pricing_rules_on_vehicle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pricing_rules_on_vehicle_id ON public.pricing_rules USING btree (vehicle_id);
 
 
 --
@@ -634,11 +813,61 @@ CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
+-- Name: index_vehicle_availabilities_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicle_availabilities_on_uuid ON public.vehicle_availabilities USING btree (uuid);
+
+
+--
+-- Name: index_vehicle_availabilities_on_vehicle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vehicle_availabilities_on_vehicle_id ON public.vehicle_availabilities USING btree (vehicle_id);
+
+
+--
+-- Name: index_vehicles_on_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vehicles_on_category ON public.vehicles USING btree (category);
+
+
+--
+-- Name: index_vehicles_on_registration_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicles_on_registration_number ON public.vehicles USING btree (registration_number);
+
+
+--
+-- Name: index_vehicles_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vehicles_on_status ON public.vehicles USING btree (status);
+
+
+--
+-- Name: index_vehicles_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicles_on_uuid ON public.vehicles USING btree (uuid);
+
+
+--
 -- Name: refresh_tokens fk_rails_279e9a0091; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.refresh_tokens
     ADD CONSTRAINT fk_rails_279e9a0091 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: pricing_rules fk_rails_3e9d476c18; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pricing_rules
+    ADD CONSTRAINT fk_rails_3e9d476c18 FOREIGN KEY (vehicle_id) REFERENCES public.vehicles(id) ON DELETE CASCADE;
 
 
 --
@@ -674,12 +903,21 @@ ALTER TABLE ONLY public.one_time_passwords
 
 
 --
+-- Name: vehicle_availabilities fk_rails_ebe45553c7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_availabilities
+    ADD CONSTRAINT fk_rails_ebe45553c7 FOREIGN KEY (vehicle_id) REFERENCES public.vehicles(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "public", "public";
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260616000011'),
 ('20260616000010'),
 ('20260616000009'),
 ('20260616000008'),

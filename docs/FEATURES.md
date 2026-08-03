@@ -53,6 +53,14 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Plan Limits Enforcement** — `PlanLimitService` checks and enforces resource caps defined in `Plan#limits`. → [feature/subscriptions.md](feature/subscriptions.md)
 - **SuperAdmin APIs** — Paginated owner list/show/status updates, subscription plan CRUD, and owner subscription management (`GET/POST/PATCH /api/v1/super_admin/*`). → [feature/subscriptions.md](feature/subscriptions.md)
 
+## Vehicles, Availability, Pricing & Discounts (Session 5)
+
+- **Tenant Vehicle Fleet Management** — `GET/POST/PATCH/DELETE /api/v1/vehicles`, schema-isolated vehicle listings supporting tractors, JCBs, heavy vehicles, buses, cranes, and harvesters. → [feature/vehicles.md](feature/vehicles.md)
+- **Plan Vehicle Quota Enforcement** — `VehiclesController#create` checks `PlanLimitService` before creating listings and returns `code: "plan_limit_exceeded"` (HTTP 403) when cap is met. → [feature/vehicles.md](feature/vehicles.md)
+- **Availability & Holds Management** — `GET/POST/DELETE /api/v1/vehicles/:id/availabilities`, schedule maintenance holds or booked date ranges. → [feature/vehicles.md](feature/vehicles.md)
+- **Tiered Discounts & Pricing Rules** — `GET/POST/DELETE /api/v1/vehicles/:id/pricing_rules`, configure duration-based rate overrides or percentage discounts. → [feature/vehicles.md](feature/vehicles.md)
+- **Instant Rental Quote Engine** — `GET /api/v1/vehicles/:id/quote?hours=X&days=Y`, `PricingCalculatorService` computes base rates and applies discount rules. → [feature/vehicles.md](feature/vehicles.md)
+
 ## Coming
 
-vehicles & pricing (S5) · discovery & booking (S6) · driver execution (S7) · reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).
+discovery & booking (S6) · driver execution (S7) · reviews (S8) · leave/payroll/notifications (S9) · reporting & web admin (S10).

@@ -70,6 +70,16 @@ The app opens on the **Welcome** screen (app name + language picker). Point it
 at your running backend with `EXPO_PUBLIC_API_BASE_URL` — see
 [`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md).
 
+## Quickstart — web-admin
+
+Full walkthrough: [`web-admin/AGENTS.md`](web-admin/AGENTS.md) and [`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md).
+
+```bash
+cd web-admin
+npm install
+npm run dev           # Vite dev server on http://localhost:5173
+```
+
 ## Quality gates (what CI runs)
 
 ```bash

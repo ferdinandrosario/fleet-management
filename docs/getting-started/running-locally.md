@@ -2,10 +2,10 @@
 
 The day-to-day workflow once you've done [`prerequisites.md`](prerequisites.md),
 [`backend/setup.md`](../backend/setup.md), and [`mobile/setup.md`](../mobile/setup.md).
-You run the backend and the mobile app at the same time, in **separate
+You run the backend, mobile app, and web admin in **separate
 terminals** (we don't use a process orchestrator on purpose).
 
-## The two-terminal loop
+## The multi-terminal loop
 
 **Terminal 1 — backend API:**
 
@@ -14,28 +14,37 @@ cd backend
 bin/rails server            # http://localhost:3000
 ```
 
-**Terminal 2 — mobile (Metro bundler):**
+**Terminal 2 — mobile (Metro bundler / Expo Web):**
 
 ```bash
 cd mobile
-npx expo start              # Metro on :8081 — press i / a / w
+npx expo start              # Metro on :8081 — press i (iOS) / a (Android) / w (Expo Web in browser)
 ```
 
-Leave both running. Edit code; the backend reloads per request, Metro
-hot-reloads the app.
+**Terminal 3 — web admin (React / Vite):**
 
-## Pointing the app at the backend
+```bash
+cd web-admin
+npm install                 # first time only
+npm run dev                 # Vite dev server on http://localhost:5173
+```
 
-The app reads `EXPO_PUBLIC_API_BASE_URL` (only `EXPO_PUBLIC_*` vars reach the
+Leave services running. Edit code; the backend reloads per request, Metro and Vite
+hot-reload the apps.
+
+## Pointing clients at the backend
+
+The mobile app reads `EXPO_PUBLIC_API_BASE_URL` (only `EXPO_PUBLIC_*` vars reach the
 bundle). `localhost` **inside a simulator/emulator means the simulated device**,
 not your Mac — so the right value depends on where the app runs:
 
-| You run the app on… | Set `EXPO_PUBLIC_API_BASE_URL` to | Extra step |
+| You run the app on… | Set API base URL to | Extra step |
 |---|---|---|
 | iOS Simulator | `http://localhost:3000` | — |
 | Android emulator | `http://10.0.2.2:3000` | — (`10.0.2.2` is the emulator's alias for your Mac) |
 | Physical phone (same Wi-Fi) | `http://<your-Mac-LAN-IP>:3000` | start Rails with `bin/rails server -b 0.0.0.0` |
 | Expo web (browser) | `http://localhost:3000` | the backend's CORS allowlist already includes `:8081` |
+| Web admin (browser) | `http://localhost:3000` (`VITE_API_BASE_URL`) | the backend's CORS allowlist already includes `:5173` |
 
 Put the value in `mobile/.env` and restart Metro so it's picked up:
 
@@ -76,6 +85,15 @@ bin/rubocop -a                                   # autofix style before pushing
 cd mobile
 npm run test:watch                               # re-runs on save
 npm test                                         # one-shot, both platform presets
+npm run typecheck                                # tsc --noEmit
+npm run lint
+```
+
+**Web Admin:**
+
+```bash
+cd web-admin
+npm test                                         # Vitest one-shot
 npm run typecheck                                # tsc --noEmit
 npm run lint
 ```

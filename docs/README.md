@@ -58,8 +58,8 @@ mocked/sandboxed until the final session.
 | 8 | Completion photos + reviews + rating aggregation — **done** |
 | 9 | Leave, payroll, notifications — **done** |
 | 10 | Reporting, dashboards, exports + web admin — **done** |
-| 11 | Hardening pass (security/perf/coverage/i18n) — **next** |
-| 12 | Paid integrations + go-live |
+| 11 | Hardening pass (security/perf/coverage/i18n) — **done** |
+| 12 | Paid integrations + go-live — **next** |
 
 ## Where to go next
 

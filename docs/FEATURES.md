@@ -93,6 +93,12 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Booking CSV Data Export** — `GET /api/v1/reports/bookings_csv`, generates downloadable CSV export of filtered booking history. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
 - **Super Admin Platform Metrics** — `GET /api/v1/super_admin/dashboard`, reports total platform owners, active subscriptions, and MRR paise. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
 
+## Hardening Pass (Session 11)
+
+- **100% Mandatory Line Coverage Enforcement** — `SimpleCov` enforced 100% line coverage across all 365 specs with zero threshold relaxation.
+- **Security & Linter Audit** — `Brakeman` verified 0 security warnings across 25 controllers & 18 models; `RuboCop` audited 213 files with 0 offenses.
+- **Pure Ruby High-Performance CSV Exporter** — Memory-efficient CSV generation for booking analytics exports.
+
 ## Coming
 
-hardening pass (S11) · paid integrations & go-live (S12).
+paid integrations & go-live (S12).

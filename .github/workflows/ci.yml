@@ -37,23 +37,23 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '.ruby-version'
+          ruby-version: '4.0.6'
           working-directory: 'backend'
           bundler-cache: true
 
       - name: Setup Database Structure
         env:
           RAILS_ENV: test
-          PGHOST: localhost
+          PGHOST: 127.0.0.1
           PGUSER: postgres
           PGPASSWORD: password
           PGPORT: 5432
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: 127.0.0.1
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_PORT: 5432
           POSTGRES_DB: fleet_management_test
-          DATABASE_URL: postgres://postgres:password@localhost:5432/fleet_management_test
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/fleet_management_test
           AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
           AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
           AR_ENCRYPTION_KEY_DERIVATION_SALT: dev_only_key_derivation_salt_not_secret
@@ -65,17 +65,17 @@ jobs:
       - name: Run RSpec Test Suite with 100% Coverage Gate
         env:
           RAILS_ENV: test
-          PGHOST: localhost
+          PGHOST: 127.0.0.1
           PGUSER: postgres
           PGPASSWORD: password
           PGPORT: 5432
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: 127.0.0.1
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_PORT: 5432
           POSTGRES_DB: fleet_management_test
           COVERAGE: full
-          DATABASE_URL: postgres://postgres:password@localhost:5432/fleet_management_test
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/fleet_management_test
           AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
           AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
           AR_ENCRYPTION_KEY_DERIVATION_SALT: dev_only_key_derivation_salt_not_secret
@@ -91,7 +91,7 @@ jobs:
 
       - name: Run Code Linter (RuboCop)
         run: |
-          bin/rubocop
+          bundle exec rubocop
         working-directory: backend
 
   web-admin-ci:

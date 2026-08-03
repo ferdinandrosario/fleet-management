@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Input } from './Input';
 
 export interface TableColumn<T> {
   header: string;
@@ -31,20 +32,20 @@ export function DataTable<T extends { id: string | number }>({
     <div className="space-y-3">
       {searchKey && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative max-w-sm w-full">
-            <input
+          <div className="max-w-sm w-full">
+            <Input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full bg-slate-900/80 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+              icon="🔍"
             />
           </div>
-          <span className="text-xs text-slate-400">{filteredData.length} records</span>
+          <span className="text-xs text-slate-400 font-medium">{filteredData.length} records</span>
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800/80">
+      <div className="overflow-x-auto rounded-xl border border-slate-800/80 shadow-inner">
         <table className="w-full text-left text-xs text-slate-300 border-collapse">
           <thead className="bg-slate-900/90 border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider">
             <tr>

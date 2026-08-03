@@ -17,7 +17,7 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 Universal rule in [`AGENTS.md`](../AGENTS.md) "VERSION & STABILITY".
 Mobile-specific:
 
-- **Node.js: `26.3.1`** — latest stable, **pinned exact** in
+- **Node.js: `26.5.1`** — latest stable, **pinned exact** in
   [`.mise.toml`](../.mise.toml) and CI (see [`AGENTS.md`](../AGENTS.md)
   R10 + VERSION & STABILITY), even while it is a "Current" line not yet
   promoted to LTS. Never a prerelease, never an EOL line.

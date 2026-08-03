@@ -87,6 +87,12 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Automated Driver Payroll Calculation** — `POST /api/v1/driver_payrolls/calculate`, `PayrollService` aggregates completed booking hours, base earnings cut (40%), bonuses, and deductions. → [feature/payroll-and-leave.md](feature/payroll-and-leave.md)
 - **Payroll Settlement Payout** — `PATCH /api/v1/driver_payrolls/:id/pay`, transitions payroll settlement state to paid. → [feature/payroll-and-leave.md](feature/payroll-and-leave.md)
 
+## Reporting, Dashboards, Exports & Web Admin (Session 10)
+
+- **Owner Fleet Analytics Dashboard** — `GET /api/v1/reports/dashboard`, `ReportingService` computes total revenue, job counts, active drivers, vehicle utilization rate, and fleet average rating. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
+- **Booking CSV Data Export** — `GET /api/v1/reports/bookings_csv`, generates downloadable CSV export of filtered booking history. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
+- **Super Admin Platform Metrics** — `GET /api/v1/super_admin/dashboard`, reports total platform owners, active subscriptions, and MRR paise. → [feature/reporting-and-web-admin.md](feature/reporting-and-web-admin.md)
+
 ## Coming
 
-reporting, dashboards, exports + web admin (S10).
+hardening pass (S11) · paid integrations & go-live (S12).

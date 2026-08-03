@@ -25,9 +25,10 @@ Rails.application.routes.draw do
       get "me", to: "profile#show"
       patch "me", to: "profile#update"
 
-      # Super admin platform operations (Session 4).
+      # Super admin platform operations & metrics (Session 4 & 10).
       namespace :super_admin do
         post "login", to: "sessions#create"
+        get "dashboard", to: "dashboards#show"
         resources :owners, only: [ :index, :show, :create ] do
           member do
             patch :status, to: "owners#update_status"
@@ -85,6 +86,10 @@ Rails.application.routes.draw do
           patch :pay
         end
       end
+
+      # Owner Reporting & CSV Export (Session 10).
+      get "reports/dashboard", to: "reports#dashboard"
+      get "reports/bookings_csv", to: "reports#bookings_csv"
     end
   end
 end

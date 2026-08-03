@@ -57,8 +57,8 @@ mocked/sandboxed until the final session.
 | 7 | Driver work execution + GPS tracking — **done** |
 | 8 | Completion photos + reviews + rating aggregation — **done** |
 | 9 | Leave, payroll, notifications — **done** |
-| 10 | Reporting, dashboards, exports + web admin — **next** |
-| 11 | Hardening pass (security/perf/coverage/i18n) |
+| 10 | Reporting, dashboards, exports + web admin — **done** |
+| 11 | Hardening pass (security/perf/coverage/i18n) — **next** |
 | 12 | Paid integrations + go-live |
 
 ## Where to go next

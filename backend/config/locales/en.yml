@@ -20,5 +20,9 @@ en:
     job_finish_failed: "Could not finish job execution."
     gps_ping_failed: "Could not record GPS location ping."
     review_creation_failed: "Could not submit review."
+    leave_application_failed: "Could not apply for leave."
+    leave_update_failed: "Could not update leave status."
+    payroll_calculation_failed: "Could not calculate payroll."
+    payroll_payment_failed: "Could not settle payroll payment."
   health:
     status: "ok"

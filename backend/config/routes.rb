@@ -69,6 +69,22 @@ Rails.application.routes.draw do
           post :review, to: "reviews#create"
         end
       end
+
+      # Driver Leave Management & Payroll Settlement (Session 9).
+      resources :driver_leaves, only: [ :index, :create ] do
+        member do
+          patch :status, to: "driver_leaves#update_status"
+        end
+      end
+
+      resources :driver_payrolls, only: [ :index ] do
+        collection do
+          post :calculate
+        end
+        member do
+          patch :pay
+        end
+      end
     end
   end
 end

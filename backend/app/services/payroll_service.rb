@@ -1,0 +1,79 @@
+# Driver payroll calculation and settlement service (Session 9).
+class PayrollService
+  Result = Struct.new(:success, :payroll, :errors, keyword_init: true) do
+    def success?
+      success == true
+    end
+  end
+
+  class << self
+    def calculate_payroll(driver:, period_start:, period_end:, bonus_cents: 0, deductions_cents: 0)
+      if driver.nil?
+        return Result.new(success: false, errors: { driver: [ "driver is required" ] })
+      end
+
+      unless driver.driver?
+        return Result.new(success: false, errors: { driver: [ "must have driver role" ] })
+      end
+
+      if period_start.blank? || period_end.blank?
+        return Result.new(success: false, errors: { period: [ "period_start and period_end are required" ] })
+      end
+
+      start_t = Date.parse(period_start.to_s).beginning_of_day
+      end_t = Date.parse(period_end.to_s).end_of_day
+
+      completed_bookings = Booking.where(driver_id: driver.id, status: :completed)
+                                  .where(job_finished_at: start_t..end_t)
+
+      jobs_count = completed_bookings.count
+      total_hours = 0.0
+      base_pay_sum = 0
+
+      completed_bookings.each do |b|
+        if b.job_started_at.present? && b.job_finished_at.present?
+          duration = (b.job_finished_at - b.job_started_at) / 3600.0
+          total_hours += duration if duration.positive?
+        end
+        base_pay_sum += (b.total_cents * 0.40).round
+      end
+
+      b_cents = bonus_cents.to_i
+      d_cents = deductions_cents.to_i
+      total_payout = [ base_pay_sum + b_cents - d_cents, 0 ].max
+
+      payroll = DriverPayroll.new(
+        driver: driver,
+        period_start: period_start,
+        period_end: period_end,
+        completed_jobs_count: jobs_count,
+        total_hours_worked: total_hours.round(2),
+        base_pay_cents: base_pay_sum,
+        bonus_cents: b_cents,
+        deductions_cents: d_cents,
+        total_payout_cents: total_payout,
+        status: :draft
+      )
+
+      if payroll.save
+        Result.new(success: true, payroll: payroll)
+      else
+        Result.new(success: false, errors: payroll.errors.to_hash)
+      end
+    end
+
+    def mark_as_paid(payroll:)
+      if payroll.nil?
+        return Result.new(success: false, errors: { payroll: [ "payroll is required" ] })
+      end
+
+      payroll.status = :paid
+
+      if payroll.save
+        Result.new(success: true, payroll: payroll)
+      else
+        Result.new(success: false, errors: payroll.errors.to_hash)
+      end
+    end
+  end
+end

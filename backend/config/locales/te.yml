@@ -4,7 +4,7 @@ te:
   errors:
     unauthorized: "ఈ చర్యను చేయడానికి మీకు అనుమతి లేదు."
     not_found: "అభ్యర్థించిన వనరు కనుగొనబడలేదు."
-    rate_limited: "చాలా ఎక్కువ అభ్యర్థనలు. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి."
+    rate_limited: "చాలా ఎక్కువ అభ్యర్థనలు. దയచేസി తర్వాత మళ్లీ ప్రయత్నించండి."
     validation_failed: "ధృవీకరణ విఫలమైంది."
     unknown_tenant: "తెలియని టెనెంట్."
     invalid_credentials: "చెల్లని ఫోన్ నంబర్ లేదా పాస్‌వర్డ్."
@@ -20,5 +20,9 @@ te:
     job_finish_failed: "పని పూర్తి కాలేదు."
     gps_ping_failed: "జిపిఎస్ స్థానం నమోదు చేయబడలేదు."
     review_creation_failed: "సమీక్ష సమర్పించబడలేదు."
+    leave_application_failed: " సెలవు దరఖాస్తు సమర్పించబడలేదు."
+    leave_update_failed: "సెలవు స్థితి నవీకరించబడలేదు."
+    payroll_calculation_failed: "పేరోల్ లెక్కించబడలేదు."
+    payroll_payment_failed: "పేరోల్ చెల్లింపు పూర్తి కా లేదు."
   health:
     status: "సరే"

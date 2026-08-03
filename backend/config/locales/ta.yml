@@ -20,5 +20,9 @@ ta:
     job_finish_failed: "பணியை முடிக்க முடியவில்லை."
     gps_ping_failed: "ஜிபிஎஸ் இருப்பிடத்தைப் பதிவு செய்ய முடியவில்லை."
     review_creation_failed: "மதிப்பாய்வைச் சமர்ப்பிக்க முடியவில்லை."
+    leave_application_failed: "விடுப்புக் கோரலைச் சமர்ப்பிக்க முடியவில்லை."
+    leave_update_failed: "விடுப்பு நிலையைப் புதுப்பிக்க முடியவில்லை."
+    payroll_calculation_failed: "சம்பளத்தைக் கணக்கிட முடியவில்லை."
+    payroll_payment_failed: "சம்பளக் கொடுப்பனவைச் செய்ய முடியவில்லை."
   health:
     status: "சரி"

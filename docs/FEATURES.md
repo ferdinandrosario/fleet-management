@@ -81,6 +81,12 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Automatic Rating Score Aggregation** — `Vehicle#update_rating_stats!` updates vehicle `average_rating` and `reviews_count` on review submission. → [feature/reviews.md](feature/reviews.md)
 - **Vehicle Review Listing** — `GET /api/v1/vehicles/:id/reviews`, returns paginated customer feedback and aggregate rating summary. → [feature/reviews.md](feature/reviews.md)
 
+## Driver Leave Management & Payroll Settlement (Session 9)
+
+- **Driver Leave Application & Approval** — `POST /api/v1/driver_leaves`, `PATCH /api/v1/driver_leaves/:id/status`, `DriverLeaveService` manages driver leave requests and owner admin approvals. → [feature/payroll-and-leave.md](feature/payroll-and-leave.md)
+- **Automated Driver Payroll Calculation** — `POST /api/v1/driver_payrolls/calculate`, `PayrollService` aggregates completed booking hours, base earnings cut (40%), bonuses, and deductions. → [feature/payroll-and-leave.md](feature/payroll-and-leave.md)
+- **Payroll Settlement Payout** — `PATCH /api/v1/driver_payrolls/:id/pay`, transitions payroll settlement state to paid. → [feature/payroll-and-leave.md](feature/payroll-and-leave.md)
+
 ## Coming
 
-leave/payroll/notifications (S9) · reporting & web admin (S10).
+reporting, dashboards, exports + web admin (S10).

@@ -104,6 +104,84 @@ ALTER SEQUENCE public.bookings_id_seq OWNED BY public.bookings.id;
 
 
 --
+-- Name: driver_leaves; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_leaves (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    driver_id bigint NOT NULL,
+    approved_by_id bigint,
+    start_date date NOT NULL,
+    end_date date NOT NULL,
+    reason text,
+    status integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: driver_leaves_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.driver_leaves_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: driver_leaves_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.driver_leaves_id_seq OWNED BY public.driver_leaves.id;
+
+
+--
+-- Name: driver_payrolls; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_payrolls (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    driver_id bigint NOT NULL,
+    period_start date NOT NULL,
+    period_end date NOT NULL,
+    completed_jobs_count integer DEFAULT 0 NOT NULL,
+    total_hours_worked numeric(10,2) DEFAULT 0.0 NOT NULL,
+    base_pay_cents integer DEFAULT 0 NOT NULL,
+    bonus_cents integer DEFAULT 0 NOT NULL,
+    deductions_cents integer DEFAULT 0 NOT NULL,
+    total_payout_cents integer DEFAULT 0 NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: driver_payrolls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.driver_payrolls_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: driver_payrolls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.driver_payrolls_id_seq OWNED BY public.driver_payrolls.id;
+
+
+--
 -- Name: gps_pings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -593,6 +671,20 @@ ALTER TABLE ONLY public.bookings ALTER COLUMN id SET DEFAULT nextval('public.boo
 
 
 --
+-- Name: driver_leaves id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_leaves ALTER COLUMN id SET DEFAULT nextval('public.driver_leaves_id_seq'::regclass);
+
+
+--
+-- Name: driver_payrolls id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_payrolls ALTER COLUMN id SET DEFAULT nextval('public.driver_payrolls_id_seq'::regclass);
+
+
+--
 -- Name: gps_pings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -697,6 +789,22 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.bookings
     ADD CONSTRAINT bookings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: driver_leaves driver_leaves_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_leaves
+    ADD CONSTRAINT driver_leaves_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: driver_payrolls driver_payrolls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_payrolls
+    ADD CONSTRAINT driver_payrolls_pkey PRIMARY KEY (id);
 
 
 --
@@ -812,6 +920,13 @@ ALTER TABLE ONLY public.vehicles
 
 
 --
+-- Name: idx_on_driver_id_period_start_period_end_1d39ebd886; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_driver_id_period_start_period_end_1d39ebd886 ON public.driver_payrolls USING btree (driver_id, period_start, period_end);
+
+
+--
 -- Name: idx_vehicle_avail_lookup; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -872,6 +987,48 @@ CREATE UNIQUE INDEX index_bookings_on_uuid ON public.bookings USING btree (uuid)
 --
 
 CREATE INDEX index_bookings_on_vehicle_id ON public.bookings USING btree (vehicle_id);
+
+
+--
+-- Name: index_driver_leaves_on_approved_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_driver_leaves_on_approved_by_id ON public.driver_leaves USING btree (approved_by_id);
+
+
+--
+-- Name: index_driver_leaves_on_driver_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_driver_leaves_on_driver_id ON public.driver_leaves USING btree (driver_id);
+
+
+--
+-- Name: index_driver_leaves_on_driver_id_and_start_date_and_end_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_driver_leaves_on_driver_id_and_start_date_and_end_date ON public.driver_leaves USING btree (driver_id, start_date, end_date);
+
+
+--
+-- Name: index_driver_leaves_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_driver_leaves_on_uuid ON public.driver_leaves USING btree (uuid);
+
+
+--
+-- Name: index_driver_payrolls_on_driver_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_driver_payrolls_on_driver_id ON public.driver_payrolls USING btree (driver_id);
+
+
+--
+-- Name: index_driver_payrolls_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_driver_payrolls_on_uuid ON public.driver_payrolls USING btree (uuid);
 
 
 --
@@ -1162,6 +1319,14 @@ CREATE UNIQUE INDEX index_vehicles_on_uuid ON public.vehicles USING btree (uuid)
 
 
 --
+-- Name: driver_leaves fk_rails_0abd488011; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_leaves
+    ADD CONSTRAINT fk_rails_0abd488011 FOREIGN KEY (approved_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: gps_pings fk_rails_19ea08e02b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1178,11 +1343,27 @@ ALTER TABLE ONLY public.refresh_tokens
 
 
 --
+-- Name: driver_payrolls fk_rails_35dbf64237; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_payrolls
+    ADD CONSTRAINT fk_rails_35dbf64237 FOREIGN KEY (driver_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: pricing_rules fk_rails_3e9d476c18; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.pricing_rules
     ADD CONSTRAINT fk_rails_3e9d476c18 FOREIGN KEY (vehicle_id) REFERENCES public.vehicles(id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_leaves fk_rails_6279533450; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_leaves
+    ADD CONSTRAINT fk_rails_6279533450 FOREIGN KEY (driver_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -1296,6 +1477,7 @@ ALTER TABLE ONLY public.bookings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260616000015'),
 ('20260616000014'),
 ('20260616000013'),
 ('20260616000012'),

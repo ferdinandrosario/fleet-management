@@ -20,5 +20,9 @@ hi:
     job_finish_failed: "कार्य समाप्त नहीं किया जा सका।"
     gps_ping_failed: "जीपीएस स्थान नहीं सहेजा जा सका।"
     review_creation_failed: "समीक्षा सबमिट नहीं की जा सकी।"
+    leave_application_failed: "छुट्टी का आवेदन प्रस्तुत नहीं किया जा सका।"
+    leave_update_failed: "छुट्टी की स्थिति अपडेट नहीं की जा सकी।"
+    payroll_calculation_failed: "पेरोल की गणना नहीं की जा सकी।"
+    payroll_payment_failed: "पेरोल भुगतान संसाधित नहीं किया जा सका।"
   health:
     status: "ठीक है"

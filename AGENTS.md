@@ -103,6 +103,12 @@ one codebase directory, and each codebase carries its own `AGENTS.md`.
     validators are the source of truth), mirrors those rules inline on
     each client, and guards every file attachment. See the VALIDATION
     section below for the full statement.
+14. **Pre-push verification & clean atomic commits — zero CI failures.**
+    Before pushing any commit or merging a PR to `main`, run the full
+    test suite, linters, security scanners, typechecks, and build commands
+    locally to guarantee zero CI failures. Never push unverified code or
+    land trial-and-error fixup commits — every change landing on `main`
+    must be a clean, self-contained, fully verified atomic unit.
 
 ## OUTPUT FORMAT
 
@@ -244,7 +250,8 @@ Operational detail for ABSOLUTE RULE 8 (which governs *when* a git command needs
 
 - **One branch per change:** `<type>/<kebab-desc>`, Conventional-Commit type (`feat/ fix/ docs/ chore/ refactor/ …`).
 - **Rebase, never merge.** `git pull --rebase` (`pull.rebase=true`); keep local `main` fast-forwarded from `origin/main` before branching or rebasing.
-- **Atomic commits.** One commit = one logical change with everything it needs to stay self-consistent and bisectable. A **file rename is the `git mv` plus every reference update, together in one commit**.
+- **Pre-push verification mandatory.** Run test suite, linters, security scanners, typecheck, and build locally prior to pushing or requesting PR merge to ensure zero CI failures.
+- **Atomic commits.** One commit = one logical change with everything it needs to stay self-consistent and bisectable. No trial-and-error fixup commit noise. A **file rename is the `git mv` plus every reference update, together in one commit**.
 - **Conventional Commit subjects:** `refactor: rename OLD -> NEW`, `docs: …`, `feat(scope): …`.
 - **Renames use `git mv` only** — never delete + recreate (keeps history and the executable bit). Prove zero orphaned references with `git grep` before committing; full ritual in [`NAMING-CONVENTIONS.md`](NAMING-CONVENTIONS.md) "Renaming an existing file".
 - **Force-push:** `--force-with-lease` only, on your own feature branch only, only on an explicit force instruction — never shared history.

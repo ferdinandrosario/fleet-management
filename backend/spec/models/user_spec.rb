@@ -11,7 +11,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to define_enum_for(:role).with_values(customer: 0, driver: 1, owner_admin: 2) }
   it { is_expected.to allow_value("+919876543210").for(:phone) }
   it { is_expected.not_to allow_value("not-a-phone").for(:phone) }
-  it { is_expected.to validate_inclusion_of(:locale).in_array(%w[en ta ml te mr hi]) }
+  it { is_expected.to validate_inclusion_of(:locale).in_array(%w[en]) }
 
   it "defaults role to customer" do
     expect(User.new.role).to eq("customer")

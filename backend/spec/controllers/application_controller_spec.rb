@@ -79,16 +79,16 @@ RSpec.describe ApplicationController, type: :controller do
       expect(response.parsed_body["data"]["locale"]).to eq("en")
     end
 
-    it "selects a supported locale from Accept-Language" do
-      request.headers["Accept-Language"] = "hi"
+    it "selects en when Accept-Language matches en" do
+      request.headers["Accept-Language"] = "en"
       get :locale
-      expect(response.parsed_body["data"]["locale"]).to eq("hi")
+      expect(response.parsed_body["data"]["locale"]).to eq("en")
     end
 
-    it "drops the region subtag (hi-IN -> hi)" do
-      request.headers["Accept-Language"] = "hi-IN,en;q=0.9"
+    it "drops the region subtag (en-US -> en)" do
+      request.headers["Accept-Language"] = "en-US,fr;q=0.9"
       get :locale
-      expect(response.parsed_body["data"]["locale"]).to eq("hi")
+      expect(response.parsed_body["data"]["locale"]).to eq("en")
     end
 
     it "falls back to en for an unsupported language" do

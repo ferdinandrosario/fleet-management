@@ -130,15 +130,15 @@ RSpec.describe "Api::V1 auth", :tenant_schema, type: :request do
     it "updates the saved locale" do
       login
       token = json["data"]["access_token"]
-      patch "/api/v1/me", params: { user: { locale: "hi" } }, headers: auth_headers(token)
+      patch "/api/v1/me", params: { user: { locale: "en" } }, headers: auth_headers(token)
       expect(response).to have_http_status(:ok)
-      expect(json["data"]["locale"]).to eq("hi")
+      expect(json["data"]["locale"]).to eq("en")
     end
 
     it "rejects a profile update that fails validation" do
       login
       token = json["data"]["access_token"]
-      patch "/api/v1/me", params: { user: { locale: "xx" } }, headers: auth_headers(token)
+      patch "/api/v1/me", params: { user: { locale: "hi" } }, headers: auth_headers(token)
       expect(response).to have_http_status(:unprocessable_content)
     end
 

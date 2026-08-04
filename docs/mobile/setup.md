@@ -59,7 +59,7 @@ npm run test:coverage
 
 - **NativeWind v4** styling + design tokens (`tailwind.config.js`,
   `src/theme/tokens.ts`) — see [design.md](design.md).
-- **i18n** — 6 locales, device detection, runtime switching, language picker.
+- **i18n** — English locale (en), device detection, language picker.
 - **Typed API client** (`src/lib/api.ts`) — one fetch transport, standard
   envelope, auth + `X-Tenant` + `Accept-Language` headers, wired to the stores
   by `src/lib/bootstrap.ts`.

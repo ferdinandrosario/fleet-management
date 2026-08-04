@@ -13,7 +13,7 @@ tokens + locales (Session 10).
 | Navigation | **React Navigation (native-stack)** | `App.tsx` is the router shell + auth gate; native-stack is the boring, idiomatic fit. |
 | Server state | **TanStack Query** | Cache, pagination, lazy fetch — wraps the one shared fetch client. |
 | Client state | **Zustand** | One tiny store per concern (auth session, language). No Redux. |
-| i18n | **i18next + react-i18next + expo-localization** | 6 locales, device detection, runtime switching. |
+| i18n | **i18next + react-i18next + expo-localization** | English locale, device detection. |
 | Secure storage | **expo-secure-store** | Tokens in Keychain/Keystore, never AsyncStorage. |
 
 ## UX principles
@@ -76,36 +76,22 @@ light↔dark flip under `system` re-renders them with every className.
 | Otp (verify code → session) | `src/features/auth/` | done |
 | Home (authenticated placeholder + logout) | `src/features/home/` | done |
 
-`App.tsx` shows the loading state while the session rehydrates, then swaps the
+## Navigation & Auth shell
+
+The app boot sequence (`App.tsx`) initializes i18n and the API client,
+restores the secure session, and conditionally mounts either the
 **auth stack** (Welcome/Login/Register/Otp) for the **app stack** (Home) by auth
 status. Auth logic lives in `src/features/auth/` (`auth-client.ts` +
 `use-auth.ts` TanStack mutations); the session is held in the secure auth store.
 Role-based dashboards arrive from Session 5.
 
-## Internationalization (6 locales)
+## Internationalization (English)
 
-- **Locales:** English (`en`, base + fallback), Tamil (`ta`), Malayalam (`ml`),
-  Telugu (`te`), Marathi (`mr`), Hindi (`hi`). All LTR.
-- **Structure:** one file per locale in `src/locales/<lang>.ts`. `en.ts` defines
-  the `Translations` type; every other locale is typed `Translations`, so **the
-  compiler enforces key parity** (a missing key fails typecheck). Endonyms (each
-  language's own name) live once in `src/locales/languageNames.ts`.
+- **Locales:** English (`en`, base + fallback).
+- **Structure:** `src/locales/en.ts` defines the `Translations` type. Endonyms live in `src/locales/languageNames.ts`.
 - **No hard-coded strings.** Every user-facing string comes from `t("…")`.
-- **Detection + switching:** `deviceLanguage()` picks the device locale if
-  supported, else `en`. The Zustand `language-store` switches at runtime and
-  (Session 3) persists to the user's profile.
-- **Backend parity:** the backend localizes its own messages via Rails I18n with
-  the same six locales (`docs/security/threat-model.md`, `docs/architecture/overview.md`).
-- **Non-English copy is best-effort, PENDING professional review** (deferred paid
-  item) — English is authoritative.
-
-### Indic-script fonts
-
-Tamil/Malayalam/Telugu/Devanagari render with the **system fonts** on modern
-iOS and Android (which ship full Indic coverage incl. conjuncts). `expo-font`
-is installed so we can bundle Noto fonts if glyph gaps appear on older devices.
-**On-device glyph/conjunct/line-break verification is a manual check** (flagged
-— do before go-live, alongside the translation review).
+- **Detection + switching:** `deviceLanguage()` picks `en`. The Zustand `language-store` manages language state.
+- **Backend parity:** the backend localizes its own messages via Rails I18n with English locale (`docs/architecture/overview.md`).
 
 ### How to add a locale
 
@@ -116,5 +102,5 @@ is installed so we can bundle Noto fonts if glyph gaps appear on older devices.
 
 ## Web admin
 
-The web admin (Session 10) reuses these tokens and the same 6-locale i18next
+The web admin (Session 10) reuses these tokens and the English i18next
 setup with shadcn/ui + Tremor. See `web-admin/AGENTS.md`.

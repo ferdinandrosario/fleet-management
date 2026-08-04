@@ -15,8 +15,7 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 - **React 19** on **Vite** (latest stable). SPA, not Next — no server
   runtime to host or pay for; it builds to static assets.
 - **UI: Tailwind CSS + shadcn/ui + Tremor.** Tailwind CSS v3 (`tailwindcss@3.4.17` + PostCSS + Autoprefixer) processes all layout utilities, grid layouts, form input alignment, and color tokens; shadcn for primitives (owned source under `src/components/ui/`, including `Input.tsx` with inline validation), and Tremor for reporting dashboards.
-- **i18n: i18next + react-i18next**, the same 6 locales as mobile
-  (`en` base/fallback, `ta`, `ml`, `te`, `mr`, `hi`). **No hard-coded
+- **i18n: i18next + react-i18next**, English locale (`en` base/fallback). **No hard-coded
   user-facing strings** — every label comes from a translation file.
 - ESLint with the Vite/React TS config. **No Prettier** (matches mobile).
 

@@ -90,4 +90,4 @@ amazon:
 | **Test Suite** | 365 RSpec examples passing at 100% line coverage | 🟢 Verified |
 | **Security** | 0 Brakeman security warnings across controllers/models | 🟢 Verified |
 | **Linter** | 0 RuboCop offenses across 213 inspected files | 🟢 Verified |
-| **i18n** | Full 6-locale translation keys (en, ta, ml, te, mr, hi) | 🟢 Verified |
+| **i18n** | Full English translation keys (en) | 🟢 Verified |

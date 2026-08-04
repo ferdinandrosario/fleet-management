@@ -64,7 +64,6 @@ runbook) and [security](../security/threat-model.md) (threat model + controls).
 
 ## Internationalization
 
-Six locales (`en` base/fallback, `ta`, `ml`, `te`, `mr`, `hi`). Backend
+English locale (`en` base/fallback). Backend
 messages resolve through Rails I18n (`config/locales/*.yml`), locale chosen per
-request from `Accept-Language` (the authenticated user's saved preference takes
-over in Session 3). No hard-coded user-facing strings.
+request from `Accept-Language`. No hard-coded user-facing strings.

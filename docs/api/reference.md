@@ -6,7 +6,7 @@ Versioned under `/api/v1`. Every response uses the envelope
 **Headers**
 - `X-Tenant: <slug>` — required on every tenant endpoint; unknown ⇒ `404 unknown_tenant`.
 - `Authorization: Bearer <access_token>` — required on protected endpoints.
-- `Accept-Language: <locale>` — optional; localizes messages (en/ta/ml/te/mr/hi).
+- `Accept-Language: <locale>` — optional; localizes messages (en).
 
 ## Health
 

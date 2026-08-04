@@ -27,7 +27,7 @@ docs/      → source of truth
 
 This is a **multi-tenant commercial-vehicle booking SaaS for India**
 (tractors, JCBs, heavy vehicles, buses). Schema-per-tenant isolation
-(`ros-apartment`), Razorpay payments, 6-locale i18n (en/ta/ml/te/mr/hi).
+(`ros-apartment`), Razorpay payments, English i18n.
 Built session-by-session — see `docs/README.md` for the build plan.
 
 ## PROJECT LAYOUT (standard structure, every repo from the template)

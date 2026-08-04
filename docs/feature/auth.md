@@ -75,4 +75,4 @@ attempts), `refresh_tokens` (jti, family, expiry, revoked_at). All tenant-scoped
 
 New role-gated endpoint: subclass `AuthenticatedController`, add a Pundit policy
 (default-deny), `authorize` in every action, scope queries to `Current` /
-tenant. Add localized messages to all six `config/locales/*.yml`.
+tenant. Add localized messages to `config/locales/en.yml`.

@@ -3,8 +3,7 @@
 Multi-tenant commercial-vehicle booking platform for India (tractors, JCBs,
 heavy vehicles, buses). Owners list vehicles; customers browse by location +
 rating, book, and pay a token advance; drivers execute and track trips.
-Schema-per-tenant isolation, Razorpay payments, six-language UI (English +
-Tamil, Malayalam, Telugu, Marathi, Hindi).
+Schema-per-tenant isolation, Razorpay payments, English-language UI.
 
 Security-first, test-first (100% backend line coverage), docs-first. Built
 session-by-session — see the [documentation map](#documentation) and

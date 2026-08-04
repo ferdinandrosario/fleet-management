@@ -12,7 +12,7 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Security baseline** — secure_headers/CSP, strict CORS, rack-attack
   throttles, force_ssl, AR encryption, log filtering, Pundit default-deny
   scaffolding. → [security/threat-model.md](security/threat-model.md)
-- **Internationalization** — Rails I18n, six locales (en/ta/ml/te/mr/hi),
+- **Internationalization** — Rails I18n, English locale (en),
   Accept-Language resolution. (`docs/architecture/overview.md`)
 - **Public-schema models** — SuperAdmin, Owner (tenant), Subscription,
   TenantRegistry. → [feature/multi-tenancy.md](feature/multi-tenancy.md)
@@ -26,7 +26,7 @@ One bullet per shipped surface, by feature. Canonical detail lives in
 - **Theming** — four-state Light / Dark / AMOLED Black / System toggle
   (light stays the sunlight-first default; Black renders a true-`#000`
   canvas for OLED screens), persisted per device. → [mobile/design.md](mobile/design.md)
-- **i18n** — i18next, 6 locales (en/ta/ml/te/mr/hi), device detection, runtime
+- **i18n** — i18next, English locale (en), device detection, runtime
   language picker. → [mobile/design.md](mobile/design.md)
 - **API client** — one typed fetch transport, standard envelope, auth +
   `X-Tenant` + `Accept-Language` headers. (`docs/mobile/setup.md`)

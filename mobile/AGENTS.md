@@ -88,7 +88,7 @@ future maintainer never reverse-engineers an unexplained dependency.
 | `@tanstack/react-query` | server-state cache + pagination + lazy fetch (approved S0); wraps the shared fetch client | MSW intercepts the underlying `fetch` |
 | `zustand` | small global stores (auth status, language, theme) — no Redux | plain (store reset per test) |
 | `nativewind` + `tailwindcss@3.4.17` | Tailwind styling for RN; Tailwind v3 pinned (NativeWind v4 caveat) | n/a |
-| `i18next` + `react-i18next` + `expo-localization` | 6-locale i18n + device locale detection | init with test resources |
+| `i18next` + `react-i18next` + `expo-localization` | English i18n + device locale detection | init with test resources |
 | `expo-secure-store` | tokens in Keychain/Keystore, never AsyncStorage | jest mock module |
 | `@react-native-async-storage/async-storage` | non-sensitive UI prefs only (theme choice); secrets stay in secure-store | official in-memory mock |
 | `@react-navigation/native` + `native-stack` | navigation — `App.tsx` is the router shell + auth gate (folder layout) | jest-expo handles native deps |

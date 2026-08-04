@@ -32,43 +32,43 @@ export function DataTable<T extends { id: string | number }>({
   return (
     <div className="space-y-3">
       {searchKey && (
-        <div className="flex items-center justify-between gap-4">
-          <div className="max-w-sm w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
+          <div className="w-full sm:max-w-sm">
             <Input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
-              icon={<Search className="w-3.5 h-3.5 text-slate-400" />}
+              icon={<Search className="w-3.5 h-3.5 text-[var(--text-muted)]" />}
             />
           </div>
-          <span className="text-xs text-slate-400 font-medium">{filteredData.length} records</span>
+          <span className="text-xs text-[var(--text-muted)] font-medium self-end sm:self-auto shrink-0">{filteredData.length} records</span>
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800/80 shadow-inner">
-        <table className="w-full text-left text-xs text-slate-300 border-collapse">
-          <thead className="bg-slate-900/90 border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider">
+      <div className="overflow-x-auto rounded-xl border border-[var(--border-color)] shadow-sm">
+        <table className="w-full text-left text-xs text-[var(--text-main)] border-collapse min-w-full">
+          <thead className="bg-[var(--input-bg)] border-b border-[var(--border-color)] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
             <tr>
               {columns.map((col, idx) => (
-                <th key={idx} className={`p-3.5 ${col.className || ''}`}>
+                <th key={idx} className={`p-2.5 sm:p-3.5 whitespace-nowrap ${col.className || ''}`}>
                   {col.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 bg-slate-950/40">
+          <tbody className="divide-y divide-[var(--border-color)] bg-[var(--bg-secondary)]/50">
             {filteredData.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="p-8 text-center text-slate-500">
+                <td colSpan={columns.length} className="p-8 text-center text-[var(--text-muted)]">
                   No matching items found
                 </td>
               </tr>
             ) : (
               filteredData.map((row) => (
-                <tr key={row.id} className="hover:bg-slate-900/50 transition-colors">
+                <tr key={row.id} className="hover:bg-[var(--input-bg)]/60 transition-colors">
                   {columns.map((col, idx) => (
-                    <td key={idx} className={`p-3.5 ${col.className || ''}`}>
+                    <td key={idx} className={`p-2.5 sm:p-3.5 ${col.className || ''}`}>
                       {typeof col.accessor === 'function'
                         ? col.accessor(row)
                         : (row[col.accessor] as React.ReactNode)}

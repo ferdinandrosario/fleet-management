@@ -69,7 +69,11 @@ const defaultOwnerMetrics: OwnerMetrics = {
   average_vehicle_rating: 4.8,
 };
 
-export const OwnerDashboard: React.FC = () => {
+interface OwnerDashboardProps {
+  activeTab?: 'overview' | 'fleet' | 'telemetry';
+}
+
+export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'overview' }) => {
   const [metrics, setMetrics] = useState<OwnerMetrics | null>(null);
   const [vehicles, setVehicles] = useState<VehicleData[]>(mockFleetVehicles);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
@@ -176,29 +180,225 @@ export const OwnerDashboard: React.FC = () => {
     ? `₹${(metrics.total_revenue_cents / 100).toLocaleString('en-IN')}`
     : '₹0';
 
+  // --- Fleet Equipment Dedicated View ---
+  if (activeTab === 'fleet') {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-100">Fleet Equipment & Machinery Inventory</h1>
+              <Badge variant="info">{vehicles.length} Machinery Registered</Badge>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+              Commercial fleet inventory across tractors, JCB excavators, cranes, harvesters & buses
+            </p>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <Button
+              onClick={() => setIsAddModalOpen(true)}
+              variant="primary"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white"
+            >
+              <Plus className="w-4 h-4" />
+              <span>{t('add_vehicle')}</span>
+            </Button>
+            <Button onClick={handleExportCsv} variant="outline" className="flex-1 sm:flex-none flex items-center justify-center gap-1.5">
+              <Download className="w-4 h-4" />
+              <span>{t('export_csv')}</span>
+            </Button>
+          </div>
+        </div>
+
+        {/* Equipment Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <StatBox
+            title="Total Registered Fleet"
+            value={metrics?.total_vehicles_count || vehicles.length}
+            subtitle="Commercial heavy machinery"
+          />
+          <StatBox
+            title="Available & Ready"
+            value={metrics?.active_vehicles_count || vehicles.filter((v) => v.status === 'active').length}
+            subtitle="Ready for instant booking"
+          />
+          <StatBox
+            title="On Active Job"
+            value={vehicles.filter((v) => v.status === 'on_trip').length}
+            subtitle="Live driver assignment"
+          />
+          <StatBox
+            title="Under Maintenance"
+            value={vehicles.filter((v) => v.status === 'in_service').length}
+            subtitle="In service bay"
+          />
+        </div>
+
+        {/* Fleet Equipment Table */}
+        <Card className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-semibold text-slate-100">Active Machinery Directory</h3>
+              <p className="text-xs text-slate-400">Search and manage operational rates and driver assignments</p>
+            </div>
+            <Badge variant="neutral" className="self-start sm:self-auto">Schema Isolated</Badge>
+          </div>
+          <DataTable
+            columns={vehicleColumns}
+            data={vehicles}
+            searchPlaceholder="Search vehicle name, category, or driver..."
+            searchKey="name"
+          />
+        </Card>
+
+        {/* Add Vehicle Modal */}
+        <AddVehicleModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onVehicleCreated={handleVehicleCreated}
+        />
+      </div>
+    );
+  }
+
+  // --- Telemetry & System Dedicated View ---
+  if (activeTab === 'telemetry') {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-100">Real-Time Telemetry & System Operations</h1>
+              <Badge variant="success">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-1 inline-block" />
+                Live GPS Stream
+              </Badge>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+              Vehicle location telemetry, engine diagnostics, PostGIS spatial tracking & tenant isolation status
+            </p>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-xs text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800 self-start sm:self-auto">
+            <span>Schema: tenant_kaveri_agri</span>
+          </div>
+        </div>
+
+        {/* Telemetry KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <StatBox
+            title="Telemetry Pings Today"
+            value="1,420 pings"
+            subtitle="POST /api/v1/bookings/:id/gps_pings"
+          />
+          <StatBox
+            title="Active Driver Tracks"
+            value={`${vehicles.filter((v) => v.status === 'on_trip').length} Active Trip`}
+            subtitle="GPS location stream live"
+          />
+          <StatBox
+            title="System Uptime"
+            value="99.99%"
+            subtitle="PostgreSQL 17 + PostGIS 3.5"
+          />
+          <StatBox
+            title="Queue Processor"
+            value="Solid Queue"
+            subtitle="0 pending telemetry jobs"
+          />
+        </div>
+
+        {/* Live GPS Telemetry Feed */}
+        <Card className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-semibold text-slate-100">Live Vehicle Telemetry Feed</h3>
+              <p className="text-xs text-slate-400">Real-time GPS coordinates, operating speed, and engine thermal telemetry</p>
+            </div>
+            <Badge variant="info" className="self-start sm:self-auto">4G LTE Cellular GPS</Badge>
+          </div>
+
+          <div className="overflow-x-auto no-scrollbar border border-slate-800 rounded-xl">
+            <table className="w-full text-xs text-left text-slate-300 min-w-[700px]">
+              <thead className="text-[11px] uppercase bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                <tr>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Vehicle</th>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Registration</th>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Current GPS Coordinates</th>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Speed</th>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Engine Thermal</th>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Telemetry Status</th>
+                  <th className="px-4 py-3 font-semibold whitespace-nowrap">Last Ping</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60">
+                <tr className="hover:bg-slate-900/40">
+                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">Mahindra 575 DI Tractor</td>
+                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-AX-4821</td>
+                  <td className="px-4 py-3 font-mono text-emerald-400 whitespace-nowrap">11.6643° N, 78.1460° E (Salem)</td>
+                  <td className="px-4 py-3 font-semibold text-slate-200 whitespace-nowrap">24 km/h</td>
+                  <td className="px-4 py-3 text-slate-300 whitespace-nowrap">82°C (Normal)</td>
+                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="info">Transmitting</Badge></td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">2s ago</td>
+                </tr>
+                <tr className="hover:bg-slate-900/40">
+                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">JCB 3DX Super Excavator</td>
+                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-BX-9012</td>
+                  <td className="px-4 py-3 font-mono text-slate-400 whitespace-nowrap">11.0168° N, 76.9558° E (Coimbatore)</td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">0 km/h (Idle)</td>
+                  <td className="px-4 py-3 text-slate-300 whitespace-nowrap">65°C (Idle)</td>
+                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="success">Standby</Badge></td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">45s ago</td>
+                </tr>
+                <tr className="hover:bg-slate-900/40">
+                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">Escorts Hydra Crane 15T</td>
+                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-CY-3344</td>
+                  <td className="px-4 py-3 font-mono text-slate-400 whitespace-nowrap">10.7905° N, 78.7047° E (Trichy)</td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">0 km/h</td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">Off</td>
+                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="warning">In Service</Badge></td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">5m ago</td>
+                </tr>
+                <tr className="hover:bg-slate-900/40">
+                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">Ashok Leyland Viking Bus 40s</td>
+                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-DZ-7788</td>
+                  <td className="px-4 py-3 font-mono text-slate-400 whitespace-nowrap">9.9252° N, 78.1198° E (Madurai)</td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">0 km/h</td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">Off</td>
+                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="success">Parked</Badge></td>
+                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">12m ago</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // --- Overview Default View ---
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-slate-100">{t('owner_dashboard')}</h1>
+          <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-100">{t('owner_dashboard')}</h1>
             <Badge variant="success">Live Operations</Badge>
           </div>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Real-time commercial vehicle fleet utilization, driver assignments, and revenue reports
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <Button
             onClick={() => setIsAddModalOpen(true)}
             variant="primary"
-            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white"
           >
             <Plus className="w-4 h-4" />
             <span>{t('add_vehicle')}</span>
           </Button>
-          <Button onClick={handleExportCsv} variant="outline" className="flex items-center gap-1.5">
+          <Button onClick={handleExportCsv} variant="outline" className="flex-1 sm:flex-none flex items-center justify-center gap-1.5">
             <Download className="w-4 h-4" />
             <span>{t('export_csv')}</span>
           </Button>
@@ -216,7 +416,7 @@ export const OwnerDashboard: React.FC = () => {
       )}
 
       {/* KPI Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatBox
           title={t('total_revenue')}
           value={formattedRevenue}
@@ -245,7 +445,7 @@ export const OwnerDashboard: React.FC = () => {
       </div>
 
       {/* Charts & Analytics */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <Card className="lg:col-span-2">
           <FleetRevenueChart />
         </Card>
@@ -283,14 +483,14 @@ export const OwnerDashboard: React.FC = () => {
 
       {/* Fleet Inventory Table */}
       <Card className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-semibold text-slate-100">Fleet Equipment Inventory</h3>
             <p className="text-xs text-slate-400">
               Live status across tractors, JCB excavators, cranes, harvesters, and commercial buses
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Button
               onClick={() => setIsAddModalOpen(true)}
               variant="primary"

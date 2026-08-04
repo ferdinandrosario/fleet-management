@@ -58,7 +58,7 @@ const translations: Record<Locale, Record<string, string>> = {
     razorpay_integrated: "Razorpay Billing",
     main_portal: "Main Portal",
     demo_portal: "Super Admin /demo Portal",
-    platform_footer_desc: "Commercial vehicle booking SaaS for India (Tractors, JCBs, Earthmovers, Buses).",
+    platform_footer_desc: "Commercial vehicle booking platform for India (Tractors, JCBs, Earthmovers, Buses).",
     add_vehicle: "Add Vehicle",
     add_new_vehicle: "Add New Vehicle",
     add_vehicle_subtitle: "Register a new tractor, JCB, crane, or commercial vehicle to your fleet",

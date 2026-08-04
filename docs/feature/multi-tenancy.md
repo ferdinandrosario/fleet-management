@@ -114,6 +114,6 @@ bin/rails db:migrate                  # tenants migrate automatically with db:mi
 | Model | Key columns | Notes |
 |---|---|---|
 | `SuperAdmin` | uuid, email, password_digest | `has_secure_password`; no tenant data access |
-| `Owner` | uuid, name, slug, status | tenant identity; status pending→active→suspended→cancelled |
+| `Owner` | uuid, name, company_name, address, slug, status | tenant identity; `company_name` is tenant name (visible exclusively to super admin); `name` is fleet owner name; `address` is company address |
 | `Subscription` | uuid, owner_id, status, razorpay_subscription_id | one per owner; Razorpay is source of truth |
 | `TenantRegistry` | owner_id, slug, schema_name | lean slug→schema map for request resolution |

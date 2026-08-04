@@ -5,6 +5,8 @@ RSpec.describe Owner, type: :model do
 
   it { is_expected.to be_valid }
   it { is_expected.to validate_presence_of(:name) }
+  it { is_expected.to validate_presence_of(:company_name) }
+  it { is_expected.to validate_presence_of(:address) }
   it { is_expected.to validate_presence_of(:slug) }
   it { is_expected.to validate_uniqueness_of(:slug).case_insensitive }
   it { is_expected.to have_one(:subscription).dependent(:destroy) }

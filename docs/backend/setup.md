@@ -45,6 +45,16 @@ bin/rails server
 # => Listening on http://localhost:3000
 ```
 
+### Production Docker Container Deployment
+
+To launch the full production stack (`api`, `db`, `worker`, `web-admin`):
+
+```bash
+cp ../.env.production.example ../.env
+# Fill in real production secrets in .env
+docker compose -f ../docker-compose.prod.yml up -d --build
+```
+
 Verify the versioned health endpoint and the framework liveness probe:
 
 ```bash

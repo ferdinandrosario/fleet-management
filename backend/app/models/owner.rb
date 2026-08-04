@@ -13,6 +13,8 @@ class Owner < ApplicationRecord
   before_validation :normalize_slug
 
   validates :name, presence: true
+  validates :company_name, presence: true
+  validates :address, presence: true
   validates :slug, presence: true, uniqueness: true,
             format: {
               with: /\A[a-z][a-z0-9_]*\z/,

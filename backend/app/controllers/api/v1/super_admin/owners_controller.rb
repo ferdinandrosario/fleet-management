@@ -11,7 +11,7 @@ module Api
           pagy, owners = pagy(scope)
           render_success(
             data: {
-              owners: owners.map { |o| OwnerSerializer.call(o) },
+              owners: owners.map { |o| OwnerSerializer.call(o, super_admin: true) },
               pagination: {
                 page: pagy.page,
                 pages: pagy.pages,
@@ -25,7 +25,7 @@ module Api
         def show
           owner = Owner.find_by!(uuid: params[:id])
           authorize owner
-          render_success(data: { owner: OwnerSerializer.call(owner) })
+          render_success(data: { owner: OwnerSerializer.call(owner, super_admin: true) })
         rescue ActiveRecord::RecordNotFound
           skip_authorization
           render_error(code: "not_found", message: I18n.t("errors.not_found"), status: :not_found)
@@ -45,6 +45,8 @@ module Api
 
           result = TenantProvisioningService.call(
             name: owner_params[:name],
+            company_name: owner_params[:company_name],
+            address: owner_params[:address],
             slug: owner_params[:slug],
             plan: plan,
             owner_name: owner_params[:owner_name],
@@ -53,7 +55,7 @@ module Api
           )
 
           if result.success?
-            render_success(data: { owner: OwnerSerializer.call(result.owner) }, status: :created)
+            render_success(data: { owner: OwnerSerializer.call(result.owner, super_admin: true) }, status: :created)
           else
             render_error(
               code: "validation_failed",
@@ -70,7 +72,7 @@ module Api
 
           if Owner.statuses.key?(status_params[:status])
             owner.update!(status: status_params[:status])
-            render_success(data: { owner: OwnerSerializer.call(owner) })
+            render_success(data: { owner: OwnerSerializer.call(owner, super_admin: true) })
           else
             render_error(code: "invalid_status", message: I18n.t("errors.validation_failed"), status: :unprocessable_content)
           end
@@ -82,7 +84,7 @@ module Api
         private
 
         def owner_params
-          params.permit(:name, :slug, :plan_id, :plan_tier, :owner_name, :owner_phone, :password)
+          params.permit(:name, :company_name, :address, :slug, :plan_id, :plan_tier, :owner_name, :owner_phone, :password)
         end
 
         def status_params

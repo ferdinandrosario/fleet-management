@@ -9,7 +9,9 @@ RSpec.describe TenantProvisioningService do
         slug = "test_tenant_#{SecureRandom.hex(4)}"
 
         result = described_class.call(
-          name: "Test Transit",
+          name: "Test Owner",
+          company_name: "Test Transit Pvt Ltd",
+          address: "100 Outer Ring Road, Bengaluru",
           slug: slug,
           plan: plan,
           owner_name: "Owner Admin",
@@ -19,6 +21,9 @@ RSpec.describe TenantProvisioningService do
 
         expect(result).to be_success
         expect(result.owner).to be_persisted
+        expect(result.owner.name).to eq("Test Owner")
+        expect(result.owner.company_name).to eq("Test Transit Pvt Ltd")
+        expect(result.owner.address).to eq("100 Outer Ring Road, Bengaluru")
         expect(result.owner.slug).to eq(slug)
         expect(result.tenant_registry.schema_name).to eq(slug)
         expect(result.subscription.plan).to eq(plan)

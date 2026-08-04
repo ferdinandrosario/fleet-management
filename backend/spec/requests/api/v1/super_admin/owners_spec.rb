@@ -49,7 +49,9 @@ RSpec.describe "Api::V1::SuperAdmin::Owners", type: :request do
       slug = "new_owner_#{SecureRandom.hex(4)}"
 
       post "/api/v1/super_admin/owners", params: {
-        name: "New Owner Logistics",
+        name: "John Fleet Owner",
+        company_name: "New Owner Logistics Pvt Ltd",
+        address: "45 Industrial Layout, Hosur Road, Bengaluru",
         slug: slug,
         plan_id: plan.uuid,
         owner_name: "John Owner",
@@ -60,6 +62,9 @@ RSpec.describe "Api::V1::SuperAdmin::Owners", type: :request do
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
       expect(json["data"]["owner"]["slug"]).to eq(slug)
+      expect(json["data"]["owner"]["name"]).to eq("John Fleet Owner")
+      expect(json["data"]["owner"]["company_name"]).to eq("New Owner Logistics Pvt Ltd")
+      expect(json["data"]["owner"]["address"]).to eq("45 Industrial Layout, Hosur Road, Bengaluru")
 
       # Cleanup schema
       Apartment::Tenant.drop(slug) rescue nil

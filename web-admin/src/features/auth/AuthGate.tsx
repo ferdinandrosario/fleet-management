@@ -25,7 +25,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
   const [password, setPassword] = useState<string>(
     isDemoRoute ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : ''
   );
-  const [tenantSlug, setTenantSlug] = useState<string>('demo_tenant');
+  const tenantSlug = 'demo_tenant';
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
     setSuccessMessage(null);
 
     if (activeRole === 'owner') {
-      if (!phone.trim() || !password.trim() || !tenantSlug.trim()) {
+      if (!phone.trim() || !password.trim()) {
         setErrorMessage(t('login_error_required'));
         return;
       }
@@ -53,7 +53,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
 
     try {
       if (activeRole === 'owner') {
-        const res = await loginOwner({ phone, password, tenantSlug });
+        const res = await loginOwner({ phone, password, tenantSlug: tenantSlug || 'demo_tenant' });
         if (res.success) {
           setSuccessMessage(t('login_success'));
         } else {
@@ -75,9 +75,9 @@ export const AuthGate: React.FC<AuthGateProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] flex flex-col justify-center items-center px-4 py-12 transition-colors duration-250">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] flex flex-col justify-center items-center px-4 py-8 sm:py-12 transition-colors duration-250">
       {/* Top bar controls */}
-      <div className="absolute top-4 right-6 flex items-center gap-3">
+      <div className="absolute top-3 right-4 sm:top-4 sm:right-6 flex items-center gap-3">
         <ThemeToggle />
       </div>
 
@@ -120,24 +120,14 @@ export const AuthGate: React.FC<AuthGateProps> = ({
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {activeRole === 'owner' ? (
-              <>
-                <Input
-                  label={t('phone_number')}
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder={t('phone_placeholder')}
-                  required
-                />
-                <Input
-                  label={t('tenant_slug')}
-                  type="text"
-                  value={tenantSlug}
-                  onChange={(e) => setTenantSlug(e.target.value)}
-                  placeholder={t('tenant_slug_placeholder')}
-                  required
-                />
-              </>
+              <Input
+                label={t('phone_number')}
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder={t('phone_placeholder')}
+                required
+              />
             ) : (
               <Input
                 label={t('email_address')}

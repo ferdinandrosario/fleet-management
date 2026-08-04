@@ -65,7 +65,7 @@ export const TechnicalArchitecture: React.FC = () => {
             </div>
           </div>
           <p className="text-sm text-[var(--text-muted)] mt-2">
-            Confidential infrastructure telemetry, schema isolation details, and framework version manifest for Fleet Management SaaS.
+            Confidential infrastructure telemetry, schema isolation details, and framework version manifest for Fleet Management.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export const TechnicalArchitecture: React.FC = () => {
       </div>
 
       {/* Core Tech Stack Summary Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Backend API */}
         <Card className="space-y-3 relative overflow-hidden border-blue-500/20 bg-gradient-to-br from-blue-950/20 to-transparent">
           <div className="flex items-center justify-between">
@@ -206,7 +206,7 @@ export const TechnicalArchitecture: React.FC = () => {
 
       {/* System Topology Diagram */}
       <Card className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-lg font-bold text-slate-100 flex items-center gap-2">
               <Layers className="w-5 h-5 text-blue-400" />
@@ -216,11 +216,11 @@ export const TechnicalArchitecture: React.FC = () => {
               End-to-end request lifecycle from web/mobile clients to schema-isolated databases and async workers
             </p>
           </div>
-          <Badge variant="info">Production Topology</Badge>
+          <Badge variant="info" className="self-start sm:self-auto">Production Topology</Badge>
         </div>
 
         {/* Visual Flow diagram cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-2">
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center space-y-2 relative">
             <div className="w-8 h-8 mx-auto rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
               <Globe className="w-4 h-4" />

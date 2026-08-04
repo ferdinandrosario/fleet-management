@@ -21,17 +21,17 @@ export const FleetRevenueChart: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
         <div>
-          <h4 className="text-sm font-semibold text-slate-200">Weekly Revenue & Job Volume</h4>
-          <p className="text-xs text-slate-400">Total gross earnings across tractors, JCBs, and buses</p>
+          <h4 className="text-sm font-semibold text-[var(--text-main)]">Weekly Revenue & Job Volume</h4>
+          <p className="text-xs text-[var(--text-muted)]">Total gross earnings across tractors, JCBs, and buses</p>
         </div>
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-1.5 text-slate-300">
+        <div className="flex items-center gap-3 sm:gap-4 text-xs self-start sm:self-auto">
+          <div className="flex items-center gap-1.5 text-[var(--text-main)]">
             <span className="w-3 h-3 rounded bg-blue-500 inline-block"></span>
             <span>Revenue (₹)</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-300">
+          <div className="flex items-center gap-1.5 text-[var(--text-main)]">
             <span className="w-3 h-3 rounded bg-emerald-500 inline-block"></span>
             <span>Completed Jobs</span>
           </div>
@@ -39,25 +39,25 @@ export const FleetRevenueChart: React.FC = () => {
       </div>
 
       {/* SVG Bar Chart Visualization */}
-      <div className="h-44 w-full flex items-end justify-between gap-3 pt-6 pb-2 border-b border-slate-800">
+      <div className="h-44 w-full flex items-end justify-between gap-1.5 sm:gap-3 pt-6 pb-2 border-b border-[var(--border-color)]">
         {mockData.map((pt, idx) => {
           const heightPct = Math.round((pt.revenue / maxRevenue) * 100);
           return (
             <div key={idx} className="flex-1 flex flex-col items-center gap-2 group relative">
               {/* Tooltip on hover */}
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-10 bg-slate-900 text-slate-100 text-[11px] py-1 px-2.5 rounded-lg border border-slate-700 pointer-events-none z-20 whitespace-nowrap shadow-xl">
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-10 bg-[var(--bg-secondary)] text-[var(--text-main)] text-[11px] py-1 px-2.5 rounded-lg border border-[var(--border-color)] pointer-events-none z-20 whitespace-nowrap shadow-xl">
                 ₹{pt.revenue.toLocaleString('en-IN')} · {pt.jobs} jobs
               </div>
 
               {/* Bar container */}
-              <div className="w-full bg-slate-800/50 rounded-t-lg h-32 flex items-end p-1 overflow-hidden">
+              <div className="w-full bg-[var(--input-bg)] rounded-t-lg h-32 flex items-end p-1 overflow-hidden">
                 <div
                   className="w-full bg-gradient-to-t from-blue-600 to-indigo-500 rounded-t transition-all duration-500 group-hover:from-blue-500 group-hover:to-indigo-400"
                   style={{ height: `${heightPct}%` }}
                 ></div>
               </div>
 
-              <span className="text-xs font-medium text-slate-400 group-hover:text-slate-200">
+              <span className="text-xs font-medium text-[var(--text-muted)] group-hover:text-[var(--text-main)]">
                 {pt.day}
               </span>
             </div>

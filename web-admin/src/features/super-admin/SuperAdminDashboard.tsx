@@ -17,6 +17,8 @@ interface SuperAdminMetrics {
 interface TenantItem {
   id: string;
   name: string;
+  company_name: string; // Tenant Name (super admin only)
+  address: string;
   slug: string;
   schema: string;
   plan: string;
@@ -28,7 +30,9 @@ interface TenantItem {
 const mockTenants: TenantItem[] = [
   {
     id: 'ten_1',
-    name: 'Kaveri Agri & Transport Fleet',
+    name: 'Ramesh Kumar',
+    company_name: 'Kaveri Agri & Transport Fleet',
+    address: '42 Railway Station Road, Salem, Tamil Nadu',
     slug: 'kaveri_agri',
     schema: 'tenant_kaveri_agri',
     plan: 'Enterprise (Annual)',
@@ -38,7 +42,9 @@ const mockTenants: TenantItem[] = [
   },
   {
     id: 'ten_2',
-    name: 'Kongu Heavy Earthmovers',
+    name: 'Senthil Nathan',
+    company_name: 'Kongu Heavy Earthmovers',
+    address: '108 Tricy Main Road, Coimbatore, Tamil Nadu',
     slug: 'kongu_jcb',
     schema: 'tenant_kongu_jcb',
     plan: 'Pro Fleet (Monthly)',
@@ -48,7 +54,9 @@ const mockTenants: TenantItem[] = [
   },
   {
     id: 'ten_3',
-    name: 'Vazhai City Transit Buses',
+    name: 'Muthu Vadivel',
+    company_name: 'Vazhai City Transit Buses',
+    address: '15 Bus Stand Highway, Madurai, Tamil Nadu',
     slug: 'vazhai_buses',
     schema: 'tenant_vazhai_buses',
     plan: 'Starter Plan',
@@ -58,7 +66,9 @@ const mockTenants: TenantItem[] = [
   },
   {
     id: 'ten_4',
-    name: 'Deccan Commercial Carriers',
+    name: 'Vikram Reddy',
+    company_name: 'Deccan Commercial Carriers',
+    address: '88 Tech Park Zone, Hyderabad, Telangana',
     slug: 'deccan_fleet',
     schema: 'tenant_deccan_fleet',
     plan: 'Pro Fleet (Monthly)',
@@ -99,12 +109,21 @@ export const SuperAdminDashboard: React.FC = () => {
 
   const tenantColumns: TableColumn<TenantItem>[] = [
     {
-      header: 'Tenant Name',
+      header: 'Tenant Company Name',
       accessor: (row) => (
         <div>
-          <p className="font-semibold text-slate-100">{row.name}</p>
+          <p className="font-semibold text-slate-100">{row.company_name}</p>
+          <p className="text-xs text-slate-300">Owner: {row.name}</p>
           <p className="text-[11px] text-slate-400 font-mono">slug: {row.slug}</p>
         </div>
+      ),
+    },
+    {
+      header: 'Company Address',
+      accessor: (row) => (
+        <span className="text-xs text-slate-300">
+          {row.address}
+        </span>
       ),
     },
     {

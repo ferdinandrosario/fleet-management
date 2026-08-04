@@ -11,7 +11,7 @@ module TenantHelpers
 
   def provision_tenant(slug)
     Apartment::Tenant.create(slug) unless schema_exists?(slug)
-    owner = Owner.create!(name: slug.tr("_", " ").capitalize, slug: slug)
+    owner = Owner.create!(name: slug.tr("_", " ").capitalize, company_name: "#{slug.tr('_', ' ').capitalize} Corp", address: "123 Main Street", slug: slug)
     TenantRegistry.create!(owner: owner, slug: slug, schema_name: slug)
     slug
   end

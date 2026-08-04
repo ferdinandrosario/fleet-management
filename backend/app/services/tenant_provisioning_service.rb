@@ -10,8 +10,10 @@ class TenantProvisioningService
   end
 
   class << self
-    def call(name:, slug:, plan:, owner_name:, owner_phone:, password:, status: :active)
-      owner = Owner.new(name: name, slug: slug, status: status)
+    def call(name:, company_name: nil, address: nil, slug:, plan:, owner_name:, owner_phone:, password:, status: :active)
+      company_name = company_name.presence || name
+      address = address.presence || "Default Address"
+      owner = Owner.new(name: name, company_name: company_name, address: address, slug: slug, status: status)
       unless owner.valid?
         return Result.new(success: false, errors: owner.errors.to_hash)
       end

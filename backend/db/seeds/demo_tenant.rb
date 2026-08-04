@@ -9,6 +9,8 @@ module Seeds
       unless owner
         result = TenantProvisioningService.call(
           name: "Demo Fleet Services",
+          company_name: "Demo Fleet Logistics Pvt Ltd",
+          address: "100 Anna Salai, Guindy, Chennai",
           slug: "demo_tenant",
           plan: pro_plan,
           owner_name: "Demo Owner",

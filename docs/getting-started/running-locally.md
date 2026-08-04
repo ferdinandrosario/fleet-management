@@ -44,7 +44,7 @@ not your Mac — so the right value depends on where the app runs:
 | Android emulator | `http://10.0.2.2:3000` | — (`10.0.2.2` is the emulator's alias for your Mac) |
 | Physical phone (same Wi-Fi) | `http://<your-Mac-LAN-IP>:3000` | start Rails with `bin/rails server -b 0.0.0.0` |
 | Expo web (browser) | `http://localhost:3000` | the backend's CORS allowlist already includes `:8081` |
-| Web admin (browser) | `http://localhost:3000` (`VITE_API_BASE_URL`) | the backend's CORS allowlist already includes `:5173` |
+| Web admin (browser) | `http://localhost:5173` (Vite dev server) | proxies `/api` to Rails on `:3000`; backend CORS allowlist includes `:5173` |
 
 Put the value in `mobile/.env` and restart Metro so it's picked up:
 

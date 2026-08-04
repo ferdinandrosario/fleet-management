@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { LanguagePicker } from "../../components/language-picker";
 import { ThemeToggle } from "../../components/theme-toggle";
 import { Button } from "../../components/ui/button";
 import type { AuthStackParamList } from "../../navigation/types";
@@ -44,7 +43,6 @@ export function WelcomeScreen({ navigation }: Props) {
               </View>
             ))}
           </View>
-          <LanguagePicker />
           <View className="gap-3">
             <Button title={t("auth.signIn")} onPress={() => navigation.navigate("Login")} />
             <Button

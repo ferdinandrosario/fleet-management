@@ -14,10 +14,9 @@ describe("WelcomeScreen", () => {
       </Providers>,
     );
 
-  it("shows the app name, language picker, and auth actions", async () => {
+  it("shows the app name and auth actions", async () => {
     const { findByText } = await renderScreen();
     expect(await findByText("Fleet Management")).toBeTruthy();
-    expect(await findByText("Choose your language")).toBeTruthy();
   });
 
   it("shows the tagline and the three persona value props", async () => {

@@ -16,7 +16,7 @@ describe("bootstrap", () => {
   it("wires the API client to the auth and language stores", async () => {
     bootstrap();
     useAuthStore.setState({ accessToken: "tok", tenant: "acme" });
-    useLanguageStore.setState({ language: "hi" });
+    useLanguageStore.setState({ language: "en" });
 
     await request("/api/v1/x");
 
@@ -24,6 +24,6 @@ describe("bootstrap", () => {
     const headers = fetchSpy.mock.calls[0][1]?.headers as Record<string, string>;
     expect(headers.Authorization).toBe("Bearer tok");
     expect(headers["X-Tenant"]).toBe("acme");
-    expect(headers["Accept-Language"]).toBe("hi");
+    expect(headers["Accept-Language"]).toBe("en");
   });
 });

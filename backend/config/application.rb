@@ -45,12 +45,11 @@ module Backend
     # the Ruby schema.rb — dump structure.sql instead.
     config.active_record.schema_format = :sql
 
-    # --- Internationalization: six locales, English is base + fallback ------
+    # --- Internationalization: English locale --------------------------------
     # No user-facing string is hard-coded; backend messages (validation,
-    # notifications, receipts) resolve through these. Indic scripts: ta, ml,
-    # te (Dravidian) + mr, hi (Devanagari). Per-locale files may live in
-    # config/locales/<locale>/*.yml, hence the recursive glob.
-    config.i18n.available_locales = %i[en ta ml te mr hi]
+    # notifications, receipts) resolve through these.
+    # Per-locale files live in config/locales/<locale>/*.yml.
+    config.i18n.available_locales = %i[en]
     config.i18n.default_locale = :en
     config.i18n.fallbacks = [ :en ]
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]

@@ -5,20 +5,16 @@ import { SuperAdminDashboard } from './features/super-admin/SuperAdminDashboard'
 import { TechnicalArchitecture } from './features/super-admin/TechnicalArchitecture';
 import { OwnerDashboard } from './features/owner-admin/OwnerDashboard';
 import { ThemeProvider } from './lib/theme';
-import { ThemeToggle } from './components/ui/ThemeToggle';
-import { setLocale, Locale, t } from './lib/i18n';
+import { ProfileMenu } from './components/ui/ProfileMenu';
+import { t } from './lib/i18n';
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { AuthGate } from './features/auth/AuthGate';
 import { Badge } from './components/ui/Badge';
-import { Button } from './components/ui/Button';
 import {
-  LogOut,
   Zap,
   LayoutDashboard,
   Truck,
   Activity,
-  Globe,
-  Building2,
   ShieldCheck,
   CheckCircle2,
   Layers,
@@ -27,8 +23,7 @@ import {
 } from 'lucide-react';
 
 const DashboardContent: React.FC = () => {
-  const { isAuthenticated, user, role, tenantSlug, setTenant, logout } = useAuth();
-  const [currentLocale, setCurrentLocaleState] = useState<Locale>('en');
+  const { isAuthenticated, role } = useAuth();
   const [currentPath, setCurrentPath] = useState<string>(window.location.pathname);
   const [activeTab, setActiveTab] = useState<'overview' | 'fleet' | 'telemetry'>('overview');
 
@@ -43,16 +38,14 @@ const DashboardContent: React.FC = () => {
     setCurrentPath(path);
   };
 
-  const handleLocaleChange = (loc: Locale) => {
-    setCurrentLocaleState(loc);
-    setLocale(loc);
-  };
+
 
   const isDemoRoute = currentPath === '/demo';
   const isTechnicalRoute = currentPath === '/technical' || currentPath === '/tecnical';
+  const isSuperAdminRoute = currentPath.toLowerCase().replace(/\/$/, '') === '/superadmin';
 
   if (!isAuthenticated) {
-    return <AuthGate isDemoRoute={isDemoRoute} />;
+    return <AuthGate isDemoRoute={isDemoRoute} isSuperAdminRoute={isSuperAdminRoute} />;
   }
 
   return (
@@ -91,13 +84,6 @@ const DashboardContent: React.FC = () => {
                 </div>
                 <p className="text-[11px] text-[var(--text-muted)] font-medium">Commercial Fleet SaaS · India</p>
               </div>
-            </div>
-
-            {/* Quick Mobile Logout */}
-            <div className="md:hidden">
-              <Button onClick={logout} variant="secondary" className="px-2.5 py-1 text-xs">
-                <LogOut className="w-3.5 h-3.5" />
-              </Button>
             </div>
           </div>
 
@@ -166,57 +152,9 @@ const DashboardContent: React.FC = () => {
             )}
           </nav>
 
-          {/* User Controls & Settings */}
-          <div className="flex items-center flex-wrap justify-end gap-2.5 w-full md:w-auto">
-            {/* Tenant Input for Owner Role */}
-            {role === 'owner' && (
-              <div className="flex items-center gap-1.5 text-xs bg-[var(--input-bg)] border border-[var(--border-color)] px-2.5 py-1 rounded-xl">
-                <Building2 className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                <span className="text-[var(--text-muted)] font-medium">{t('tenant_label')}</span>
-                <input
-                  type="text"
-                  value={tenantSlug}
-                  onChange={(e) => setTenant(e.target.value)}
-                  className="bg-transparent text-[var(--text-main)] font-mono w-24 focus:outline-none text-xs font-semibold"
-                  placeholder="tenant_slug"
-                />
-              </div>
-            )}
-
-            {/* i18n Language Picker */}
-            <div className="relative flex items-center">
-              <Globe className="w-3.5 h-3.5 text-[var(--text-muted)] absolute left-2.5 pointer-events-none" />
-              <select
-                value={currentLocale}
-                onChange={(e) => handleLocaleChange(e.target.value as Locale)}
-                className="bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--primary-accent)] rounded-xl pl-8 pr-2.5 py-1.5 text-xs text-[var(--text-main)] focus:outline-none cursor-pointer font-medium"
-              >
-                <option value="en">English (EN)</option>
-                <option value="hi">हिंदी (HI)</option>
-                <option value="ta">தமிழ் (TA)</option>
-                <option value="ml">മലയാളം (ML)</option>
-                <option value="te">తెలుగు (TE)</option>
-                <option value="mr">मराठी (MR)</option>
-              </select>
-            </div>
-
-            {/* Theme Toggle */}
-            <ThemeToggle />
-
-            {/* User Profile Pill & Logout */}
-            <div className="hidden sm:flex items-center gap-2 bg-[var(--input-bg)] px-3 py-1 rounded-xl border border-[var(--border-color)] text-xs">
-              <Badge variant={role === 'super_admin' ? 'info' : 'success'}>
-                {role === 'super_admin' ? t('role_super_admin') : t('role_fleet_owner')}
-              </Badge>
-              <span className="text-[var(--text-main)] font-medium max-w-[130px] truncate">
-                {user?.phone || user?.email || user?.name}
-              </span>
-            </div>
-
-            <Button onClick={logout} variant="secondary" className="hidden md:flex text-xs px-3 py-1.5 items-center gap-1.5">
-              <LogOut className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-              <span>{t('logout')}</span>
-            </Button>
+          {/* User Profile & Settings Menu */}
+          <div className="flex items-center justify-end">
+            <ProfileMenu />
           </div>
 
         </div>
@@ -267,50 +205,28 @@ const DashboardContent: React.FC = () => {
                   <Zap className="w-3 h-3 text-amber-400" />
                   {t('razorpay_integrated')}
                 </span>
-                <span className="px-2.5 py-1 rounded-lg bg-[var(--input-bg)] border border-[var(--border-color)] text-[var(--text-main)] flex items-center gap-1.5">
-                  <Globe className="w-3 h-3 text-emerald-400" />
-                  {t('locales_supported')} (EN · HI · TA · ML · TE · MR)
-                </span>
               </div>
             </div>
 
-            {/* Column 3: Portal Switcher & Operational Status */}
+            {/* Column 3: Operational Status */}
             <div className="space-y-3 flex flex-col justify-between">
               <div>
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">Portal Navigation</h4>
-                {isDemoRoute ? (
-                  <button
-                    type="button"
-                    onClick={() => navigate('/')}
-                    className="w-full text-left p-3 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--primary-accent)] transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-main)] group-hover:text-[var(--primary-accent)]">
-                      <span>{t('main_portal')} (/)</span>
-                      <span className="text-[10px] text-[var(--text-muted)]">Click to switch</span>
-                    </div>
-                    <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Return to live operational environment</p>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => navigate('/demo')}
-                    className="w-full text-left p-3 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--primary-accent)] transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-main)] group-hover:text-[var(--primary-accent)]">
-                      <span className="flex items-center gap-1.5">
-                        <Zap className="w-3.5 h-3.5 text-amber-400" />
-                        <span>{t('demo_portal')}</span>
-                      </span>
-                      <span className="text-[10px] text-[var(--text-muted)]">Click to switch</span>
-                    </div>
-                    <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Pre-filled credentials for owner & admin</p>
-                  </button>
-                )}
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">System Performance</h4>
+                <div className="p-3 rounded-xl bg-[var(--input-bg)] border border-[var(--border-color)] space-y-1.5">
+                  <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-main)]">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>{t('system_status')}</span>
+                    </span>
+                    <span className="text-[10px] text-emerald-400 font-mono font-bold">99.99%</span>
+                  </div>
+                  <p className="text-[11px] text-[var(--text-muted)]">Real-time telemetry and active schema monitoring</p>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] pt-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{t('system_status')} · 99.99% Uptime</span>
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>SSL Encrypted · ISO 27001 Certified</span>
               </div>
             </div>
 

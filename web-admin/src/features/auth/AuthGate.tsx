@@ -5,46 +5,32 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
-import { t, setLocale, Locale, getLocale } from '../../lib/i18n';
+import { t } from '../../lib/i18n';
 
 interface AuthGateProps {
   isDemoRoute?: boolean;
+  isSuperAdminRoute?: boolean;
 }
 
-export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
+export const AuthGate: React.FC<AuthGateProps> = ({
+  isDemoRoute = false,
+  isSuperAdminRoute = false,
+}) => {
   const { loginOwner, loginSuperAdmin } = useAuth();
-  const [activeRole, setActiveRole] = useState<'owner' | 'super_admin'>('owner');
+  const activeRole: 'owner' | 'super_admin' = isSuperAdminRoute ? 'super_admin' : 'owner';
 
   // Form State - Pre-filled on /demo route based on activeRole
   const [phone, setPhone] = useState<string>(isDemoRoute ? '+919876543210' : '');
   const [email, setEmail] = useState<string>(isDemoRoute ? 'admin@fleet.example.com' : '');
-  const [password, setPassword] = useState<string>(isDemoRoute ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : '');
+  const [password, setPassword] = useState<string>(
+    isDemoRoute ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : ''
+  );
   const [tenantSlug, setTenantSlug] = useState<string>('demo_tenant');
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [currentLocaleState, setCurrentLocaleState] = useState<Locale>(getLocale());
 
-  const handleLocaleChange = (loc: Locale) => {
-    setCurrentLocaleState(loc);
-    setLocale(loc);
-  };
-
-  const handleRoleSwitch = (role: 'owner' | 'super_admin') => {
-    setActiveRole(role);
-    setErrorMessage(null);
-    if (isDemoRoute) {
-      if (role === 'owner') {
-        setPhone('+919876543210');
-        setPassword('password123');
-        setTenantSlug('demo_tenant');
-      } else {
-        setEmail('admin@fleet.example.com');
-        setPassword('adminsecret123');
-      }
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,18 +79,6 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
       {/* Top bar controls */}
       <div className="absolute top-4 right-6 flex items-center gap-3">
         <ThemeToggle />
-        <select
-          value={currentLocaleState}
-          onChange={(e) => handleLocaleChange(e.target.value as Locale)}
-          className="bg-[var(--input-bg)] border border-[var(--border-color)] hover:border-[var(--primary-accent)] rounded-xl px-3 py-1.5 text-xs text-[var(--text-main)] focus:outline-none cursor-pointer font-medium"
-        >
-          <option value="en">English (EN)</option>
-          <option value="hi">हिंदी (HI)</option>
-          <option value="ta">தமிழ் (TA)</option>
-          <option value="ml">മലയാളം (ML)</option>
-          <option value="te">తెలుగు (TE)</option>
-          <option value="mr">मराठी (MR)</option>
-        </select>
       </div>
 
       <div className="w-full max-w-md space-y-6">
@@ -114,39 +88,23 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
             FM
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-100">
-            {isDemoRoute ? 'Fleet Management Demo Portal' : t('auth_title')}
+            {isDemoRoute
+              ? activeRole === 'super_admin'
+                ? 'Super Admin Demo Portal'
+                : 'Fleet Owner Demo Portal'
+              : activeRole === 'super_admin'
+              ? t('superadmin_auth_title')
+              : t('owner_auth_title')}
           </h1>
           <p className="text-xs text-slate-400 max-w-xs mx-auto">
             {isDemoRoute
-              ? 'Pre-filled demo credentials for Fleet Owner & Super Admin'
-              : t('auth_subtitle')}
+              ? activeRole === 'super_admin'
+                ? 'Pre-filled demo credentials for Super Admin'
+                : 'Pre-filled demo credentials for Fleet Owner'
+              : activeRole === 'super_admin'
+              ? t('superadmin_auth_subtitle')
+              : t('owner_auth_subtitle')}
           </p>
-        </div>
-
-        {/* Role Selector Tabs */}
-        <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
-          <button
-            type="button"
-            onClick={() => handleRoleSwitch('owner')}
-            className={`py-2 rounded-lg font-medium transition-all ${
-              activeRole === 'owner'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            {t('role_fleet_owner')}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleRoleSwitch('super_admin')}
-            className={`py-2 rounded-lg font-medium transition-all ${
-              activeRole === 'super_admin'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            {t('role_super_admin')}
-          </button>
         </div>
 
         {/* Auth Form Card */}
@@ -237,3 +195,4 @@ export const AuthGate: React.FC<AuthGateProps> = ({ isDemoRoute = false }) => {
     </div>
   );
 };
+

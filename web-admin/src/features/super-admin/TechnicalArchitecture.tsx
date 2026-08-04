@@ -135,10 +135,7 @@ export const TechnicalArchitecture: React.FC = () => {
               <span className="text-slate-400">State & Auth</span>
               <span className="font-mono text-cyan-400">Context API + JWT</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Locales</span>
-              <span className="font-mono text-cyan-400">6 Locales (en/ta/ml/te/mr/hi)</span>
-            </div>
+
           </div>
         </Card>
 
@@ -326,10 +323,7 @@ export const TechnicalArchitecture: React.FC = () => {
               <span className="text-slate-400 font-medium">Mobile Styling</span>
               <span className="font-mono font-semibold text-indigo-400">NativeWind v4 + react-native-reusables</span>
             </div>
-            <div className="py-2.5 flex items-center justify-between">
-              <span className="text-slate-400 font-medium">Internationalization (i18n)</span>
-              <span className="font-mono font-semibold text-cyan-400">6 Locales (EN, TA, ML, TE, MR, HI)</span>
-            </div>
+
             <div className="py-2.5 flex items-center justify-between">
               <span className="text-slate-400 font-medium">Client Validation</span>
               <span className="font-mono font-semibold text-emerald-400">Inline Form Validation (Model Parity)</span>

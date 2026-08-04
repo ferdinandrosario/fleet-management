@@ -16,8 +16,8 @@ describe("language store", () => {
   });
 
   it("setLanguage updates both the store and i18n", () => {
-    useLanguageStore.getState().setLanguage("hi");
-    expect(useLanguageStore.getState().language).toBe("hi");
-    expect(i18n.language).toBe("hi");
+    useLanguageStore.getState().setLanguage("en");
+    expect(useLanguageStore.getState().language).toBe("en");
+    expect(i18n.language).toBe("en");
   });
 });

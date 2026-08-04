@@ -1,13 +1,14 @@
 import { deviceLanguage, initI18n, isSupported, resources, SUPPORTED_LANGUAGES } from "./i18n";
 
 describe("i18n", () => {
-  it("declares the six locales, en first", () => {
-    expect(SUPPORTED_LANGUAGES).toEqual(["en", "ta", "ml", "te", "mr", "hi"]);
-    expect(Object.keys(resources)).toEqual(["en", "ta", "ml", "te", "mr", "hi"]);
+  it("declares the English locale", () => {
+    expect(SUPPORTED_LANGUAGES).toEqual(["en"]);
+    expect(Object.keys(resources)).toEqual(["en"]);
   });
 
   it("recognizes supported codes and rejects the rest", () => {
-    expect(isSupported("hi")).toBe(true);
+    expect(isSupported("en")).toBe(true);
+    expect(isSupported("hi")).toBe(false);
     expect(isSupported("fr")).toBe(false);
     expect(isSupported(null)).toBe(false);
   });
@@ -28,12 +29,11 @@ describe("i18n", () => {
     spy.mockRestore();
   });
 
-  it("initializes and translates per locale", () => {
-    const i18n = initI18n("hi");
+  it("initializes and translates in English", () => {
+    const i18n = initI18n("en");
     expect(i18n.isInitialized).toBe(true);
-    expect(i18n.t("common.retry")).toBe("पुनः प्रयास करें");
-    i18n.changeLanguage("ta");
-    expect(i18n.t("common.cancel")).toBe("ரத்துசெய்");
+    expect(i18n.t("common.retry")).toBe("Retry");
+    expect(i18n.t("common.cancel")).toBe("Cancel");
   });
 
   it("is idempotent on a second init", () => {

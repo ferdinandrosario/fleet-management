@@ -13,6 +13,7 @@ import { OtpScreen } from "./src/features/auth/otp-screen";
 import { RegisterScreen } from "./src/features/auth/register-screen";
 import { HomeScreen } from "./src/features/home/home-screen";
 import { WelcomeScreen } from "./src/features/welcome/welcome-screen";
+import { AddVehicleScreen } from "./src/features/vehicles/add-vehicle-screen";
 import { bootstrap } from "./src/lib/bootstrap";
 import type { AppStackParamList, AuthStackParamList } from "./src/navigation/types";
 import { palette } from "./src/theme/tokens";
@@ -41,6 +42,7 @@ function AppNavigator() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       <AppStack.Screen name="Home" component={HomeScreen} />
+      <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
     </AppStack.Navigator>
   );
 }

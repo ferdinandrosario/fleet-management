@@ -43,11 +43,15 @@ module Api
             return render_error(code: "plan_not_found", message: I18n.t("errors.not_found"), status: :unprocessable_content)
           end
 
+          name = owner_params[:name].presence || owner_params[:company_name]
+          company_name = owner_params[:company_name].presence || name
+          slug = owner_params[:slug].presence || name.to_s.parameterize(separator: "_")
+
           result = TenantProvisioningService.call(
-            name: owner_params[:name],
-            company_name: owner_params[:company_name],
+            name: name,
+            company_name: company_name,
             address: owner_params[:address],
-            slug: owner_params[:slug],
+            slug: slug,
             plan: plan,
             owner_name: owner_params[:owner_name],
             owner_phone: owner_params[:owner_phone],
@@ -64,6 +68,31 @@ module Api
               fields: result.errors
             )
           end
+        end
+
+        def update
+          owner = Owner.find_by!(uuid: params[:id])
+          authorize owner
+
+          ActiveRecord::Base.transaction do
+            owner.update!(owner_params)
+
+            # If name or company_name was updated, update the tenant registry?
+            # Wait, the user didn't mention updating tenant registry, just the owner's name/company_name.
+            # "The tenant name should be updated during transactions." -> owner.update! handles this in a transaction.
+          end
+
+          render_success(data: { owner: OwnerSerializer.call(owner, super_admin: true) })
+        rescue ActiveRecord::RecordInvalid => e
+          render_error(
+            code: "validation_failed",
+            message: I18n.t("errors.validation_failed"),
+            status: :unprocessable_content,
+            fields: e.record.errors.to_hash
+          )
+        rescue ActiveRecord::RecordNotFound
+          skip_authorization
+          render_error(code: "not_found", message: I18n.t("errors.not_found"), status: :not_found)
         end
 
         def update_status

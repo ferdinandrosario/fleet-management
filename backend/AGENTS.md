@@ -175,6 +175,7 @@ future maintainer never has to reverse-engineer an unexplained dependency.
 | `pagy` | Mandatory pagination on collections (wired Session 4). | (gem only so far) |
 | `bullet` | Raises on N+1 / unused eager-load in dev/test (build fails). | `config/initializers/bullet.rb` |
 | `bcrypt` | `has_secure_password` for SuperAdmin (and tenant users, S3). | `app/models/super_admin.rb` |
+| `rswag-api` + `rswag-ui` + `rswag-specs` | OpenAPI 3.0 specification generation & interactive documentation UI for API endpoints. | `config/initializers/rswag_api.rb`, `config/initializers/rswag_ui.rb`, `spec/swagger_helper.rb` |
 
 Test-only gems (`database_cleaner-active_record`, `webmock`, `vcr`,
 `simplecov`, `rspec-rails`, `factory_bot_rails`, `faker`, `shoulda-matchers`)

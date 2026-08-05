@@ -8,6 +8,14 @@ Versioned under `/api/v1`. Every response uses the envelope
 - `Authorization: Bearer <access_token>` — required on protected endpoints.
 - `Accept-Language: <locale>` — optional; localizes messages (en).
 
+## OpenAPI 3.0 & Interactive Swagger UI
+
+API documentation is generated directly from Rails controllers, serializers, and Rswag specs, grouped by resource:
+
+- **Interactive Swagger UI**: [`http://localhost:3000/api-docs`](http://localhost:3000/api-docs)
+- **OpenAPI 3.0 JSON Spec**: [`http://localhost:3000/api-docs/v1/swagger.json`](http://localhost:3000/api-docs/v1/swagger.json)
+- **Spec Source Files**: `backend/spec/swagger/v1/*_spec.rb` grouped by resource (Authentication, Vehicles, Bookings, Driver Operations, Driver Leaves, Driver Payroll, GPS Telemetry, Reviews, Discovery, Reports, SuperAdmin Platform).
+
 ## Health
 
 `GET /api/v1/health` → `200`

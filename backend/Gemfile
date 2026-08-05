@@ -52,6 +52,11 @@ gem "pundit"
 gem "rack-attack"     # request throttling (auth / OTP / payments / search)
 gem "secure_headers"  # CSP + security response headers
 
+# OpenAPI / Swagger API Documentation
+gem "ostruct"
+gem "rswag-api", "~> 2.13"
+gem "rswag-ui", "~> 2.13"
+
 # Performance: mandatory pagination on every collection.
 gem "pagy"
 
@@ -72,6 +77,9 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+
+  # OpenAPI / Swagger specs generator
+  gem "rswag-specs", "~> 2.13"
 
   # N+1 / unused-eager-load detection — raises in dev/test (fails the build).
   gem "bullet"

@@ -16,6 +16,7 @@ import {
   ArrowLeft,
   Terminal,
 } from 'lucide-react';
+import { ApiDocsAccess } from './ApiDocsAccess';
 
 export const TechnicalArchitecture: React.FC = () => {
   const { role } = useAuth();
@@ -348,6 +349,9 @@ export const TechnicalArchitecture: React.FC = () => {
           </p>
         </div>
       </Card>
+
+      {/* API Docs Access Control */}
+      <ApiDocsAccess />
     </div>
   );
 };

@@ -40,6 +40,7 @@ Rails.application.routes.draw do
         end
         resources :plans, only: [ :index, :show, :create, :update ]
         resources :subscriptions, only: [ :show, :update ]
+        resources :api_doc_grants, only: [ :index, :create, :destroy ]
       end
 
       # Vehicles, Availability, Pricing Rules & Reviews (Session 5 & 8).

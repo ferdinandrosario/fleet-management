@@ -41,6 +41,9 @@ module Backend
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    require_relative "../app/middleware/api_docs_auth"
+    config.middleware.use ApiDocsAuth
+
     # PostGIS spatial types and per-schema search paths can't be represented in
     # the Ruby schema.rb — dump structure.sql instead.
     config.active_record.schema_format = :sql

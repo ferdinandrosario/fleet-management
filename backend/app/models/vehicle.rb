@@ -3,6 +3,8 @@
 class Vehicle < ApplicationRecord
   include HasPublicUuid
 
+  belongs_to :vehicle_model, optional: true
+
   has_many :vehicle_availabilities, dependent: :destroy
   has_many :pricing_rules, dependent: :destroy
   has_many :bookings, dependent: :destroy

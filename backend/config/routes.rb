@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       namespace :super_admin do
         post "login", to: "sessions#create"
         get "dashboard", to: "dashboards#show"
-        resources :owners, only: [ :index, :show, :create ] do
+        resources :owners, only: [ :index, :show, :create, :update ] do
           member do
             patch :status, to: "owners#update_status"
           end
@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         resources :plans, only: [ :index, :show, :create, :update ]
         resources :subscriptions, only: [ :show, :update ]
         resources :api_doc_grants, only: [ :index, :create, :destroy ]
+        resources :vehicle_models
       end
 
       # Vehicles, Availability, Pricing Rules & Reviews (Session 5 & 8).
@@ -55,6 +56,7 @@ Rails.application.routes.draw do
 
       # Discovery & Search (Session 6).
       get "discovery/vehicles", to: "discovery#vehicles"
+      get "discovery/vehicle_models", to: "discovery/vehicle_models#index"
 
       # Bookings, Payments, Driver Execution, GPS & Reviews (Session 6, 7 & 8).
       resources :bookings, only: [ :index, :show, :create ] do

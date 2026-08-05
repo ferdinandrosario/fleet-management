@@ -7,6 +7,7 @@ module VehicleSerializer
 
     {
       id: vehicle.uuid,
+      vehicle_model_id: vehicle.vehicle_model&.uuid,
       name: vehicle.name,
       category: vehicle.category,
       registration_number: vehicle.registration_number,

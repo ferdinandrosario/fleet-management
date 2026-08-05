@@ -4,8 +4,8 @@ require "rails_helper"
 
 RSpec.describe "Database Seeds" do
   after do
-    if Owner.exists?(slug: "demo_tenant")
-      Apartment::Tenant.drop("demo_tenant") rescue nil
+    if Owner.exists?(slug: "demo")
+      Apartment::Tenant.drop("demo") rescue nil
     end
   end
 
@@ -20,9 +20,9 @@ RSpec.describe "Database Seeds" do
     super_admin = SuperAdmin.find_by(email: "admin@fleet.example.com")
     expect(super_admin.authenticate("adminsecret123")).to be_truthy
 
-    expect(Owner.exists?(slug: "demo_tenant")).to be true
+    expect(Owner.exists?(slug: "demo")).to be true
 
-    Apartment::Tenant.switch("demo_tenant") do
+    Apartment::Tenant.switch("demo") do
       demo_user = User.find_by(phone: "+919876543210")
       expect(demo_user).to be_present
       expect(demo_user.phone_verified?).to be true

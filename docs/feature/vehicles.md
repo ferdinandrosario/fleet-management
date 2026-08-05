@@ -26,6 +26,14 @@ Owner Admin (tenant schema context)
 - `crane` (4)
 - `harvester` (5)
 
+## Vehicle Catalog (VehicleModels)
+
+To support dependent dropdowns in the frontend UI (Make -> Variety/Model), a global catalog of `VehicleModel` records is stored in the `public` schema. Super Admins manage the varieties (e.g., Swaraj -> 744 XT).
+
+- **SuperAdmin API:** `SuperAdmin::VehicleModelsController` provides full CRUD for the catalog (`/api/v1/super_admin/vehicle_models`).
+- **Discovery API:** `Discovery::VehicleModelsController` provides read-only listing (`/api/v1/discovery/vehicle_models`) accessible without authentication for populating frontend dropdowns.
+- **Vehicles Table:** Contains an optional `vehicle_model_id` pointing to the public `VehicleModel` record.
+
 ## Services & Logic
 
 ### 1. `PricingCalculatorService`

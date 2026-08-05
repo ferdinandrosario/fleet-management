@@ -100,7 +100,7 @@ module Api
       private
 
       def vehicle_params
-        params.permit(:name, :category, :registration_number, :model_year, :hourly_rate_cents, :daily_rate_cents, :status, specs: {})
+        params.permit(:name, :category, :registration_number, :model_year, :hourly_rate_cents, :daily_rate_cents, :status, :vehicle_model_id, specs: {})
       end
     end
   end

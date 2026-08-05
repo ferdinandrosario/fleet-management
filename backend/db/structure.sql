@@ -655,6 +655,41 @@ ALTER SEQUENCE public.vehicle_availabilities_id_seq OWNED BY public.vehicle_avai
 
 
 --
+-- Name: vehicle_models; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vehicle_models (
+    id bigint NOT NULL,
+    uuid character varying NOT NULL,
+    name character varying,
+    make character varying,
+    category integer,
+    active boolean DEFAULT true,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: vehicle_models_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.vehicle_models_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vehicle_models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.vehicle_models_id_seq OWNED BY public.vehicle_models.id;
+
+
+--
 -- Name: vehicles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -675,7 +710,8 @@ CREATE TABLE public.vehicles (
     longitude numeric(10,6),
     address character varying,
     average_rating numeric(3,2) DEFAULT 0.0 NOT NULL,
-    reviews_count integer DEFAULT 0 NOT NULL
+    reviews_count integer DEFAULT 0 NOT NULL,
+    vehicle_model_id bigint
 );
 
 
@@ -808,6 +844,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 ALTER TABLE ONLY public.vehicle_availabilities ALTER COLUMN id SET DEFAULT nextval('public.vehicle_availabilities_id_seq'::regclass);
+
+
+--
+-- Name: vehicle_models id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_models ALTER COLUMN id SET DEFAULT nextval('public.vehicle_models_id_seq'::regclass);
 
 
 --
@@ -959,6 +1002,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.vehicle_availabilities
     ADD CONSTRAINT vehicle_availabilities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: vehicle_models vehicle_models_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_models
+    ADD CONSTRAINT vehicle_models_pkey PRIMARY KEY (id);
 
 
 --
@@ -1348,6 +1399,20 @@ CREATE INDEX index_vehicle_availabilities_on_vehicle_id ON public.vehicle_availa
 
 
 --
+-- Name: index_vehicle_models_on_make_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicle_models_on_make_and_name ON public.vehicle_models USING btree (make, name);
+
+
+--
+-- Name: index_vehicle_models_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicle_models_on_uuid ON public.vehicle_models USING btree (uuid);
+
+
+--
 -- Name: index_vehicles_on_category; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1380,6 +1445,13 @@ CREATE INDEX index_vehicles_on_status ON public.vehicles USING btree (status);
 --
 
 CREATE UNIQUE INDEX index_vehicles_on_uuid ON public.vehicles USING btree (uuid);
+
+
+--
+-- Name: index_vehicles_on_vehicle_model_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vehicles_on_vehicle_model_id ON public.vehicles USING btree (vehicle_model_id);
 
 
 --
@@ -1541,6 +1613,9 @@ ALTER TABLE ONLY public.bookings
 SET search_path TO "public", "public";
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260805220537'),
+('20260805212159'),
+('20260805212144'),
 ('20260805192630'),
 ('20260804140000'),
 ('20260616000015'),

@@ -67,7 +67,7 @@ RSpec.configure do |config|
               data: { type: :object },
               error: { type: :object, nullable: true, example: nil }
             },
-            required: ['status', 'data', 'error']
+            required: [ 'status', 'data', 'error' ]
           },
           StandardErrorEnvelope: {
             type: :object,
@@ -81,10 +81,10 @@ RSpec.configure do |config|
                   message: { type: :string, example: 'Validation failed' },
                   fields: { type: :object, nullable: true }
                 },
-                required: ['code', 'message']
+                required: [ 'code', 'message' ]
               }
             },
-            required: ['status', 'data', 'error']
+            required: [ 'status', 'data', 'error' ]
           },
           Vehicle: {
             type: :object,
@@ -103,7 +103,7 @@ RSpec.configure do |config|
               created_at: { type: :string, format: :'date-time' },
               updated_at: { type: :string, format: :'date-time' }
             },
-            required: ['uuid', 'registration_number', 'vehicle_type', 'make', 'model', 'status']
+            required: [ 'uuid', 'registration_number', 'vehicle_type', 'make', 'model', 'status' ]
           },
           Booking: {
             type: :object,
@@ -119,7 +119,7 @@ RSpec.configure do |config|
               payment_status: { type: :string, example: 'paid' },
               created_at: { type: :string, format: :'date-time' }
             },
-            required: ['uuid', 'booking_number', 'status', 'total_amount']
+            required: [ 'uuid', 'booking_number', 'status', 'total_amount' ]
           },
           DriverLeave: {
             type: :object,
@@ -132,7 +132,7 @@ RSpec.configure do |config|
               status: { type: :string, example: 'pending' },
               created_at: { type: :string, format: :'date-time' }
             },
-            required: ['uuid', 'start_date', 'end_date', 'status']
+            required: [ 'uuid', 'start_date', 'end_date', 'status' ]
           },
           DriverPayroll: {
             type: :object,
@@ -147,7 +147,7 @@ RSpec.configure do |config|
               net_pay: { type: :string, example: '26500.00' },
               status: { type: :string, example: 'draft' }
             },
-            required: ['uuid', 'month', 'year', 'net_pay', 'status']
+            required: [ 'uuid', 'month', 'year', 'net_pay', 'status' ]
           },
           GpsPing: {
             type: :object,
@@ -159,7 +159,7 @@ RSpec.configure do |config|
               speed_kmh: { type: :number, example: 42.5 },
               recorded_at: { type: :string, format: :'date-time' }
             },
-            required: ['uuid', 'latitude', 'longitude', 'recorded_at']
+            required: [ 'uuid', 'latitude', 'longitude', 'recorded_at' ]
           },
           PricingRule: {
             type: :object,
@@ -169,7 +169,7 @@ RSpec.configure do |config|
               multiplier: { type: :string, example: '1.25' },
               active: { type: :boolean, example: true }
             },
-            required: ['uuid', 'vehicle_type', 'multiplier']
+            required: [ 'uuid', 'vehicle_type', 'multiplier' ]
           },
           Review: {
             type: :object,
@@ -180,7 +180,7 @@ RSpec.configure do |config|
               comment: { type: :string, example: 'Excellent equipment condition and punctual driver.' },
               created_at: { type: :string, format: :'date-time' }
             },
-            required: ['uuid', 'rating']
+            required: [ 'uuid', 'rating' ]
           },
           User: {
             type: :object,
@@ -191,7 +191,7 @@ RSpec.configure do |config|
               role: { type: :string, example: 'customer' },
               created_at: { type: :string, format: :'date-time' }
             },
-            required: ['uuid', 'name', 'phone', 'role']
+            required: [ 'uuid', 'name', 'phone', 'role' ]
           },
           Owner: {
             type: :object,
@@ -202,7 +202,7 @@ RSpec.configure do |config|
               status: { type: :string, example: 'active' },
               created_at: { type: :string, format: :'date-time' }
             },
-            required: ['id', 'company_name', 'subdomain', 'status']
+            required: [ 'id', 'company_name', 'subdomain', 'status' ]
           }
         }
       }

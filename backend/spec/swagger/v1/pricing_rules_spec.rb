@@ -6,7 +6,7 @@ RSpec.describe 'Dynamic Pricing Rules API', type: :request do
 
     get 'Lists dynamic rate surge/discount pricing rules' do
       tags 'Pricing Rules'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'pricing rules listed' do
@@ -17,7 +17,7 @@ RSpec.describe 'Dynamic Pricing Rules API', type: :request do
 
     post 'Adds a dynamic surge or seasonal rate multiplier rule' do
       tags 'Pricing Rules'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -28,7 +28,7 @@ RSpec.describe 'Dynamic Pricing Rules API', type: :request do
           start_date: { type: :string, format: :date },
           end_date: { type: :string, format: :date }
         },
-        required: ['name', 'multiplier']
+        required: [ 'name', 'multiplier' ]
       }
 
       response '201', 'pricing rule created' do
@@ -44,7 +44,7 @@ RSpec.describe 'Dynamic Pricing Rules API', type: :request do
 
     delete 'Removes a pricing rule' do
       tags 'Pricing Rules'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'pricing rule deleted' do

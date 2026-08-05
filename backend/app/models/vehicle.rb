@@ -45,8 +45,8 @@ class Vehicle < ApplicationRecord
 
   # Recalculates average rating and review count from submitted reviews
   def update_rating_stats!
-    cnt, avg = reviews.pick(Arel.sql('COUNT(*)'), Arel.sql('AVG(rating)'))
-    
+    cnt, avg = reviews.pick(Arel.sql("COUNT(*)"), Arel.sql("AVG(rating)"))
+
     cnt = cnt.to_i
     avg = cnt.positive? ? avg.to_f.round(2) : 0.0
 

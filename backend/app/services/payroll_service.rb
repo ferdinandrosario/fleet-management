@@ -28,7 +28,7 @@ class PayrollService
                                   .where.not(job_started_at: nil, job_finished_at: nil)
 
       jobs_count = completed_bookings.count
-      
+
       # Calculate total hours using SQL EXTRACT(EPOCH) for seconds difference
       total_seconds = completed_bookings.sum("EXTRACT(EPOCH FROM (job_finished_at - job_started_at))")
       total_hours = (total_seconds / 3600.0)

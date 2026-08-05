@@ -4,7 +4,7 @@ RSpec.describe 'Bookings API', type: :request do
   path '/api/v1/bookings' do
     get 'Lists all bookings' do
       tags 'Bookings'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'bookings list retrieved' do
@@ -15,7 +15,7 @@ RSpec.describe 'Bookings API', type: :request do
 
     post 'Creates a new vehicle booking reservation' do
       tags 'Bookings'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -26,7 +26,7 @@ RSpec.describe 'Bookings API', type: :request do
           end_time: { type: :string, format: :'date-time' },
           delivery_location: { type: :string, example: 'Bandra West, Mumbai' }
         },
-        required: ['vehicle_uuid', 'start_time', 'end_time']
+        required: [ 'vehicle_uuid', 'start_time', 'end_time' ]
       }
 
       response '201', 'booking created' do
@@ -41,7 +41,7 @@ RSpec.describe 'Bookings API', type: :request do
 
     get 'Retrieves booking details' do
       tags 'Bookings'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'booking details retrieved' do
@@ -56,7 +56,7 @@ RSpec.describe 'Bookings API', type: :request do
 
     post 'Processes Razorpay advance payment for booking' do
       tags 'Bookings'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -65,7 +65,7 @@ RSpec.describe 'Bookings API', type: :request do
           razorpay_payment_id: { type: :string, example: 'pay_LgX1234567' },
           razorpay_signature: { type: :string, example: 'sig_abc123' }
         },
-        required: ['razorpay_payment_id']
+        required: [ 'razorpay_payment_id' ]
       }
 
       response '200', 'advance payment recorded' do
@@ -80,7 +80,7 @@ RSpec.describe 'Bookings API', type: :request do
 
     patch 'Cancels an existing booking reservation' do
       tags 'Bookings'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {

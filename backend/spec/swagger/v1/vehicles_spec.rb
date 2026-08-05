@@ -4,7 +4,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
   path '/api/v1/vehicles' do
     get 'Lists all vehicles in the tenant fleet' do
       tags 'Vehicles'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'vehicles collection retrieved' do
@@ -15,7 +15,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
 
     post 'Creates a new vehicle in the fleet' do
       tags 'Vehicles'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -29,7 +29,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
           base_rate_per_hour: { type: :number, example: 850.0 },
           base_rate_per_day: { type: :number, example: 6500.0 }
         },
-        required: ['registration_number', 'vehicle_type', 'make', 'model', 'base_rate_per_hour', 'base_rate_per_day']
+        required: [ 'registration_number', 'vehicle_type', 'make', 'model', 'base_rate_per_hour', 'base_rate_per_day' ]
       }
 
       response '201', 'vehicle created' do
@@ -44,7 +44,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
 
     get 'Retrieves details of a specific vehicle' do
       tags 'Vehicles'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'vehicle details retrieved' do
@@ -55,7 +55,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
 
     patch 'Updates a vehicle' do
       tags 'Vehicles'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -73,7 +73,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
 
     delete 'Deletes a vehicle' do
       tags 'Vehicles'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'vehicle deleted' do
@@ -90,7 +90,7 @@ RSpec.describe 'Vehicles Management API', type: :request do
 
     get 'Generates a price quote for booking a vehicle' do
       tags 'Vehicles'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'price quote generated' do

@@ -6,7 +6,7 @@ RSpec.describe 'Driver Job Execution API', type: :request do
 
     post 'Assigns a driver to a booking' do
       tags 'Driver Operations'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -14,7 +14,7 @@ RSpec.describe 'Driver Job Execution API', type: :request do
         properties: {
           driver_id: { type: :integer, example: 5 }
         },
-        required: ['driver_id']
+        required: [ 'driver_id' ]
       }
 
       response '200', 'driver assigned' do
@@ -29,7 +29,7 @@ RSpec.describe 'Driver Job Execution API', type: :request do
 
     post 'Starts a job/trip for an assigned booking' do
       tags 'Driver Operations'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
 
@@ -45,7 +45,7 @@ RSpec.describe 'Driver Job Execution API', type: :request do
 
     post 'Completes a job and uploads proof photo' do
       tags 'Driver Operations'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {

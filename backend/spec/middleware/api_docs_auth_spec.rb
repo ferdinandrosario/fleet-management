@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rack/mock'
 
 RSpec.describe ApiDocsAuth do
-  let(:app) { ->(env) { [200, env, "app"] } }
+  let(:app) { ->(env) { [ 200, env, "app" ] } }
   let(:middleware) { described_class.new(app) }
   let(:mock_request) { Rack::MockRequest.new(middleware) }
 

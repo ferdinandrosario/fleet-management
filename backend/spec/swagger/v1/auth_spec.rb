@@ -14,7 +14,7 @@ RSpec.describe 'Authentication & User Profile API', type: :request, rswag_dry_ru
           phone: { type: :string, example: '+919876543210' },
           role: { type: :string, example: 'customer' }
         },
-        required: ['name', 'phone']
+        required: [ 'name', 'phone' ]
       }
 
       response '200', 'user registered successfully' do
@@ -39,7 +39,7 @@ RSpec.describe 'Authentication & User Profile API', type: :request, rswag_dry_ru
         properties: {
           phone: { type: :string, example: '+919876543210' }
         },
-        required: ['phone']
+        required: [ 'phone' ]
       }
 
       response '200', 'OTP sent successfully' do
@@ -60,7 +60,7 @@ RSpec.describe 'Authentication & User Profile API', type: :request, rswag_dry_ru
           phone: { type: :string, example: '+919876543210' },
           otp_code: { type: :string, example: '123456' }
         },
-        required: ['phone', 'otp_code']
+        required: [ 'phone', 'otp_code' ]
       }
 
       response '200', 'OTP verified successfully' do
@@ -73,7 +73,7 @@ RSpec.describe 'Authentication & User Profile API', type: :request, rswag_dry_ru
   path '/api/v1/me' do
     get 'Retrieves current user profile' do
       tags 'User Profile'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'profile details retrieved' do
@@ -84,7 +84,7 @@ RSpec.describe 'Authentication & User Profile API', type: :request, rswag_dry_ru
 
     patch 'Updates current user profile' do
       tags 'User Profile'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {

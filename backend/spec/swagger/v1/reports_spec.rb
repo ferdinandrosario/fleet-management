@@ -4,7 +4,7 @@ RSpec.describe 'Owner Reporting & Analytics API', type: :request do
   path '/api/v1/reports/dashboard' do
     get 'Retrieves owner fleet analytics, revenue trends, and vehicle utilization' do
       tags 'Reports & Analytics'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'dashboard metrics retrieved' do
@@ -17,7 +17,7 @@ RSpec.describe 'Owner Reporting & Analytics API', type: :request do
   path '/api/v1/reports/bookings_csv' do
     get 'Exports booking financial logs as CSV' do
       tags 'Reports & Analytics'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'text/csv'
 
       response '200', 'CSV export generated' do

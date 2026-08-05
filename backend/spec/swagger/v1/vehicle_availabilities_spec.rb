@@ -6,7 +6,7 @@ RSpec.describe 'Vehicle Availability Windows API', type: :request do
 
     get 'Lists availability schedules for a vehicle' do
       tags 'Vehicle Availability'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'availability windows listed' do
@@ -17,7 +17,7 @@ RSpec.describe 'Vehicle Availability Windows API', type: :request do
 
     post 'Creates a blackout or available time slot window for a vehicle' do
       tags 'Vehicle Availability'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -25,9 +25,9 @@ RSpec.describe 'Vehicle Availability Windows API', type: :request do
         properties: {
           start_time: { type: :string, format: :'date-time' },
           end_time: { type: :string, format: :'date-time' },
-          status: { type: :string, enum: ['available', 'maintenance', 'blocked'], example: 'available' }
+          status: { type: :string, enum: [ 'available', 'maintenance', 'blocked' ], example: 'available' }
         },
-        required: ['start_time', 'end_time']
+        required: [ 'start_time', 'end_time' ]
       }
 
       response '201', 'availability window created' do
@@ -43,7 +43,7 @@ RSpec.describe 'Vehicle Availability Windows API', type: :request do
 
     delete 'Removes an availability window' do
       tags 'Vehicle Availability'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'availability window deleted' do

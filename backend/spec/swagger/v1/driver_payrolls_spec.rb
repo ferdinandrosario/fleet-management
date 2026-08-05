@@ -4,7 +4,7 @@ RSpec.describe 'Driver Payroll API', type: :request do
   path '/api/v1/driver_payrolls' do
     get 'Lists all driver payroll records' do
       tags 'Driver Management'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'payroll collection retrieved' do
@@ -17,7 +17,7 @@ RSpec.describe 'Driver Payroll API', type: :request do
   path '/api/v1/driver_payrolls/calculate' do
     post 'Calculates monthly payroll settlement for drivers' do
       tags 'Driver Management'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -26,7 +26,7 @@ RSpec.describe 'Driver Payroll API', type: :request do
           month: { type: :integer, example: 8 },
           year: { type: :integer, example: 2026 }
         },
-        required: ['month', 'year']
+        required: [ 'month', 'year' ]
       }
 
       response '200', 'payroll calculation completed' do
@@ -41,7 +41,7 @@ RSpec.describe 'Driver Payroll API', type: :request do
 
     patch 'Marks a driver payroll as paid/settled' do
       tags 'Driver Management'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'payroll marked as paid' do

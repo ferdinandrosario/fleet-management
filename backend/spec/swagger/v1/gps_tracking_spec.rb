@@ -6,7 +6,7 @@ RSpec.describe 'GPS Telemetry & Live Tracking API', type: :request do
 
     post 'Ingests a GPS ping for active trip telemetry' do
       tags 'GPS Telemetry'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :payload, in: :body, schema: {
@@ -17,7 +17,7 @@ RSpec.describe 'GPS Telemetry & Live Tracking API', type: :request do
           speed_kmh: { type: :number, example: 45.2 },
           heading: { type: :number, example: 180.0 }
         },
-        required: ['latitude', 'longitude']
+        required: [ 'latitude', 'longitude' ]
       }
 
       response '201', 'GPS ping recorded' do
@@ -32,7 +32,7 @@ RSpec.describe 'GPS Telemetry & Live Tracking API', type: :request do
 
     get 'Retrieves live tracking route history and current coordinates' do
       tags 'GPS Telemetry'
-      security [BearerAuth: [], TenantHeader: []]
+      security [ BearerAuth: [], TenantHeader: [] ]
       produces 'application/json'
 
       response '200', 'tracking coordinates retrieved' do

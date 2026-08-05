@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Truck, AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -13,6 +13,13 @@ export interface VehicleData {
   status: 'active' | 'in_service' | 'on_trip' | 'inactive';
   rate: string;
   driver: string;
+}
+
+interface VehicleModelData {
+  id: string;
+  make: string;
+  name: string;
+  category: string;
 }
 
 interface AddVehicleModalProps {
@@ -37,6 +44,8 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('tractor');
+  const [make, setMake] = useState('');
+  const [vehicleModelId, setVehicleModelId] = useState('');
   const [registrationNumber, setRegistrationNumber] = useState('');
   const [modelYear, setModelYear] = useState(new Date().getFullYear().toString());
   const [hourlyRate, setHourlyRate] = useState('800');
@@ -46,6 +55,52 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  
+  const [vehicleModels, setVehicleModels] = useState<VehicleModelData[]>([]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const fetchModels = async () => {
+      try {
+        const res = await apiRequest('/api/v1/discovery/vehicle_models');
+        if (res.status === 'success' && res.data?.vehicle_models) {
+          setVehicleModels(res.data.vehicle_models);
+        }
+      } catch (e) {
+        console.error("Failed to fetch vehicle models", e);
+      }
+    };
+    fetchModels();
+  }, [isOpen]);
+
+  // Derived state for dependent dropdowns
+  const availableMakes = Array.from(new Set(
+    vehicleModels.filter(m => m.category === category).map(m => m.make)
+  )).sort();
+  
+  const availableVarieties = vehicleModels.filter(
+    m => m.category === category && m.make === make
+  ).sort((a, b) => a.name.localeCompare(b.name));
+
+  // Reset dependent fields when parent changes
+  useEffect(() => {
+    setMake('');
+    setVehicleModelId('');
+  }, [category]);
+
+  useEffect(() => {
+    setVehicleModelId('');
+  }, [make]);
+
+  // Auto-fill name when variety is selected
+  useEffect(() => {
+    if (vehicleModelId) {
+      const selectedModel = vehicleModels.find(m => m.id === vehicleModelId);
+      if (selectedModel) {
+        setName(selectedModel.name);
+      }
+    }
+  }, [vehicleModelId, vehicleModels]);
 
   if (!isOpen) return null;
 
@@ -80,6 +135,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
     const payload = {
       name: name.trim(),
       category,
+      vehicle_model_id: vehicleModelId || undefined,
       registration_number: registrationNumber.trim().toUpperCase(),
       model_year: Number(modelYear) || new Date().getFullYear(),
       hourly_rate_cents: Math.round(Number(hourlyRate) * 100),
@@ -139,10 +195,8 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/80 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
       <div className="bg-slate-900 border-t sm:border border-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh] animate-in slide-in-from-bottom sm:zoom-in-95 duration-250">
-        {/* Bottom Sheet Drag Handle (Mobile only) */}
         <div className="w-14 h-1.5 bg-slate-700/80 rounded-full mx-auto my-3 shrink-0 sm:hidden" />
 
-        {/* Modal Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-800 bg-slate-900/60">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
@@ -162,7 +216,6 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
           </button>
         </div>
 
-        {/* Modal Body / Form */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto flex-1">
           {generalError && (
             <div className="p-3.5 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-xs flex items-center gap-2">
@@ -172,18 +225,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="sm:col-span-2">
-              <Input
-                label={t('vehicle_name')}
-                placeholder="e.g. Mahindra 575 DI Tractor"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                error={fieldErrors.name}
-                required
-              />
-            </div>
-
-            <div>
+            <div className="sm:col-span-2 md:col-span-1">
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                 {t('vehicle_category')}
               </label>
@@ -198,6 +240,55 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
                   </option>
                 ))}
               </select>
+            </div>
+            
+            <div className="sm:col-span-2 md:col-span-1">
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                Brand / Make (Optional)
+              </label>
+              <select
+                value={make}
+                onChange={(e) => setMake(e.target.value)}
+                className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                disabled={availableMakes.length === 0}
+              >
+                <option value="" className="bg-slate-900 text-slate-400">Select Make...</option>
+                {availableMakes.map((m) => (
+                  <option key={m} value={m} className="bg-slate-900 text-slate-100">
+                    {m}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-2 md:col-span-1">
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                Variety / Model (Optional)
+              </label>
+              <select
+                value={vehicleModelId}
+                onChange={(e) => setVehicleModelId(e.target.value)}
+                className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                disabled={availableVarieties.length === 0}
+              >
+                <option value="" className="bg-slate-900 text-slate-400">Select Variety...</option>
+                {availableVarieties.map((v) => (
+                  <option key={v.id} value={v.id} className="bg-slate-900 text-slate-100">
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-2 md:col-span-1">
+              <Input
+                label={t('vehicle_name')}
+                placeholder="e.g. Swaraj 744 FE Tractor"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                error={fieldErrors.name}
+                required
+              />
             </div>
 
             <div>
@@ -266,7 +357,6 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
             </div>
           </div>
 
-          {/* Modal Footer */}
           <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800 mt-4">
             <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
               {t('cancel')}

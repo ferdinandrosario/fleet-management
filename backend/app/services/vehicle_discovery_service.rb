@@ -14,36 +14,27 @@ class VehicleDiscoveryService
 
         if st && et
           # Exclude vehicles with conflicting availability blocks
-          busy_vehicle_ids_avail = VehicleAvailability.where("start_time < ? AND end_time > ?", et, st).pluck(:vehicle_id)
+          busy_vehicle_ids_avail = VehicleAvailability.where("start_time < ? AND end_time > ?", et, st).select(:vehicle_id)
           # Exclude vehicles with active overlapping bookings
-          busy_vehicle_ids_book = Booking.active.overlapping_range(st, et).pluck(:vehicle_id)
+          busy_vehicle_ids_book = Booking.active.overlapping_range(st, et).select(:vehicle_id)
 
-          busy_ids = (busy_vehicle_ids_avail + busy_vehicle_ids_book).uniq
-          scope = scope.where.not(id: busy_ids) if busy_ids.any?
+          scope = scope.where.not(id: busy_vehicle_ids_avail).where.not(id: busy_vehicle_ids_book)
         end
+      end
+
+      if latitude.present? && longitude.present?
+        scope = scope.within_radius(latitude, longitude, radius_km)
+                     .with_distance_from(latitude, longitude)
+                     .order(Arel.sql("distance ASC"))
       end
 
       vehicles_list = scope.to_a
       distances_map = {}
 
       if latitude.present? && longitude.present?
-        lat_f = latitude.to_f
-        lng_f = longitude.to_f
-        max_dist = radius_km.to_f
-
-        vehicles_list = vehicles_list.select do |v|
-          dist = v.distance_to(lat_f, lng_f)
-          if dist && dist <= max_dist
-            distances_map[v.uuid] = dist
-            true
-          elsif dist.nil?
-            true # Include vehicles without coordinates at end of list
-          else
-            false
-          end
+        vehicles_list.each do |v|
+          distances_map[v.uuid] = v.distance.to_f if v.respond_to?(:distance)
         end
-
-        vehicles_list.sort_by! { |v| distances_map[v.uuid] || 999999 }
       end
 
       Result.new(vehicles: vehicles_list, distances: distances_map)

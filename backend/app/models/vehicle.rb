@@ -33,33 +33,27 @@ class Vehicle < ApplicationRecord
   scope :available_only, -> { where(status: :available) }
   scope :by_category, ->(cat) { where(category: cat) if cat.present? }
 
+  # PostGIS spatial scopes using on-the-fly geography casting
+  scope :within_radius, ->(lat, lng, radius_km) {
+    where("latitude IS NULL OR longitude IS NULL OR ST_DWithin(ST_MakePoint(longitude, latitude)::geography, ST_MakePoint(:lng, :lat)::geography, :radius_m)",
+          lng: lng.to_f, lat: lat.to_f, radius_m: radius_km.to_f * 1000)
+  }
+
+  scope :with_distance_from, ->(lat, lng) {
+    select("vehicles.*, CASE WHEN latitude IS NOT NULL AND longitude IS NOT NULL THEN (ST_Distance(ST_MakePoint(longitude, latitude)::geography, ST_MakePoint(#{lng.to_f}, #{lat.to_f})::geography) / 1000.0) ELSE 999999.0 END AS distance")
+  }
+
   # Recalculates average rating and review count from submitted reviews
   def update_rating_stats!
-    stats = reviews.select("COUNT(*) as count, AVG(rating) as avg").take
-    cnt = stats&.count.to_i
-    avg = cnt.positive? ? stats.avg.to_f.round(2) : 0.0
+    cnt, avg = reviews.pick(Arel.sql('COUNT(*)'), Arel.sql('AVG(rating)'))
+    
+    cnt = cnt.to_i
+    avg = cnt.positive? ? avg.to_f.round(2) : 0.0
 
     update_columns(reviews_count: cnt, average_rating: avg)
   end
 
-  # Calculates distance in kilometers between vehicle location and target coordinates using Haversine formula
-  def distance_to(target_lat, target_lng)
-    return nil if latitude.nil? || longitude.nil? || target_lat.nil? || target_lng.nil?
 
-    rad_per_deg = Math::PI / 180
-    rkm = 6371
-
-    dlat_rad = (target_lat.to_f - latitude.to_f) * rad_per_deg
-    dlon_rad = (target_lng.to_f - longitude.to_f) * rad_per_deg
-
-    lat1_rad = latitude.to_f * rad_per_deg
-    lat2_rad = target_lat.to_f * rad_per_deg
-
-    a = (Math.sin(dlat_rad / 2)**2) + ((Math.sin(dlon_rad / 2)**2) * Math.cos(lat1_rad) * Math.cos(lat2_rad))
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-    (rkm * c).round(2)
-  end
 
   private
 

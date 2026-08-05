@@ -94,6 +94,11 @@ Rails.application.routes.draw do
       # Owner Reporting & CSV Export (Session 10).
       get "reports/dashboard", to: "reports#dashboard"
       get "reports/bookings_csv", to: "reports#bookings_csv"
+
+      # Webhooks (Session 4 & 6).
+      namespace :webhooks do
+        post "razorpay", to: "razorpay#create"
+      end
     end
   end
 end

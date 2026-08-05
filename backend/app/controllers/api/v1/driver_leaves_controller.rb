@@ -6,7 +6,7 @@ module Api
         authorize DriverLeave
 
         scope = Current.user.driver? ? DriverLeave.where(driver_id: Current.user.id) : DriverLeave.all
-        pagy, leaves = pagy(scope.chronological)
+        pagy, leaves = pagy(scope.chronological.includes(:driver, :approved_by))
 
         render_success(
           data: {

@@ -25,18 +25,15 @@ class PayrollService
 
       completed_bookings = Booking.where(driver_id: driver.id, status: :completed)
                                   .where(job_finished_at: start_t..end_t)
+                                  .where.not(job_started_at: nil, job_finished_at: nil)
 
       jobs_count = completed_bookings.count
-      total_hours = 0.0
-      base_pay_sum = 0
+      
+      # Calculate total hours using SQL EXTRACT(EPOCH) for seconds difference
+      total_seconds = completed_bookings.sum("EXTRACT(EPOCH FROM (job_finished_at - job_started_at))")
+      total_hours = (total_seconds / 3600.0)
 
-      completed_bookings.each do |b|
-        if b.job_started_at.present? && b.job_finished_at.present?
-          duration = (b.job_finished_at - b.job_started_at) / 3600.0
-          total_hours += duration if duration.positive?
-        end
-        base_pay_sum += (b.total_cents * 0.40).round
-      end
+      base_pay_sum = (completed_bookings.sum(:total_cents) * 0.40).round
 
       b_cents = bonus_cents.to_i
       d_cents = deductions_cents.to_i
@@ -65,6 +62,10 @@ class PayrollService
     def mark_as_paid(payroll:)
       if payroll.nil?
         return Result.new(success: false, errors: { payroll: [ "payroll is required" ] })
+      end
+
+      if payroll.paid?
+        return Result.new(success: false, errors: { payroll: [ "is already paid" ] })
       end
 
       payroll.status = :paid

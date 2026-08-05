@@ -6,7 +6,7 @@ module Api
         authorize DriverPayroll
 
         scope = Current.user.driver? ? DriverPayroll.where(driver_id: Current.user.id) : DriverPayroll.all
-        pagy, payrolls = pagy(scope.chronological)
+        pagy, payrolls = pagy(scope.chronological.includes(:driver))
 
         render_success(
           data: {

@@ -1,0 +1,133 @@
+import React, { useState, useEffect } from 'react';
+import { Card } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
+import { apiRequest } from '../../lib/api';
+import { Key, Clock, Trash2, Plus, Copy, CheckCircle } from 'lucide-react';
+
+interface Grant {
+  id: number;
+  email: string;
+  token: string;
+  expires_at: string;
+  created_at: string;
+}
+
+export const ApiDocsAccess: React.FC = () => {
+  const [grants, setGrants] = useState<Grant[]>([]);
+  const [email, setEmail] = useState('');
+  const [hours, setHours] = useState(24);
+  const [loading, setLoading] = useState(true);
+  const [copiedToken, setCopiedToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchGrants();
+  }, []);
+
+  const fetchGrants = async () => {
+    setLoading(true);
+    const res = await apiRequest('/api/v1/super_admin/api_doc_grants');
+    if (res.status === 'success') {
+      setGrants(res.data);
+    }
+    setLoading(false);
+  };
+
+  const createGrant = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    const res = await apiRequest('/api/v1/super_admin/api_doc_grants', {
+      method: 'POST',
+      body: JSON.stringify({ email, expires_in_hours: hours })
+    });
+    if (res.status === 'success') {
+      setEmail('');
+      setHours(24);
+      fetchGrants();
+    } else {
+      alert(res.error?.message || 'Failed to create grant');
+    }
+  };
+
+  const revokeGrant = async (id: number) => {
+    if (!window.confirm('Revoke this access?')) return;
+    await apiRequest(`/api/v1/super_admin/api_doc_grants/${id}`, { method: 'DELETE' });
+    fetchGrants();
+  };
+
+  const copyToken = (token: string) => {
+    navigator.clipboard.writeText(token);
+    setCopiedToken(token);
+    setTimeout(() => setCopiedToken(null), 2000);
+  };
+
+  return (
+    <Card className="p-6 mt-8">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+          <Key className="w-5 h-5 text-indigo-400" />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold">API Documentation Access</h2>
+          <p className="text-sm text-[var(--text-muted)]">Grant temporary access to the interactive API Docs.</p>
+        </div>
+      </div>
+
+      <form onSubmit={createGrant} className="flex flex-col sm:flex-row gap-4 mb-8">
+        <input 
+          type="email" 
+          placeholder="Developer Email" 
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-4 py-2 flex-1 outline-none focus:border-blue-500"
+          required
+        />
+        <select 
+          value={hours} 
+          onChange={e => setHours(Number(e.target.value))}
+          className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-4 py-2 outline-none focus:border-blue-500"
+        >
+          <option value={1}>1 Hour</option>
+          <option value={24}>24 Hours</option>
+          <option value={168}>7 Days</option>
+        </select>
+        <Button type="submit" variant="primary" className="gap-2">
+          <Plus className="w-4 h-4" /> Grant Access
+        </Button>
+      </form>
+
+      {loading ? (
+        <p className="text-[var(--text-muted)]">Loading grants...</p>
+      ) : grants.length === 0 ? (
+        <p className="text-[var(--text-muted)] text-sm">No active grants.</p>
+      ) : (
+        <div className="space-y-3">
+          {grants.map(grant => {
+            const isActive = new Date(grant.expires_at) > new Date();
+            return (
+              <div key={grant.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] gap-4">
+                <div>
+                  <p className="font-semibold text-[var(--text-main)]">{grant.email}</p>
+                  <p className="text-xs text-[var(--text-muted)] flex items-center gap-1 mt-1">
+                    <Clock className="w-3 h-3" /> 
+                    {isActive ? `Expires ${new Date(grant.expires_at).toLocaleString()}` : 'Expired'}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-md font-mono text-xs text-[var(--text-main)]">
+                    {grant.token}
+                    <button onClick={() => copyToken(grant.token)} className="text-[var(--text-muted)] hover:text-white transition-colors">
+                      {copiedToken === grant.token ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                    </button>
+                  </div>
+                  <Button variant="danger" onClick={() => revokeGrant(grant.id)} className="p-2 h-auto">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </Card>
+  );
+};

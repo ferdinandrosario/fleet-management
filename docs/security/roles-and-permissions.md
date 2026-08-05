@@ -27,6 +27,7 @@ forbidden. Session 3 (auth) surface:
 | View / update **own** profile (`/me`) | ✅ | ✅ | ✅ | — |
 | Act on **another** user | ❌ | ❌ | ❌ | ❌ |
 | Read another tenant's data | ❌ (impossible — schema isolation) | ❌ | ❌ | ❌ |
+| View API Docs / Generate Dev Grants | ❌ | ❌ | ❌ | ✅ |
 
 Enforcement: `app/policies/` (`ApplicationPolicy` denies all; `UserPolicy` opens
 self-access). See [feature/auth.md](../feature/auth.md) and

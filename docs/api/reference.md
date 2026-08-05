@@ -14,8 +14,11 @@ API documentation is generated directly from Rails controllers, serializers, and
 
 - **Interactive Swagger UI**: [`http://localhost:3000/api-docs`](http://localhost:3000/api-docs)
 - **OpenAPI 3.0 JSON Spec**: [`http://localhost:3000/api-docs/v1/swagger.json`](http://localhost:3000/api-docs/v1/swagger.json)
-- **Spec Source Files**: `backend/spec/swagger/v1/*_spec.rb` grouped by resource (Authentication, Vehicles, Bookings, Driver Operations, Driver Leaves, Driver Payroll, GPS Telemetry, Reviews, Discovery, Reports, SuperAdmin Platform).
+- **Spec Source Files**: `backend/spec/swagger/v1/*_spec.rb` grouped by resource.
 
+**Access Control**: The `/api-docs` endpoints are protected by HTTP Basic Auth.
+- **Super Admins**: Can log in using their registered super admin email and password.
+- **Developers/Third-Parties**: Super admins can generate temporary access tokens (grants) from the **Technical Architecture** page in the web admin portal. The developer logs in using their email as the username and the generated token as the password.
 ## Health
 
 `GET /api/v1/health` → `200`

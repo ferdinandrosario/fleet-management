@@ -53,6 +53,9 @@ bin/rails server      # boots on http://localhost:3000
 # in another terminal:
 curl -s localhost:3000/api/v1/health
 # => {"status":"success","data":{"service":"fleet-management-api","status":"ok"},"error":null}
+
+# View the interactive API documentation (Swagger UI):
+# http://localhost:3000/api-docs
 ```
 
 ## Quickstart — mobile

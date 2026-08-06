@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -23,7 +24,9 @@ export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(makeQueryClient);
   return (
     <SafeAreaProvider initialMetrics={initialMetrics}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>{children}</NavigationContainer>
+      </QueryClientProvider>
     </SafeAreaProvider>
   );
 }

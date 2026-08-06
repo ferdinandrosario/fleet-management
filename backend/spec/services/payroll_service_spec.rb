@@ -59,6 +59,13 @@ RSpec.describe PayrollService do
       expect(res).not_to be_success
     end
 
+    it "returns error if payroll is already paid" do
+      payroll.update!(status: :paid)
+      res = described_class.mark_as_paid(payroll: payroll)
+      expect(res).not_to be_success
+      expect(res.errors[:payroll]).to include("is already paid")
+    end
+
     it "returns error if payroll update fails" do
       payroll.period_end = payroll.period_start - 1.day
       res = described_class.mark_as_paid(payroll: payroll)

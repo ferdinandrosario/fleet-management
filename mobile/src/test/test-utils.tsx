@@ -6,8 +6,7 @@ import { render, act } from "@testing-library/react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Configure React testing environment for React 18/19 act support
-// @ts-expect-error IS_REACT_ACT_ENVIRONMENT global flag
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+(globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
 // Fixed safe-area metrics so screens using SafeAreaView render without a device.
 const initialMetrics = {

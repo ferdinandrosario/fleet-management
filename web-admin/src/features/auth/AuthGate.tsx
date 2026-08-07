@@ -21,7 +21,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
 
   // Form State - Pre-filled on /demo route based on activeRole
   const [phone, setPhone] = useState<string>(isDemoRoute ? '+919876543210' : '');
-  const [email, setEmail] = useState<string>(isDemoRoute ? 'admin@fleet.example.com' : '');
+  const [email, setEmail] = useState<string>(isDemoRoute ? 'admin@example.com' : '');
   const [password, setPassword] = useState<string>(
     isDemoRoute ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : ''
   );

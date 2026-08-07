@@ -35,7 +35,7 @@ const translations: Record<Locale, Record<string, string>> = {
     phone_number: "Phone Number",
     phone_placeholder: "+91 98765 43210",
     email_address: "Email Address",
-    email_placeholder: "admin@fleet.example.com",
+    email_placeholder: "admin@example.com",
     password: "Password",
     password_placeholder: "••••••••",
     tenant_slug: "Tenant Slug",

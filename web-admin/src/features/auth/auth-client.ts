@@ -90,7 +90,7 @@ export async function loginSuperAdminApi(
 
   // Demo credential fallback (works seamlessly when backend is unseeded or offline)
   const isDemoSuperAdmin =
-    payload.email.trim().toLowerCase() === 'admin@fleet.example.com' &&
+    payload.email.trim().toLowerCase() === 'admin@example.com' &&
     payload.password === 'adminsecret123';
 
   if (isDemoSuperAdmin) {
@@ -102,7 +102,7 @@ export async function loginSuperAdminApi(
         access_token: mockToken,
         super_admin: {
           id: 'super_admin_demo_1',
-          email: 'admin@fleet.example.com',
+          email: 'admin@example.com',
         },
       },
       error: null,

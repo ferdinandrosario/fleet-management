@@ -19,11 +19,12 @@ export const AuthGate: React.FC<AuthGateProps> = ({
   const { loginOwner, loginSuperAdmin } = useAuth();
   const activeRole: 'owner' | 'super_admin' = isSuperAdminRoute ? 'super_admin' : 'owner';
 
-  // Form State - Pre-filled on /demo route based on activeRole
-  const [phone, setPhone] = useState<string>(isDemoRoute ? '+919876543210' : '');
-  const [email, setEmail] = useState<string>(isDemoRoute ? 'admin@example.com' : '');
+  // Form State - Pre-filled on /demo or /superadmin route based on activeRole
+  const isPrefillAllowed = isDemoRoute || isSuperAdminRoute;
+  const [phone, setPhone] = useState<string>(isPrefillAllowed ? '+919876543210' : '');
+  const [email, setEmail] = useState<string>(isPrefillAllowed ? 'admin@example.com' : '');
   const [password, setPassword] = useState<string>(
-    isDemoRoute ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : ''
+    isPrefillAllowed ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : ''
   );
   const tenantSlug = 'demo_tenant';
 

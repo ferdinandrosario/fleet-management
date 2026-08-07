@@ -6,14 +6,23 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { DataTable, TableColumn } from '../../components/ui/DataTable';
 import { ProvisionOwnerModal } from './ProvisionOwnerModal';
+import { ApiDocsAccess } from './ApiDocsAccess';
 import { apiRequest } from '../../lib/api';
 import { t } from '../../lib/i18n';
+
+export interface SystemInfo {
+  postgresql_version: string;
+  postgis_version?: string | null;
+  ruby_version: string;
+  rails_version: string;
+}
 
 interface SuperAdminMetrics {
   total_owners_count: number;
   active_owners_count: number;
   active_subscriptions_count: number;
   mrr_paise: number;
+  system_info?: SystemInfo;
 }
 
 interface TenantItem {
@@ -332,7 +341,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
               </Badge>
             </div>
             <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-              PostgreSQL 17 + PostGIS 3.5, Rails 8.1.3 Solid Queue, Razorpay Payment Webhooks &amp; ros-apartment telemetry
+              {metrics?.system_info ? `PostgreSQL ${metrics.system_info.postgresql_version} ${metrics.system_info.postgis_version ? `+ PostGIS ${metrics.system_info.postgis_version}` : ''}, Rails ${metrics.system_info.rails_version} Solid Queue` : 'Live Infrastructure Telemetry'}
             </p>
           </div>
           <Badge variant="info" className="self-start sm:self-auto">Platform Uptime 99.99%</Badge>
@@ -345,7 +354,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
               <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Database Engine Telemetry</span>
               <Badge variant="success">Healthy</Badge>
             </div>
-            <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>PostgreSQL 17 + PostGIS 3.5</p>
+            <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>
+              {metrics?.system_info ? `PostgreSQL ${metrics.system_info.postgresql_version} ${metrics.system_info.postgis_version ? `+ PostGIS ${metrics.system_info.postgis_version}` : ''}` : 'PostgreSQL Engine'}
+            </p>
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>4 active tenant schemas (`ros-apartment`) isolated · Spatial index latency: 1.2 ms</p>
           </Card>
 
@@ -354,7 +365,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
               <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Background Worker Queue</span>
               <Badge variant="success">Solid Queue</Badge>
             </div>
-            <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>Rails 8.1.3 Async Workers</p>
+            <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>
+              {metrics?.system_info ? `Rails ${metrics.system_info.rails_version} Async Workers` : 'Rails Async Workers'}
+            </p>
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>0 pending jobs · GPS Telemetry &amp; SMS / WhatsApp notifications active</p>
           </Card>
 
@@ -375,7 +388,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
               <h3 className="text-base font-semibold" style={{ color: 'var(--text-main)' }}>Multi-Tenant Schema Telemetry Monitor</h3>
               <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Isolated database schema health, active connection pool, and query performance</p>
             </div>
-            <Badge variant="neutral" className="self-start sm:self-auto">PostgreSQL 17</Badge>
+            <Badge variant="neutral" className="self-start sm:self-auto">
+              {metrics?.system_info ? `PostgreSQL ${metrics.system_info.postgresql_version}` : 'PostgreSQL Engine'}
+            </Badge>
           </div>
 
           <div className="overflow-x-auto no-scrollbar rounded-xl" style={{ border: '1px solid var(--border-color)' }}>
@@ -486,7 +501,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
             <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Database Engine</span>
             <Badge variant="success">Healthy</Badge>
           </div>
-          <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>PostgreSQL 17 + PostGIS 3.5</p>
+          <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>
+            {metrics?.system_info ? `PostgreSQL ${metrics.system_info.postgresql_version} ${metrics.system_info.postgis_version ? `+ PostGIS ${metrics.system_info.postgis_version}` : ''}` : 'PostgreSQL Engine'}
+          </p>
           <p className="text-xs" style={{ color: 'var(--text-muted)' }}>ros-apartment schema isolation operational</p>
         </Card>
 
@@ -495,7 +512,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
             <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Background Processing</span>
             <Badge variant="success">Solid Queue</Badge>
           </div>
-          <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>Rails 8.1.3 Async Workers</p>
+          <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>
+            {metrics?.system_info ? `Rails ${metrics.system_info.rails_version} Async Workers` : 'Rails Async Workers'}
+          </p>
           <p className="text-xs" style={{ color: 'var(--text-muted)' }}>SMS / WhatsApp telemetry notifications queued</p>
         </Card>
 
@@ -545,6 +564,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
           onToggleLazyLoad={setIsLazyLoad}
         />
       </Card>
+
+      {/* API Documentation Access Control */}
+      <ApiDocsAccess />
 
       <ProvisionOwnerModal
         isOpen={isProvisionModalOpen}

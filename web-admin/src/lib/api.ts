@@ -1,16 +1,26 @@
 // Shared API client handling JWT token, X-Tenant header, and backend response envelope.
 
-let inMemoryToken: string | null = null;
-let currentTenant: string | null = null;
+let inMemoryToken: string | null = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('fm_token') : null;
+let currentTenant: string | null = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('fm_tenant') : null;
 
 export const setAuthToken = (token: string | null) => {
   inMemoryToken = token;
+  if (token) {
+    sessionStorage.setItem('fm_token', token);
+  } else {
+    sessionStorage.removeItem('fm_token');
+  }
 };
 
 export const getAuthToken = () => inMemoryToken;
 
 export const setTenantSlug = (slug: string | null) => {
   currentTenant = slug;
+  if (slug) {
+    sessionStorage.setItem('fm_tenant', slug);
+  } else {
+    sessionStorage.removeItem('fm_tenant');
+  }
 };
 
 export const getTenantSlug = () => currentTenant;

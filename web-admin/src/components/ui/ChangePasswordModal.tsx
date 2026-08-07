@@ -82,24 +82,46 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/80 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
-      <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col animate-in slide-in-from-bottom sm:zoom-in-95 duration-250">
-        
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+      style={{ background: 'rgba(5, 8, 16, 0.85)', backdropFilter: 'blur(6px)' }}
+    >
+      <div
+        className="w-full max-w-md overflow-hidden flex flex-col animate-in slide-in-from-bottom sm:zoom-in-95 duration-250"
+        style={{
+          background: 'var(--color-surface-raised)',
+          border: '1px solid var(--border-color)',
+          borderRadius: '16px 16px 0 0',
+        }}
+      >
+        {/* Mobile drag handle */}
+        <div className="w-12 h-1 rounded-full mx-auto mt-3 mb-1 shrink-0 sm:hidden" style={{ background: 'var(--border-color)' }} />
+
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[var(--border-color)] bg-[var(--input-bg)]/40">
+        <div
+          className="flex items-center justify-between px-5 py-4 shrink-0"
+          style={{ borderBottom: '1px solid var(--border-color)', background: 'var(--color-surface-sunken)' }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8' }}
+            >
               <Key className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[var(--text-main)]">Change Account Password</h3>
-              <p className="text-[11px] text-[var(--text-muted)]">Update security credentials for your fleet account</p>
+              <h3 className="text-sm font-bold" style={{ color: 'var(--text-main)' }}>Change Account Password</h3>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>Update security credentials for your fleet account</p>
             </div>
           </div>
           <button
             onClick={handleClose}
             type="button"
-            className="text-[var(--text-muted)] hover:text-[var(--text-main)] p-1.5 rounded-lg hover:bg-[var(--input-bg)] transition-colors"
+            aria-label="Close"
+            className="p-1.5 rounded-lg transition-colors cursor-pointer"
+            style={{ color: 'var(--text-muted)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--color-row-hover)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = ''; e.currentTarget.style.color = 'var(--text-muted)'; }}
           >
             <X className="w-4 h-4" />
           </button>
@@ -107,21 +129,33 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen
 
         {/* Content */}
         <div className="p-5 space-y-4">
+
+          {/* Error — inline, persists until corrected */}
           {error && (
-            <div className="p-3 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-xs flex items-center gap-2">
+            <div
+              className="p-3 rounded-xl text-sm flex items-center gap-2.5"
+              style={{ background: 'rgba(244,63,94,0.10)', border: '1px solid rgba(244,63,94,0.25)', color: 'var(--danger-color)' }}
+            >
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
+          {/* Trust signal — persists; user closes explicitly */}
           {success && (
-            <div className="p-3 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 rounded-xl text-xs flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span>Password changed successfully! Closing...</span>
+            <div
+              className="p-3.5 rounded-xl flex items-center gap-3"
+              style={{ background: 'rgba(16,185,129,0.10)', border: '1px solid rgba(16,185,129,0.30)', color: 'var(--success-color)' }}
+            >
+              <CheckCircle2 className="w-5 h-5 shrink-0" />
+              <div>
+                <p className="text-sm font-semibold">Password updated</p>
+                <p style={{ fontSize: 'var(--text-xs)', opacity: 0.8 }}>Your account password has been changed successfully.</p>
+              </div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-3.5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               label="Current Password"
               type="password"
@@ -130,6 +164,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen
               placeholder="••••••••"
               icon={<Lock className="w-3.5 h-3.5" />}
               required
+              disabled={success}
             />
 
             <Input
@@ -139,7 +174,9 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Minimum 6 characters"
               icon={<Key className="w-3.5 h-3.5" />}
+              helperText="At least 6 characters"
               required
+              disabled={success}
             />
 
             <Input
@@ -150,37 +187,41 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen
               placeholder="Re-enter new password"
               icon={<Key className="w-3.5 h-3.5" />}
               required
+              disabled={success}
             />
 
-            <div className="pt-2 flex items-center justify-end gap-2">
+            <div
+              className="pt-3 flex items-center justify-end gap-2.5"
+              style={{ borderTop: '1px solid var(--border-color)' }}
+            >
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
                 disabled={loading}
-                className="text-xs px-3 py-1.5"
               >
-                Cancel
+                {success ? 'Done' : 'Cancel'}
               </Button>
-              <Button
-                type="submit"
-                variant="primary"
-                disabled={loading || success}
-                className="text-xs px-4 py-1.5 flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Updating...</span>
-                  </>
-                ) : (
-                  <span>Update Password</span>
-                )}
-              </Button>
+              {!success && (
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={loading}
+                  className="flex items-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
+                      <span>Updating…</span>
+                    </>
+                  ) : (
+                    <span>Update Password</span>
+                  )}
+                </Button>
+              )}
             </div>
           </form>
         </div>
-
       </div>
     </div>
   );

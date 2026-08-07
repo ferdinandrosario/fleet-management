@@ -9,7 +9,7 @@ export const FontSizeToggle: React.FC = () => {
     <div className="flex items-center gap-1 bg-[var(--input-bg)] p-1 rounded-xl border border-[var(--border-color)] text-xs">
       {/* Label / Icon */}
       <div className="flex items-center px-1.5 text-[var(--text-muted)] gap-1 shrink-0">
-        <Type className="w-3.5 h-3.5 text-blue-400" />
+        <Type className="w-3.5 h-3.5 text-indigo-400" />
         <span className="hidden lg:inline text-[11px] font-medium">Text</span>
       </div>
 

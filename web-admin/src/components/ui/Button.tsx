@@ -24,13 +24,13 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 border border-blue-400/30',
+      'bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg hover:shadow-indigo-500/30 hover:from-indigo-400 hover:to-violet-500 border border-indigo-400/30',
     secondary:
       'bg-[var(--input-bg)] text-[var(--text-main)] hover:border-[var(--primary-accent)] border border-[var(--border-color)]',
     danger:
-      'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg hover:from-red-500 hover:to-rose-500 border border-red-400/30',
+      'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-lg hover:from-rose-400 hover:to-red-500 border border-rose-400/30',
     outline:
-      'bg-transparent text-blue-400 border border-blue-500/40 hover:bg-blue-500/10',
+      'bg-transparent text-indigo-300 border border-indigo-500/35 hover:bg-indigo-500/10',
   };
 
   return (

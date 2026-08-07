@@ -33,7 +33,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             } ${
               error
                 ? 'border-rose-500/80 focus:border-rose-500 focus:ring-1 focus:ring-rose-500'
-                : 'border-[var(--border-color)] focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                : 'border-[var(--border-color)] focus:border-[var(--primary-accent)] focus:ring-1 focus:ring-indigo-500/40'
             } ${className}`}
             {...props}
           />

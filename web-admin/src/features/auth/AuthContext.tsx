@@ -23,9 +23,44 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [role, setRole] = useState<'owner' | 'super_admin'>('owner');
-  const [tenantSlug, setTenantSlugState] = useState<string>('demo_tenant');
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    try {
+      const savedUser = sessionStorage.getItem('fm_user');
+      const savedToken = sessionStorage.getItem('fm_token');
+      if (savedUser && savedToken) {
+        setAuthToken(savedToken);
+        const parsed = JSON.parse(savedUser);
+        if (parsed.tenantSlug) setTenantSlug(parsed.tenantSlug);
+        return parsed;
+      }
+    } catch {
+      // ignore JSON parse errors
+    }
+    return null;
+  });
+
+  const [role, setRole] = useState<'owner' | 'super_admin'>(() => {
+    try {
+      const savedUser = sessionStorage.getItem('fm_user');
+      if (savedUser) {
+        const parsed = JSON.parse(savedUser);
+        if (parsed.role) return parsed.role;
+      }
+    } catch {
+      // ignore
+    }
+    return 'owner';
+  });
+
+  const [tenantSlug, setTenantSlugState] = useState<string>(() => {
+    try {
+      const savedTenant = sessionStorage.getItem('fm_tenant');
+      if (savedTenant) return savedTenant;
+    } catch {
+      // ignore
+    }
+    return 'demo_tenant';
+  });
 
   const setTenant = (slug: string) => {
     setTenantSlugState(slug);
@@ -45,6 +80,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       };
       setUser(authUser);
       setRole('owner');
+      try {
+        sessionStorage.setItem('fm_user', JSON.stringify(authUser));
+      } catch {
+        // ignore storage errors
+      }
       return { success: true };
     } else {
       return {
@@ -67,6 +107,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       };
       setUser(authUser);
       setRole('super_admin');
+      try {
+        sessionStorage.setItem('fm_user', JSON.stringify(authUser));
+      } catch {
+        // ignore storage errors
+      }
       return { success: true };
     } else {
       return {
@@ -83,6 +128,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Ignore network errors on logout
     } finally {
       setUser(null);
+      setRole('owner');
+      try {
+        sessionStorage.removeItem('fm_user');
+      } catch {
+        // ignore storage errors
+      }
       setAuthToken(null);
       setTenantSlug(null);
     }

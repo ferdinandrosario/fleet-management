@@ -10,6 +10,13 @@ import { AddVehicleModal, VehicleData } from './AddVehicleModal';
 import { apiRequest } from '../../lib/api';
 import { t } from '../../lib/i18n';
 
+export interface SystemInfo {
+  postgresql_version: string;
+  postgis_version?: string | null;
+  ruby_version: string;
+  rails_version: string;
+}
+
 interface OwnerMetrics {
   total_revenue_cents: number;
   completed_jobs_count: number;
@@ -18,6 +25,7 @@ interface OwnerMetrics {
   active_drivers_count: number;
   average_vehicle_rating: number;
   vehicle_utilization_pct: number;
+  system_info?: SystemInfo;
 }
 
 const mockFleetVehicles: VehicleData[] = [
@@ -184,15 +192,15 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
       header: 'Vehicle Name',
       accessor: (row) => (
         <div>
-          <p className="font-semibold text-slate-100">{row.name}</p>
-          <p className="text-[11px] text-slate-400">{row.category}</p>
+          <p className="font-semibold" style={{ color: 'var(--text-main)' }}>{row.name}</p>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>{row.category}</p>
         </div>
       ),
     },
     { header: 'Registration', accessor: 'registration' },
     {
       header: 'Assigned Driver',
-      accessor: (row) => <span className="text-slate-300 font-medium">{row.driver}</span>,
+      accessor: (row) => <span className="font-medium" style={{ color: 'var(--text-main)' }}>{row.driver}</span>,
     },
     { header: 'Booking Rate', accessor: 'rate' },
     { header: 'Status', accessor: (row) => getStatusBadge(row.status) },
@@ -200,9 +208,23 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
 
   if (loading) {
     return (
-      <div className="p-12 text-center text-slate-400">
-        <div className="animate-spin inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mb-4"></div>
-        <p className="text-sm font-medium">Loading Commercial Fleet Analytics...</p>
+      <div className="space-y-6 animate-pulse">
+        {/* Header skeleton */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <div className="h-7 w-64 rounded-lg" style={{ background: 'var(--color-surface-raised)' }} />
+            <div className="h-4 w-96 rounded-lg" style={{ background: 'var(--color-surface-raised)' }} />
+          </div>
+          <div className="h-9 w-28 rounded-xl" style={{ background: 'var(--color-surface-raised)' }} />
+        </div>
+        {/* Stat cards skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-24 rounded-xl" style={{ background: 'var(--color-surface-raised)', borderRadius: 12, border: '1px solid var(--border-color)' }} />
+          ))}
+        </div>
+        {/* Chart skeleton */}
+        <div className="h-52 rounded-xl" style={{ background: 'var(--color-surface-raised)', borderRadius: 12, border: '1px solid var(--border-color)' }} />
       </div>
     );
   }
@@ -218,11 +240,11 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
             <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-100">Fleet Equipment & Machinery Inventory</h1>
+              <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-main)' }}>Fleet Equipment &amp; Machinery Inventory</h1>
               <Badge variant="info">{vehicles.length} Machinery Registered</Badge>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Commercial fleet inventory across tractors, JCB excavators, cranes, harvesters & buses
+            <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+              Commercial fleet inventory across tractors, JCB excavators, cranes, harvesters &amp; buses
             </p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
@@ -269,8 +291,8 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         <Card className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h3 className="text-base font-semibold text-slate-100">Active Machinery Directory</h3>
-              <p className="text-xs text-slate-400">Search and manage operational rates and driver assignments</p>
+              <h3 className="text-base font-semibold" style={{ color: 'var(--text-main)' }}>Active Machinery Directory</h3>
+              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Search and manage operational rates and driver assignments</p>
             </div>
             <Badge variant="neutral" className="self-start sm:self-auto">Schema Isolated</Badge>
           </div>
@@ -306,17 +328,20 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
             <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-100">Real-Time Telemetry & System Operations</h1>
+              <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-main)' }}>Real-Time Telemetry &amp; System Operations</h1>
               <Badge variant="success">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-1 inline-block" />
                 Live GPS Stream
               </Badge>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Vehicle location telemetry, engine diagnostics, PostGIS spatial tracking & tenant isolation status
+            <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+              Vehicle location telemetry, engine diagnostics, PostGIS spatial tracking &amp; tenant isolation status
             </p>
           </div>
-          <div className="flex items-center gap-2 font-mono text-xs text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800 self-start sm:self-auto">
+          <div
+            className="flex items-center gap-2 font-mono text-xs px-3 py-1.5 rounded-lg self-start sm:self-auto"
+            style={{ color: 'var(--text-muted)', background: 'var(--color-surface-sunken)', border: '1px solid var(--border-color)' }}
+          >
             <span>Schema: tenant_kaveri_agri</span>
           </div>
         </div>
@@ -336,7 +361,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
           <StatBox
             title="System Uptime"
             value="99.99%"
-            subtitle="PostgreSQL 17 + PostGIS 3.5"
+            subtitle={metrics?.system_info ? `PostgreSQL ${metrics.system_info.postgresql_version} ${metrics.system_info.postgis_version ? `+ PostGIS ${metrics.system_info.postgis_version}` : ''}` : 'PostgreSQL Engine'}
           />
           <StatBox
             title="Queue Processor"
@@ -349,15 +374,15 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         <Card className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h3 className="text-base font-semibold text-slate-100">Live Vehicle Telemetry Feed</h3>
-              <p className="text-xs text-slate-400">Real-time GPS coordinates, operating speed, and engine thermal telemetry</p>
+              <h3 className="text-base font-semibold" style={{ color: 'var(--text-main)' }}>Live Vehicle Telemetry Feed</h3>
+              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Real-time GPS coordinates, operating speed, and engine thermal telemetry</p>
             </div>
             <Badge variant="info" className="self-start sm:self-auto">4G LTE Cellular GPS</Badge>
           </div>
 
-          <div className="overflow-x-auto no-scrollbar border border-slate-800 rounded-xl">
-            <table className="w-full text-xs text-left text-slate-300 min-w-[700px]">
-              <thead className="text-[11px] uppercase bg-slate-900/80 text-slate-400 border-b border-slate-800">
+          <div className="overflow-x-auto no-scrollbar rounded-xl" style={{ border: '1px solid var(--border-color)' }}>
+            <table className="w-full text-xs text-left min-w-[700px]" style={{ color: 'var(--text-muted)' }}>
+              <thead style={{ background: 'var(--color-surface-sunken)', borderBottom: '1px solid var(--border-color)', fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' }}>
                 <tr>
                   <th className="px-4 py-3 font-semibold whitespace-nowrap">Vehicle</th>
                   <th className="px-4 py-3 font-semibold whitespace-nowrap">Registration</th>
@@ -368,43 +393,28 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
                   <th className="px-4 py-3 font-semibold whitespace-nowrap">Last Ping</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
-                <tr className="hover:bg-slate-900/40">
-                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">Mahindra 575 DI Tractor</td>
-                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-AX-4821</td>
-                  <td className="px-4 py-3 font-mono text-emerald-400 whitespace-nowrap">11.6643° N, 78.1460° E (Salem)</td>
-                  <td className="px-4 py-3 font-semibold text-slate-200 whitespace-nowrap">24 km/h</td>
-                  <td className="px-4 py-3 text-slate-300 whitespace-nowrap">82°C (Normal)</td>
-                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="info">Transmitting</Badge></td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">2s ago</td>
-                </tr>
-                <tr className="hover:bg-slate-900/40">
-                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">JCB 3DX Super Excavator</td>
-                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-BX-9012</td>
-                  <td className="px-4 py-3 font-mono text-slate-400 whitespace-nowrap">11.0168° N, 76.9558° E (Coimbatore)</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">0 km/h (Idle)</td>
-                  <td className="px-4 py-3 text-slate-300 whitespace-nowrap">65°C (Idle)</td>
-                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="success">Standby</Badge></td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">45s ago</td>
-                </tr>
-                <tr className="hover:bg-slate-900/40">
-                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">Escorts Hydra Crane 15T</td>
-                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-CY-3344</td>
-                  <td className="px-4 py-3 font-mono text-slate-400 whitespace-nowrap">10.7905° N, 78.7047° E (Trichy)</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">0 km/h</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">Off</td>
-                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="warning">In Service</Badge></td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">5m ago</td>
-                </tr>
-                <tr className="hover:bg-slate-900/40">
-                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">Ashok Leyland Viking Bus 40s</td>
-                  <td className="px-4 py-3 font-mono text-slate-300 whitespace-nowrap">TN-37-DZ-7788</td>
-                  <td className="px-4 py-3 font-mono text-slate-400 whitespace-nowrap">9.9252° N, 78.1198° E (Madurai)</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">0 km/h</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">Off</td>
-                  <td className="px-4 py-3 whitespace-nowrap"><Badge variant="success">Parked</Badge></td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">12m ago</td>
-                </tr>
+              <tbody style={{ color: 'var(--text-muted)', borderColor: 'var(--border-color)' }}>
+                {[
+                  { name: 'Mahindra 575 DI Tractor', reg: 'TN-37-AX-4821', coords: '11.6643° N, 78.1460° E (Salem)', speed: '24 km/h', temp: '82°C (Normal)', badge: <Badge variant="info">Transmitting</Badge>, last: '2s ago' },
+                  { name: 'JCB 3DX Super Excavator', reg: 'TN-37-BX-9012', coords: '11.0168° N, 76.9558° E (Coimbatore)', speed: '0 km/h (Idle)', temp: '65°C (Idle)', badge: <Badge variant="success">Standby</Badge>, last: '45s ago' },
+                  { name: 'Escorts Hydra Crane 15T', reg: 'TN-37-CY-3344', coords: '10.7905° N, 78.7047° E (Trichy)', speed: '0 km/h', temp: 'Off', badge: <Badge variant="warning">In Service</Badge>, last: '5m ago' },
+                  { name: 'Ashok Leyland Viking Bus 40s', reg: 'TN-37-DZ-7788', coords: '9.9252° N, 78.1198° E (Madurai)', speed: '0 km/h', temp: 'Off', badge: <Badge variant="success">Parked</Badge>, last: '12m ago' },
+                ].map((row) => (
+                  <tr
+                    key={row.reg}
+                    style={{ borderBottom: '1px solid var(--border-color)' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-row-hover)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+                  >
+                    <td className="px-4 py-3 font-medium whitespace-nowrap" style={{ color: 'var(--text-main)' }}>{row.name}</td>
+                    <td className="px-4 py-3 font-mono whitespace-nowrap" style={{ color: 'var(--text-muted)' }}>{row.reg}</td>
+                    <td className="px-4 py-3 font-mono whitespace-nowrap text-emerald-400">{row.coords}</td>
+                    <td className="px-4 py-3 whitespace-nowrap" style={{ color: 'var(--text-muted)' }}>{row.speed}</td>
+                    <td className="px-4 py-3 whitespace-nowrap" style={{ color: 'var(--text-muted)' }}>{row.temp}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{row.badge}</td>
+                    <td className="px-4 py-3 whitespace-nowrap" style={{ color: 'var(--text-muted)' }}>{row.last}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -420,10 +430,15 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-100">{t('owner_dashboard')}</h1>
+            <h1
+              className="text-xl sm:text-2xl font-bold"
+              style={{ color: 'var(--text-main)' }}
+            >
+              {t('owner_dashboard')}
+            </h1>
             <Badge variant="success">Live Operations</Badge>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
             Real-time commercial vehicle fleet utilization, driver assignments, and revenue reports
           </p>
         </div>
@@ -444,12 +459,15 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
       </div>
 
       {error && (
-        <div className="p-4 bg-rose-500/15 border border-rose-500/30 text-rose-400 rounded-xl text-sm flex items-center justify-between">
+        <div
+          className="p-4 rounded-xl text-sm flex items-center justify-between"
+          style={{ background: 'rgba(244,63,94,0.10)', border: '1px solid rgba(244,63,94,0.28)', color: 'var(--danger-color)' }}
+        >
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
-          <span className="text-xs text-rose-400/80">Check tenant API connection</span>
+          <span className="text-xs" style={{ opacity: 0.75 }}>Check tenant API connection</span>
         </div>
       )}
 
@@ -489,42 +507,38 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         </Card>
 
         <Card className="space-y-4">
-          <h3 className="text-sm font-semibold text-slate-200">Driver Payroll & Settlements</h3>
-          <p className="text-xs text-slate-400">
+          <h3 className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>Driver Payroll &amp; Settlements</h3>
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
             Automated 40% driver share split, hours tracked, and weekly payout statuses.
           </p>
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <div>
-                <p className="text-xs font-semibold text-slate-200">Ramesh Kumar</p>
-                <p className="text-[11px] text-slate-400">Tractor Driver · 38 hrs</p>
+          <div className="space-y-2 pt-2">
+            {[
+              { name: 'Ramesh Kumar', role: 'Tractor Driver · 38 hrs', badge: <Badge variant="success">Paid ₹15,200</Badge> },
+              { name: 'Suresh Babu', role: 'JCB Operator · 42 hrs', badge: <Badge variant="warning">Pending ₹20,160</Badge> },
+              { name: 'Karthik Raja', role: 'Crane Operator · 20 hrs', badge: <Badge variant="info">Processing</Badge> },
+            ].map((driver) => (
+              <div
+                key={driver.name}
+                className="flex items-center justify-between p-3 rounded-xl"
+                style={{ background: 'var(--color-surface-sunken)', border: '1px solid var(--border-color)' }}
+              >
+                <div>
+                  <p className="text-xs font-semibold" style={{ color: 'var(--text-main)' }}>{driver.name}</p>
+                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>{driver.role}</p>
+                </div>
+                {driver.badge}
               </div>
-              <Badge variant="success">Paid ₹15,200</Badge>
-            </div>
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <div>
-                <p className="text-xs font-semibold text-slate-200">Suresh Babu</p>
-                <p className="text-[11px] text-slate-400">JCB Operator · 42 hrs</p>
-              </div>
-              <Badge variant="warning">Pending ₹20,160</Badge>
-            </div>
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <div>
-                <p className="text-xs font-semibold text-slate-200">Karthik Raja</p>
-                <p className="text-[11px] text-slate-400">Crane Operator · 20 hrs</p>
-              </div>
-              <Badge variant="info">Processing</Badge>
-            </div>
+            ))}
           </div>
         </Card>
       </div>
 
-      {/* Fleet Inventory Table */}
+      {/* Fleet Inventory Table — summary snapshot; full table lives in the Fleet tab */}
       <Card className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-semibold text-slate-100">Fleet Equipment Inventory</h3>
-            <p className="text-xs text-slate-400">
+            <h3 className="text-base font-semibold" style={{ color: 'var(--text-main)' }}>Fleet Equipment Inventory</h3>
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
               Live status across tractors, JCB excavators, cranes, harvesters, and commercial buses
             </p>
           </div>
@@ -532,7 +546,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
             <Button
               onClick={() => setIsAddModalOpen(true)}
               variant="primary"
-              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-xs px-3 py-1.5"
+              className="flex items-center gap-1.5 text-xs px-3 py-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>{t('add_vehicle')}</span>

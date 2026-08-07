@@ -2,17 +2,25 @@ import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
+  size = 'md',
   children,
   className = '',
   ...props
 }) => {
   const baseStyle =
-    'inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+    'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+
+  const sizes = {
+    sm: 'px-3 py-1.5 text-xs',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-5 py-2.5 text-base',
+  };
 
   const variants = {
     primary:
@@ -26,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button className={`${baseStyle} ${variants[variant]} ${className}`} {...props}>
+    <button className={`${baseStyle} ${sizes[size]} ${variants[variant]} ${className}`} {...props}>
       {children}
     </button>
   );

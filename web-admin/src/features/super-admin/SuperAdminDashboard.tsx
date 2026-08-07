@@ -91,8 +91,49 @@ interface SuperAdminDashboardProps {
 
 export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ activeTab = 'overview' }) => {
   const [metrics, setMetrics] = useState<SuperAdminMetrics | null>(null);
+  const [tenants, setTenants] = useState<TenantItem[]>(mockTenants);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [pagination, setPagination] = useState<{ page: number; pages: number; count: number; limit: number }>({
+    page: 1,
+    pages: 1,
+    count: mockTenants.length,
+    limit: 20,
+  });
+  const [isLazyLoad, setIsLazyLoad] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchTenantsPage = async (pageToFetch: number, append: boolean = false) => {
+    if (append) setLoadingMore(true);
+    const res = await apiRequest(`/api/v1/super_admin/owners?page=${pageToFetch}&limit=20`);
+    if (res.status === 'success' && res.data?.owners) {
+      const mapped: TenantItem[] = res.data.owners.map((o: any) => ({
+        id: o.uuid || o.id,
+        name: o.owner_name || o.name || 'Fleet Owner',
+        company_name: o.company_name || o.name,
+        address: o.address || 'Tamil Nadu, India',
+        slug: o.slug,
+        schema: `tenant_${o.slug}`,
+        plan: o.plan?.name || o.plan?.tier?.toUpperCase() || 'Pro Fleet',
+        status: o.status || 'active',
+        mrr: `₹${(o.mrr_cents ? o.mrr_cents / 100 : 8999).toLocaleString('en-IN')}/mo`,
+        vehiclesCount: o.vehicles_count || 12,
+      }));
+
+      if (append) {
+        setTenants((prev) => [...prev, ...mapped]);
+      } else {
+        setTenants(mapped);
+      }
+
+      if (res.data.pagination) {
+        setPagination(res.data.pagination);
+      }
+      setPage(pageToFetch);
+    }
+    if (append) setLoadingMore(false);
+  };
 
   useEffect(() => {
     async function loadMetrics() {
@@ -105,11 +146,23 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
         setMetrics(defaultSuperAdminMetrics);
         setError(null);
       }
+
+      await fetchTenantsPage(1, false);
       setLoading(false);
     }
 
     loadMetrics();
   }, []);
+
+  const handlePageChange = (newPage: number) => {
+    fetchTenantsPage(newPage, false);
+  };
+
+  const handleLoadMore = () => {
+    if (page < pagination.pages && !loadingMore) {
+      fetchTenantsPage(page + 1, true);
+    }
+  };
 
   const tenantColumns: TableColumn<TenantItem>[] = [
     {
@@ -226,9 +279,16 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
           </div>
           <DataTable
             columns={tenantColumns}
-            data={mockTenants}
+            data={tenants}
             searchPlaceholder="Search tenant company name, owner, or slug..."
             searchKey="company_name"
+            pagination={pagination}
+            onPageChange={handlePageChange}
+            onLoadMore={handleLoadMore}
+            hasMore={page < pagination.pages}
+            loadingMore={loadingMore}
+            isLazyLoad={isLazyLoad}
+            onToggleLazyLoad={setIsLazyLoad}
           />
         </Card>
       </div>
@@ -440,9 +500,16 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
         </div>
         <DataTable
           columns={tenantColumns}
-          data={mockTenants}
+          data={tenants}
           searchPlaceholder="Search tenants by name or slug..."
           searchKey="name"
+          pagination={pagination}
+          onPageChange={handlePageChange}
+          onLoadMore={handleLoadMore}
+          hasMore={page < pagination.pages}
+          loadingMore={loadingMore}
+          isLazyLoad={isLazyLoad}
+          onToggleLazyLoad={setIsLazyLoad}
         />
       </Card>
     </div>

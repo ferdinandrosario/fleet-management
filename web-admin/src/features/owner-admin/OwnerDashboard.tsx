@@ -78,7 +78,44 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
   const [vehicles, setVehicles] = useState<VehicleData[]>(mockFleetVehicles);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [pagination, setPagination] = useState<{ page: number; pages: number; count: number; limit: number }>({
+    page: 1,
+    pages: 1,
+    count: mockFleetVehicles.length,
+    limit: 20,
+  });
+  const [isLazyLoad, setIsLazyLoad] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchVehiclesPage = async (pageToFetch: number, append: boolean = false) => {
+    if (append) setLoadingMore(true);
+    const vehiclesRes = await apiRequest(`/api/v1/vehicles?page=${pageToFetch}&limit=20`);
+    if (vehiclesRes.status === 'success' && vehiclesRes.data?.vehicles) {
+      const mapped: VehicleData[] = vehiclesRes.data.vehicles.map((v: any) => ({
+        id: v.uuid || v.id,
+        name: v.name,
+        category: v.category?.replace('_', ' ').toUpperCase() || 'EQUIPMENT',
+        registration: v.registration_number,
+        status: v.status === 'available' ? 'active' : v.status === 'booked' ? 'on_trip' : v.status === 'maintenance' ? 'in_service' : v.status,
+        rate: `₹${(v.hourly_rate_cents / 100).toLocaleString('en-IN')}/hr`,
+        driver: 'Assigned Driver',
+      }));
+
+      if (append) {
+        setVehicles((prev) => [...prev, ...mapped]);
+      } else {
+        setVehicles(mapped);
+      }
+
+      if (vehiclesRes.data.pagination) {
+        setPagination(vehiclesRes.data.pagination);
+      }
+      setPage(pageToFetch);
+    }
+    if (append) setLoadingMore(false);
+  };
 
   useEffect(() => {
     async function loadOwnerMetrics() {
@@ -92,28 +129,22 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         setError(null);
       }
 
-      // Load vehicles list from backend if available
-      const vehiclesRes = await apiRequest('/api/v1/vehicles');
-      if (vehiclesRes.status === 'success' && vehiclesRes.data?.vehicles) {
-        const mapped: VehicleData[] = vehiclesRes.data.vehicles.map((v: any) => ({
-          id: v.uuid || v.id,
-          name: v.name,
-          category: v.category,
-          registration: v.registration_number,
-          status: v.status === 'available' ? 'active' : v.status,
-          rate: `₹${(v.hourly_rate_cents / 100).toLocaleString('en-IN')}/hr`,
-          driver: 'Unassigned',
-        }));
-        if (mapped.length > 0) {
-          setVehicles(mapped);
-        }
-      }
-
+      await fetchVehiclesPage(1, false);
       setLoading(false);
     }
 
     loadOwnerMetrics();
   }, []);
+
+  const handlePageChange = (newPage: number) => {
+    fetchVehiclesPage(newPage, false);
+  };
+
+  const handleLoadMore = () => {
+    if (page < pagination.pages && !loadingMore) {
+      fetchVehiclesPage(page + 1, true);
+    }
+  };
 
   const handleExportCsv = async () => {
     const baseUrl = import.meta.env.VITE_API_URL || '';
@@ -248,6 +279,13 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
             data={vehicles}
             searchPlaceholder="Search vehicle name, category, or driver..."
             searchKey="name"
+            pagination={pagination}
+            onPageChange={handlePageChange}
+            onLoadMore={handleLoadMore}
+            hasMore={page < pagination.pages}
+            loadingMore={loadingMore}
+            isLazyLoad={isLazyLoad}
+            onToggleLazyLoad={setIsLazyLoad}
           />
         </Card>
 
@@ -507,6 +545,13 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
           data={vehicles}
           searchPlaceholder="Search vehicles or drivers..."
           searchKey="name"
+          pagination={pagination}
+          onPageChange={handlePageChange}
+          onLoadMore={handleLoadMore}
+          hasMore={page < pagination.pages}
+          loadingMore={loadingMore}
+          isLazyLoad={isLazyLoad}
+          onToggleLazyLoad={setIsLazyLoad}
         />
       </Card>
 

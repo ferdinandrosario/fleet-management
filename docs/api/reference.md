@@ -18,7 +18,7 @@ API documentation is generated directly from Rails controllers, serializers, and
 
 **Access Control**: The `/api-docs` endpoints are protected by HTTP Basic Auth.
 - **Super Admins**: Can log in using their registered super admin email and password.
-- **Developers/Third-Parties**: Super admins can generate temporary access tokens (grants) from the **Technical Architecture** page in the web admin portal. The developer logs in using their email as the username and the generated token as the password.
+- **Developers/Third-Parties**: Super admins can generate temporary access tokens (grants) from the **Super Admin Dashboard** page in the web admin portal. The developer logs in using their email as the username and the generated token as the password.
 ## Health
 
 `GET /api/v1/health` → `200`

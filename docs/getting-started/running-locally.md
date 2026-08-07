@@ -109,7 +109,7 @@ bin/rails db:drop db:prepare db:seed      # drop, recreate, migrate dev + test, 
 
 Seeding creates:
 - **Plans**: `basic`, `pro`, `enterprise`
-- **SuperAdmin**: `admin@fleet.example.com` / `adminsecret123`
+- **SuperAdmin**: `admin@example.com` / `adminsecret123`
 - **Demo Tenant (`demo_tenant`)**: Owner `Demo Fleet Services`, user `+919876543210` / `password123`
 
 If `db:drop` complains about open connections, stop the server (and any

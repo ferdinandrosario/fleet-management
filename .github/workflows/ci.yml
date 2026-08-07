@@ -13,7 +13,7 @@ jobs:
 
     services:
       postgres:
-        image: postgis/postgis:17-3.5
+        image: postgis/postgis:18-3.6
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -21,7 +21,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -29,14 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL 17 Client Tools (for PostGIS & Apartment pg_dump)
+      - name: Install PostgreSQL 18 client (pg_dump must match the server)
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y wget lsb-release gnupg
-          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-          sudo apt-get update -qq
-          sudo apt-get install -y postgresql-client-17 libpq-dev
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install --no-install-recommends -y postgresql-client-18
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -57,13 +55,13 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_PORT: 5432
           POSTGRES_DB: fleet_management_test
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/fleet_management_test
+          DATABASE_URL: postgis://postgres:password@127.0.0.1:5432/fleet_management_test
           AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
           AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
           AR_ENCRYPTION_KEY_DERIVATION_SALT: dev_only_key_derivation_salt_not_secret
           JWT_SECRET_KEY: test_jwt_secret_key_000000000000000000
         run: |
-          bundle exec rails db:prepare
+          bundle exec rails db:test:prepare
         working-directory: backend
 
       - name: Run RSpec Test Suite with 100% Coverage Gate
@@ -79,7 +77,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_DB: fleet_management_test
           COVERAGE: full
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/fleet_management_test
+          DATABASE_URL: postgis://postgres:password@127.0.0.1:5432/fleet_management_test
           AR_ENCRYPTION_PRIMARY_KEY: dev_only_primary_key_not_secret_0001
           AR_ENCRYPTION_DETERMINISTIC_KEY: dev_only_deterministic_key_not_secret
           AR_ENCRYPTION_KEY_DERIVATION_SALT: dev_only_key_derivation_salt_not_secret
@@ -90,7 +88,7 @@ jobs:
 
       - name: Run Security Scanner (Brakeman)
         run: |
-          bundle exec brakeman -q
+          bundle exec brakeman -q --no-pager
         working-directory: backend
 
       - name: Run Code Linter (RuboCop)

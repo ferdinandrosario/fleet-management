@@ -20,7 +20,8 @@ module Api
           # end
 
           # 2. Process webhook idempotently
-          result = RazorpayWebhookService.call(event: params.permit!.to_h)
+          event_payload = params.to_unsafe_h.except(:controller, :action, :razorpay)
+          result = RazorpayWebhookService.call(event: event_payload)
 
           if result.success?
             head :ok

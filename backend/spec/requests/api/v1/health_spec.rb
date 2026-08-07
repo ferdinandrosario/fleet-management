@@ -8,7 +8,9 @@ RSpec.describe "Api::V1::Health", type: :request do
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
       expect(body["status"]).to eq("success")
-      expect(body["data"]).to eq("service" => "fleet-management-api", "status" => "ok")
+      expect(body["data"]["service"]).to eq("fleet-management-api")
+      expect(body["data"]["status"]).to eq("ok")
+      expect(body["data"]).to have_key("system_info")
       expect(body["error"]).to be_nil
     end
   end

@@ -1,6 +1,28 @@
 # Analytics, dashboard metrics, and CSV export reporting service (Session 10).
 class ReportingService
   class << self
+    def system_info
+      pg_version = begin
+        ActiveRecord::Base.connection.select_value("SHOW server_version;").to_s.strip
+      rescue StandardError => e
+        "Error: #{e.message}"
+      end
+
+      postgis_version = begin
+        ActiveRecord::Base.connection.select_value("SELECT PostGIS_Lib_Version();").to_s.strip
+      rescue StandardError => e
+        "Error: #{e.message}"
+      end
+
+      {
+        postgresql_version: pg_version,
+        postgis_version: postgis_version,
+        ruby_version: RUBY_VERSION,
+        rails_version: Rails.version,
+        os_version: fetch_os_version
+      }
+    end
+
     def owner_dashboard
       vehicles_count = Vehicle.count
       active_vehicles_count = Vehicle.where(status: :available).count
@@ -20,7 +42,8 @@ class ReportingService
         active_vehicles_count: active_vehicles_count,
         active_drivers_count: active_drivers_count,
         average_vehicle_rating: average_rating,
-        vehicle_utilization_pct: utilization_pct
+        vehicle_utilization_pct: utilization_pct,
+        system_info: system_info
       }
     end
 
@@ -35,7 +58,8 @@ class ReportingService
         total_owners_count: total_owners,
         active_owners_count: active_owners,
         active_subscriptions_count: active_subscriptions.count,
-        mrr_paise: mrr_paise
+        mrr_paise: mrr_paise,
+        system_info: system_info
       }
     end
 
@@ -73,6 +97,25 @@ class ReportingService
     def escape_csv_field(field)
       val = field.to_s.gsub('"', '""')
       val.match?(/[,\n"]/) ? "\"#{val}\"" : val
+    end
+
+    def fetch_os_version
+      if File.exist?("/etc/os-release")
+        os_release = File.read("/etc/os-release")
+        pretty_name = os_release[/^PRETTY_NAME="?([^"\n]+)"?/, 1]
+        return pretty_name if pretty_name.present?
+      end
+
+      if RUBY_PLATFORM.include?("darwin")
+        mac_ver = `sw_vers -productVersion 2>/dev/null`.to_s.strip
+        return "macOS #{mac_ver}" if mac_ver.present?
+      end
+
+      require "etc"
+      u = Etc.uname
+      "#{u[:sysname]} #{u[:release]}"
+    rescue StandardError => e
+      "Error: #{e.message}"
     end
   end
 end

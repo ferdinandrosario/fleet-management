@@ -6,7 +6,7 @@ RSpec.describe RazorpayWebhookService do
       it "returns failure if event is blank" do
         result = described_class.call(event: nil)
         expect(result).not_to be_success
-        expect(result.errors).to eq({ event: ["is required"] })
+        expect(result.errors).to eq({ event: [ "is required" ] })
       end
 
       it "returns success early if event name is blank" do
@@ -53,10 +53,10 @@ RSpec.describe RazorpayWebhookService do
           "event" => "subscription.halted",
           "payload" => { "subscription" => { "entity" => { "id" => "sub_123", "status" => "halted" } } }
         }
-        
+
         result = described_class.call(event: event)
         expect(result).to be_success
-        
+
         expect(subscription.reload.status).to eq("past_due")
         expect(owner.reload.status).to eq("suspended")
       end
@@ -66,10 +66,10 @@ RSpec.describe RazorpayWebhookService do
           "event" => "subscription.halted",
           "payload" => { "subscription" => { "entity" => { "id" => "sub_123", "status" => "paused" } } }
         }
-        
+
         result = described_class.call(event: event)
         expect(result).to be_success
-        
+
         expect(subscription.reload.status).to eq("past_due")
         expect(owner.reload.status).to eq("suspended")
       end
@@ -79,10 +79,10 @@ RSpec.describe RazorpayWebhookService do
           "event" => "subscription.cancelled",
           "payload" => { "subscription" => { "entity" => { "id" => "sub_123", "status" => "cancelled" } } }
         }
-        
+
         result = described_class.call(event: event)
         expect(result).to be_success
-        
+
         expect(subscription.reload.status).to eq("canceled")
         expect(owner.reload.status).to eq("suspended")
       end
@@ -92,10 +92,10 @@ RSpec.describe RazorpayWebhookService do
           "event" => "subscription.cancelled",
           "payload" => { "subscription" => { "entity" => { "id" => "sub_123", "status" => "completed" } } }
         }
-        
+
         result = described_class.call(event: event)
         expect(result).to be_success
-        
+
         expect(subscription.reload.status).to eq("canceled")
         expect(owner.reload.status).to eq("suspended")
       end
@@ -108,10 +108,10 @@ RSpec.describe RazorpayWebhookService do
           "event" => "subscription.active",
           "payload" => { "subscription" => { "entity" => { "id" => "sub_123", "status" => "active" } } }
         }
-        
+
         result = described_class.call(event: event)
         expect(result).to be_success
-        
+
         expect(subscription.reload.status).to eq("active")
         expect(owner.reload.status).to eq("active")
       end
@@ -170,15 +170,15 @@ RSpec.describe RazorpayWebhookService do
     context "when an exception occurs" do
       it "rescues and returns a failure result" do
         allow(Subscription).to receive(:find_by).and_raise(StandardError.new("DB Error"))
-        
+
         event = {
           "event" => "subscription.active",
           "payload" => { "subscription" => { "entity" => { "id" => "sub_123", "status" => "active" } } }
         }
-        
+
         result = described_class.call(event: event)
         expect(result).not_to be_success
-        expect(result.errors).to eq({ base: ["DB Error"] })
+        expect(result.errors).to eq({ base: [ "DB Error" ] })
       end
     end
   end

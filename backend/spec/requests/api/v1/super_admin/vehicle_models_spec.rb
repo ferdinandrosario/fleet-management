@@ -83,7 +83,7 @@ RSpec.describe "Api::V1::SuperAdmin::VehicleModels", type: :request do
       json = JSON.parse(response.body)
       expect(json["data"]["vehicle_model"]["name"]).to eq("744 XT")
     end
-    
+
     it "returns validation errors for invalid data" do
       patch "/api/v1/super_admin/vehicle_models/#{vehicle_model.uuid}", params: {
         make: ""
@@ -112,7 +112,7 @@ RSpec.describe "Api::V1::SuperAdmin::VehicleModels", type: :request do
         # Vehicles table does not exist in public, only in tenant schemas
         # Let's mock `vehicle_model.vehicles.exists?` instead of creating a full tenant
         allow_any_instance_of(VehicleModel).to receive_message_chain(:vehicles, :exists?).and_return(true)
-        
+
         delete "/api/v1/super_admin/vehicle_models/#{vehicle_model.uuid}", headers: auth_headers
         expect(response).to have_http_status(:unprocessable_content)
         json = JSON.parse(response.body)

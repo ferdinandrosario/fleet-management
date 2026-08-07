@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Discovery::VehicleModels", type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json["status"]).to eq("success")
-      
+
       models = json["data"]["vehicle_models"]
       expect(models).to be_an(Array)
       expect(models.length).to eq(1)
@@ -30,7 +30,7 @@ RSpec.describe "Api::V1::Discovery::VehicleModels", type: :request do
       expect(models.length).to eq(1)
       expect(models.first["make"]).to eq("JCB")
     end
-    
+
     it "filters by make" do
       create(:vehicle_model, make: "Mahindra", name: "New Tractor", category: :tractor, active: true)
       get "/api/v1/discovery/vehicle_models", params: { make: "Mahindra" }

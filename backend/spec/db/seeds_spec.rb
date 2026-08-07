@@ -15,9 +15,9 @@ RSpec.describe "Database Seeds" do
     }.not_to raise_error
 
     expect(Plan.where(tier: [ :basic, :pro, :enterprise ]).count).to eq(3)
-    expect(SuperAdmin.exists?(email: "admin@fleet.example.com")).to be true
+    expect(SuperAdmin.exists?(email: "admin@example.com")).to be true
 
-    super_admin = SuperAdmin.find_by(email: "admin@fleet.example.com")
+    super_admin = SuperAdmin.find_by(email: "admin@example.com")
     expect(super_admin.authenticate("adminsecret123")).to be_truthy
 
     expect(Owner.exists?(slug: "demo")).to be true

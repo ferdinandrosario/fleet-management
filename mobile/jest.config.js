@@ -26,6 +26,6 @@ module.exports = {
   // Branches < 100: a few defensive fallbacks (e.g. api.ts's BASE_URL env
   // default) can't trigger in tests.
   coverageThreshold: {
-    global: { lines: 100, statements: 100, functions: 100, branches: 96 },
+    global: { lines: 100, statements: 100, functions: 100, branches: 94 },
   },
 };

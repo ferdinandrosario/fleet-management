@@ -8,11 +8,26 @@ import { HomeScreen } from "./home-screen";
 const success = (data: unknown) =>
   new Response(JSON.stringify({ status: "success", data, error: null }), { status: 200 });
 
+const mockNavigate = jest.fn();
+
+jest.mock("@react-navigation/native", () => {
+  const actual = jest.requireActual("@react-navigation/native");
+  return {
+    ...actual,
+    useNavigation: () => ({
+      navigate: mockNavigate,
+    }),
+  };
+});
+
 describe("HomeScreen", () => {
   const fetchSpy = jest.spyOn(globalThis, "fetch");
 
   beforeAll(() => initI18n("en"));
-  beforeEach(() => fetchSpy.mockReset());
+  beforeEach(() => {
+    fetchSpy.mockReset();
+    mockNavigate.mockClear();
+  });
 
   const renderScreen = () =>
     render(
@@ -33,5 +48,11 @@ describe("HomeScreen", () => {
     const { findByLabelText } = await renderScreen();
     await fireEvent.press(await findByLabelText("Log out"));
     await waitFor(() => expect(useAuthStore.getState().status).toBe("unauthenticated"));
+  });
+
+  it("navigates to AddVehicle when Add Vehicle is pressed", async () => {
+    const { findByText } = await renderScreen();
+    await fireEvent.press(await findByText("Add Vehicle"));
+    expect(mockNavigate).toHaveBeenCalledWith("AddVehicle");
   });
 });

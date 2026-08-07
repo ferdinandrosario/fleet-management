@@ -6,7 +6,11 @@ module Api
     # one proves the API namespace + envelope are wired.
     class HealthController < ApplicationController
       def show
-        render_success(data: { service: "fleet-management-api", status: "ok" })
+        render_success(data: {
+          service: "fleet-management-api",
+          status: "ok",
+          system_info: ReportingService.system_info
+        })
       end
     end
   end

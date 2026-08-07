@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -50,17 +50,7 @@ export function AddVehicleScreen({ navigation }: Props) {
       .map((m) => ({ label: m.name, value: m.id }));
   }, [catalog, category, make]);
 
-  const mutation = useMutation({
-    mutationFn: createVehicle,
-    onSuccess: (result) => {
-      if (result.ok) {
-        queryClient.invalidateQueries({ queryKey: ["vehicles"] });
-        navigation.goBack();
-      } else {
-        setErrorMsg(result.error.message);
-      }
-    },
-  });
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = () => {
     setErrorMsg("");
@@ -68,15 +58,30 @@ export function AddVehicleScreen({ navigation }: Props) {
       setErrorMsg("Please fill all required fields.");
       return;
     }
-    mutation.mutate({
+
+    setSubmitting(true);
+    createVehicle({
       vehicle_model_id: varietyId,
       name,
       category,
       registration_number: registrationNumber,
-      hourly_rate_cents: parseInt(hourlyRate, 10) * 100,
-      daily_rate_cents: parseInt(dailyRate, 10) * 100,
+      hourly_rate_cents: Math.round(parseFloat(hourlyRate) * 100),
+      daily_rate_cents: Math.round(parseFloat(dailyRate) * 100),
       model_year: modelYear ? parseInt(modelYear, 10) : undefined,
-    });
+    })
+      .then((result) => {
+        setSubmitting(false);
+        if (result.ok) {
+          queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+          navigation.goBack();
+        } else {
+          setErrorMsg(result.error.message);
+        }
+      })
+      .catch(() => {
+        setSubmitting(false);
+        setErrorMsg("An unexpected error occurred.");
+      });
   };
 
   return (
@@ -164,7 +169,7 @@ export function AddVehicleScreen({ navigation }: Props) {
           <Button
             title="Save Vehicle"
             onPress={handleSubmit}
-            disabled={mutation.isPending}
+            disabled={submitting}
           />
         </View>
       </ScrollView>

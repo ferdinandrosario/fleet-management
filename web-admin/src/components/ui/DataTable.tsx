@@ -84,8 +84,8 @@ export function DataTable<T extends { id: string | number }>({
                 onClick={() => onToggleLazyLoad(false)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
                   !isLazyLoad
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-[var(--text-muted)] hover:text-slate-200'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                 }`}
               >
                 <ListFilter className="w-3 h-3" />
@@ -96,8 +96,8 @@ export function DataTable<T extends { id: string | number }>({
                 onClick={() => onToggleLazyLoad(true)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
                   isLazyLoad
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-[var(--text-muted)] hover:text-slate-200'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                 }`}
               >
                 <ArrowDownCircle className="w-3 h-3" />
@@ -156,7 +156,7 @@ export function DataTable<T extends { id: string | number }>({
               size="sm"
               onClick={onLoadMore}
               disabled={loadingMore}
-              className="flex items-center gap-2 px-5 py-2 border-blue-500/40 hover:bg-blue-500/10 text-blue-400 font-semibold"
+              className="flex items-center gap-2 px-5 py-2 border-indigo-500/40 hover:bg-indigo-500/10 text-indigo-400 font-semibold"
             >
               {loadingMore ? (
                 <>
@@ -184,9 +184,9 @@ export function DataTable<T extends { id: string | number }>({
         pagination && totalPages > 1 && (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-[var(--bg-secondary)]/40 rounded-xl border border-[var(--border-color)] text-xs text-[var(--text-muted)]">
             <div>
-              Showing <span className="font-semibold text-slate-200">{startRecord}</span> to{' '}
-              <span className="font-semibold text-slate-200">{endRecord}</span> of{' '}
-              <span className="font-semibold text-slate-200">{totalCount}</span> entries
+              Showing <span className="font-semibold text-[var(--text-main)]">{startRecord}</span> to{' '}
+              <span className="font-semibold text-[var(--text-main)]">{endRecord}</span> of{' '}
+              <span className="font-semibold text-[var(--text-main)]">{totalCount}</span> entries
             </div>
 
             <div className="flex items-center gap-1.5 self-center sm:self-auto">
@@ -214,8 +214,8 @@ export function DataTable<T extends { id: string | number }>({
                       onClick={() => onPageChange?.(p)}
                       className={`px-3 py-1 text-xs font-semibold rounded-lg border transition-all ${
                         p === currentPage
-                          ? 'bg-blue-600 text-white border-blue-500 shadow-sm'
-                          : 'border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--input-bg)] hover:text-slate-200'
+                          ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
+                          : 'border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--input-bg)] hover:text-[var(--text-main)]'
                       }`}
                     >
                       {p}

@@ -14,16 +14,37 @@ export const StatBox: React.FC<StatBoxProps> = ({ title, value, subtitle, trend,
   return (
     <Card className="animate-fade-in relative overflow-hidden">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">{title}</p>
-          <h3 className="text-2xl font-bold text-[var(--text-main)]">{value}</h3>
-          {subtitle && <p className="text-xs text-[var(--text-muted)] mt-1">{subtitle}</p>}
+        <div className="min-w-0 flex-1">
+          <p
+            className="text-xs font-semibold uppercase tracking-widest mb-1.5"
+            style={{ color: 'var(--text-muted)', letterSpacing: '0.08em' }}
+          >
+            {title}
+          </p>
+          <h3
+            className="font-bold truncate"
+            style={{ fontSize: 'var(--text-2xl)', color: 'var(--text-main)' }}
+          >
+            {value}
+          </h3>
+          {subtitle && (
+            <p className="text-xs mt-1 truncate" style={{ color: 'var(--text-muted)' }}>
+              {subtitle}
+            </p>
+          )}
         </div>
-        {icon && <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400 border border-blue-500/20">{icon}</div>}
+        {icon && (
+          <div className="p-3 rounded-xl ml-3 shrink-0 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+            {icon}
+          </div>
+        )}
       </div>
       {trend && (
-        <div className="mt-3 pt-3 border-t border-[var(--border-color)] text-xs font-medium text-emerald-400 flex items-center gap-1.5">
-          <TrendingUp className="w-3.5 h-3.5" />
+        <div
+          className="mt-3 pt-3 text-xs font-medium flex items-center gap-1.5"
+          style={{ borderTop: '1px solid var(--border-color)', color: 'var(--success-color)' }}
+        >
+          <TrendingUp className="w-3.5 h-3.5 shrink-0" />
           <span>{trend}</span>
         </div>
       )}

@@ -1,3 +1,9 @@
+/**
+ * StylistProfileCard uses the salon gold/black editorial palette (#C5A880 / #0A0B0E).
+ * This is intentionally separate from the Midnight Slate fleet dashboard theme —
+ * the card is designed for the beauty/salon product domain, not fleet management.
+ * Do not migrate these colours to indigo/CSS vars.
+ */
 import React from 'react';
 import { Star, Calendar, MapPin, Award, ArrowUpRight, Scissors } from 'lucide-react';
 

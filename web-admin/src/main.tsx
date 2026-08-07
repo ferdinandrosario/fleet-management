@@ -4,9 +4,11 @@ import './index.css';
 import { SuperAdminDashboard } from './features/super-admin/SuperAdminDashboard';
 import { TechnicalArchitecture } from './features/super-admin/TechnicalArchitecture';
 import { OwnerDashboard } from './features/owner-admin/OwnerDashboard';
-import { ThemeProvider } from './lib/theme';
+
 import { FontSizeProvider } from './lib/fontSize';
 import { ProfileMenu } from './components/ui/ProfileMenu';
+import { Card } from './components/ui/Card';
+import { Button } from './components/ui/Button';
 import { t } from './lib/i18n';
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { AuthGate } from './features/auth/AuthGate';
@@ -19,6 +21,7 @@ import {
   ShieldCheck,
   Code2,
   Lock,
+  AlertCircle,
 } from 'lucide-react';
 
 const DashboardContent: React.FC = () => {
@@ -37,11 +40,15 @@ const DashboardContent: React.FC = () => {
     setCurrentPath(path);
   };
 
-
-
   const isDemoRoute = currentPath === '/demo';
-  const isTechnicalRoute = currentPath === '/technical' || currentPath === '/tecnical';
-  const isSuperAdminRoute = currentPath.toLowerCase().replace(/\/$/, '') === '/superadmin';
+  const isSuperAdminRoute = currentPath === '/superadmin' || currentPath === '/tech';
+  const isTechnicalRoute = currentPath === '/tech' && role === 'super_admin';
+  const isTechUnauthorized = currentPath === '/tech' && role !== 'super_admin';
+  const isUnknownRoute =
+    currentPath !== '/' &&
+    currentPath !== '/demo' &&
+    currentPath !== '/superadmin' &&
+    currentPath !== '/tech';
 
   if (!isAuthenticated) {
     return <AuthGate isDemoRoute={isDemoRoute} isSuperAdminRoute={isSuperAdminRoute} />;
@@ -57,10 +64,10 @@ const DashboardContent: React.FC = () => {
           <div className="flex items-center justify-between w-full md:w-auto gap-3">
             <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <div className="relative shrink-0">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 text-xs sm:text-sm tracking-wider">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-violet-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/25 text-xs sm:text-sm tracking-wider">
                   FM
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-500 border-2 border-[var(--bg-secondary)] rounded-full animate-pulse" title="System Active" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-400 border-2 border-[var(--bg-secondary)] rounded-full animate-pulse" title="System Active" />
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
@@ -73,10 +80,10 @@ const DashboardContent: React.FC = () => {
                   ) : isTechnicalRoute ? (
                     <Badge variant="info" className="text-[10px] px-1.5 py-0 shrink-0">
                       <Code2 className="w-2.5 h-2.5 inline mr-0.5" />
-                      /technical
+                      /tech
                     </Badge>
                   ) : (
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-indigo-500/12 text-indigo-300 border border-indigo-500/25 shrink-0">
                       LIVE
                     </span>
                   )}
@@ -138,22 +145,6 @@ const DashboardContent: React.FC = () => {
               <Activity className="w-3.5 h-3.5 shrink-0" />
               <span>{t('nav_telemetry')}</span>
             </button>
-
-            {/* Super Admin Technical Architecture Tab */}
-            {role === 'super_admin' && (
-              <button
-                type="button"
-                onClick={() => navigate('/technical')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 rounded-lg transition-all cursor-pointer shrink-0 ${
-                  isTechnicalRoute
-                    ? 'bg-[var(--primary-accent)] text-white shadow-sm font-semibold'
-                    : 'text-blue-400 hover:text-blue-300 hover:bg-[var(--bg-secondary)]/50'
-                }`}
-              >
-                <Code2 className="w-3.5 h-3.5 shrink-0" />
-                <span>{t('nav_technical')}</span>
-              </button>
-            )}
           </nav>
 
           {/* User Profile & Settings Menu (Desktop View) */}
@@ -166,7 +157,45 @@ const DashboardContent: React.FC = () => {
 
       {/* Main Content Body */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 animate-fade-in">
-        {isTechnicalRoute ? (
+        {isUnknownRoute ? (
+          <div className="max-w-md mx-auto my-12">
+            <Card className="border-rose-500/30 text-center space-y-4 py-10 px-6" style={{ background: 'rgba(244,63,94,0.05)' }}>
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
+                <AlertCircle className="w-7 h-7 text-rose-400" />
+              </div>
+              <div className="space-y-1.5">
+                <h2 className="text-xl font-bold text-[var(--text-main)]">404 Page Not Found</h2>
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                  The page <code className="font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded">{currentPath}</code> does not exist.
+                </p>
+              </div>
+              <div className="pt-2">
+                <Button onClick={() => navigate('/')} variant="secondary" className="text-xs">
+                  Return to Dashboard
+                </Button>
+              </div>
+            </Card>
+          </div>
+        ) : isTechUnauthorized ? (
+          <div className="max-w-md mx-auto my-12">
+            <Card className="border-rose-500/30 text-center space-y-4 py-10 px-6" style={{ background: 'rgba(244,63,94,0.05)' }}>
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
+                <ShieldCheck className="w-7 h-7 text-rose-400" />
+              </div>
+              <div className="space-y-1.5">
+                <h2 className="text-xl font-bold text-[var(--text-main)]">403 Authorization Required</h2>
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                  Technical details at <code className="font-mono text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded">/tech</code> are strictly restricted to Super Administrators.
+                </p>
+              </div>
+              <div className="pt-2">
+                <Button onClick={() => navigate('/')} variant="secondary" className="text-xs">
+                  Return to Dashboard
+                </Button>
+              </div>
+            </Card>
+          </div>
+        ) : isTechnicalRoute ? (
           <TechnicalArchitecture />
         ) : role === 'owner' ? (
           <OwnerDashboard activeTab={activeTab} />
@@ -182,7 +211,7 @@ const DashboardContent: React.FC = () => {
             {/* Brand & Security */}
             <div className="space-y-2 text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs shadow-md">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-600 flex items-center justify-center font-bold text-white text-xs shadow-md">
                   FM
                 </div>
                 <span className="font-bold text-sm text-[var(--text-main)]">{t('app_title')}</span>
@@ -204,11 +233,11 @@ const DashboardContent: React.FC = () => {
             
             {role === 'super_admin' ? (
               <button
-                onClick={() => navigate('/technical')}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 transition-all font-mono text-[11px]"
+                onClick={() => navigate('/tech')}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 border border-indigo-500/20 transition-all font-mono text-[11px] cursor-pointer"
               >
                 <Code2 className="w-3 h-3" />
-                <span>Technical Architecture & Versions (/technical)</span>
+                <span>Technical Architecture & Versions (/tech)</span>
               </button>
             ) : (
               <div className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
@@ -225,11 +254,9 @@ const DashboardContent: React.FC = () => {
 
 const App: React.FC = () => (
   <AuthProvider>
-    <ThemeProvider>
-      <FontSizeProvider>
-        <DashboardContent />
-      </FontSizeProvider>
-    </ThemeProvider>
+    <FontSizeProvider>
+      <DashboardContent />
+    </FontSizeProvider>
   </AuthProvider>
 );
 

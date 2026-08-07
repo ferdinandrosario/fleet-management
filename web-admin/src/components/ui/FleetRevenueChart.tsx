@@ -28,7 +28,7 @@ export const FleetRevenueChart: React.FC = () => {
         </div>
         <div className="flex items-center gap-3 sm:gap-4 text-xs self-start sm:self-auto">
           <div className="flex items-center gap-1.5 text-[var(--text-main)]">
-            <span className="w-3 h-3 rounded bg-blue-500 inline-block"></span>
+            <span className="w-3 h-3 rounded bg-indigo-500 inline-block"></span>
             <span>Revenue (₹)</span>
           </div>
           <div className="flex items-center gap-1.5 text-[var(--text-main)]">
@@ -52,7 +52,7 @@ export const FleetRevenueChart: React.FC = () => {
               {/* Bar container */}
               <div className="w-full bg-[var(--input-bg)] rounded-t-lg h-32 flex items-end p-1 overflow-hidden">
                 <div
-                  className="w-full bg-gradient-to-t from-blue-600 to-indigo-500 rounded-t transition-all duration-500 group-hover:from-blue-500 group-hover:to-indigo-400"
+                  className="w-full bg-gradient-to-t from-indigo-600 to-violet-500 rounded-t transition-all duration-500 group-hover:from-indigo-500 group-hover:to-violet-400"
                   style={{ height: `${heightPct}%` }}
                 ></div>
               </div>

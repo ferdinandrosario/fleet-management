@@ -130,11 +130,11 @@ module Seeds
         additional_vehicles.each_with_index do |v_data, index|
           reg_no = format("TN-%02d-XX-%04d", (index % 99) + 1, 1000 + index)
           v = Vehicle.find_or_initialize_by(registration_number: reg_no)
-          
+
           # Link to VehicleModel if it exists
           model = VehicleModel.find_by(name: v_data[:name])
           v.vehicle_model = model
-          
+
           v.name = v_data[:name]
           v.category = v_data[:category]
           v.status = :available

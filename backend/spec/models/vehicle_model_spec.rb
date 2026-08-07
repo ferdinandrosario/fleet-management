@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe VehicleModel, type: :model do
   describe "validations" do
     subject { build(:vehicle_model) }
-    
+
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:make) }
     it { should validate_uniqueness_of(:name).scoped_to(:make).case_insensitive }

@@ -4,7 +4,6 @@ module Api
   module V1
     module Discovery
       class VehicleModelsController < ApplicationController
-
         def index
           scope = VehicleModel.where(active: true)
           scope = scope.where(category: params[:category]) if params[:category].present?

@@ -33,10 +33,16 @@ Handles end-to-end tenant setup atomically:
 - Automatically rolls back database records and drops created schema if setup fails.
 
 ### 2. `PlanLimitService`
-Enforces resource caps (e.g. max vehicles, max drivers) configured in `Plan#limits`:
+Enforces resource caps (e.g. max vehicles, max bookings, max drivers) configured in `Plan#limits`:
 - `PlanLimitService.check(owner, resource, current_count:)` — returns `Result(allowed:, limit:, current:, error:)`.
 - `PlanLimitService.enforce!(owner, resource, current_count:)` — raises `PlanLimitExceededError` when a cap is hit.
 - A `nil` limit in `Plan#limits` represents unlimited access.
+
+### 3. `RazorpayWebhookService` & GST Support
+- Razorpay Webhooks verify HMAC-SHA256 signatures via `RAZORPAY_WEBHOOK_SECRET`.
+- Idempotency is guaranteed through a 7-day cache key tracking `razorpay_webhook_event:<id>`.
+- Handles UPI Autopay mandate lifecycle states (`subscription.authenticated`, `subscription.pending`, `subscription.paused`, `subscription.charged`, `subscription.active`, `subscription.halted`, `subscription.cancelled`).
+- `Subscription#gst_breakdown` calculates 18% GST (CGST+SGST or IGST) for Indian B2B invoicing.
 
 ## Authorization & Policies
 Driven by Pundit default-deny:

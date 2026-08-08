@@ -15,7 +15,6 @@ class RazorpayWebhookService
       if event_id.present?
         cache_key = "razorpay_webhook_event:#{event_id}"
         return Result.new(success: true) if Rails.cache.exist?(cache_key)
-        Rails.cache.write(cache_key, true, expires_in: 7.days)
       end
 
       event_name = event["event"]
@@ -33,6 +32,8 @@ class RazorpayWebhookService
       else
         # Unhandled event types are ignored safely
       end
+
+      Rails.cache.write(cache_key, true, expires_in: 7.days) if event_id.present?
 
       Result.new(success: true)
     rescue StandardError => e

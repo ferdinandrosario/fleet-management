@@ -1,3 +1,5 @@
 
-# Ignore SimpleCov coverage reports.
+# Ignore SimpleCov coverage reports and RSpec status files.
 /coverage/
+/spec/examples.txt
+

@@ -3,14 +3,14 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "= 8.1.3.1" # pin exact — backend/AGENTS.md "Version & stability"
 # Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
+gem "pg", "= 1.6.3"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+gem "puma", "= 8.0.2"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
 # Active Model has_secure_password (bcrypt) — SuperAdmin + tenant user auth.
-gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "= 3.1.22"
 
 # JWT encode/decode for the custom token service (short-lived access +
 # rotating refresh). Chosen over devise-jwt — see docs/feature/auth.md.
@@ -31,15 +31,15 @@ gem "bootsnap", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
-gem "aws-sdk-s3", "~> 1.173", require: false
+gem "image_processing", "= 1.14.0"
+gem "aws-sdk-s3", "= 1.228.2", require: false
 
 # Cross-Origin Resource Sharing — locked to a strict allowlist (no "*").
 gem "rack-cors"
 
 # Multi-tenancy: schema-per-tenant isolation (one physical DB, one schema
 # per owner). `require: "apartment"` — the gem name and require path differ.
-gem "ros-apartment", "~> 3.4", require: "apartment"
+gem "ros-apartment", "= 3.4.4", require: "apartment"
 
 # Geospatial: PostGIS column types + spatial queries for vehicle discovery.
 gem "activerecord-postgis-adapter"
@@ -54,8 +54,8 @@ gem "secure_headers"  # CSP + security response headers
 
 # OpenAPI / Swagger API Documentation
 gem "ostruct"
-gem "rswag-api", "~> 2.13"
-gem "rswag-ui", "~> 2.13"
+gem "rswag-api", "= 2.17.0"
+gem "rswag-ui", "= 2.17.0"
 
 # Performance: mandatory pagination on every collection.
 gem "pagy"
@@ -79,7 +79,7 @@ group :development, :test do
   gem "faker"
 
   # OpenAPI / Swagger specs generator
-  gem "rswag-specs", "~> 2.13"
+  gem "rswag-specs", "= 2.17.0"
 
   # N+1 / unused-eager-load detection — raises in dev/test (fails the build).
   gem "bullet"

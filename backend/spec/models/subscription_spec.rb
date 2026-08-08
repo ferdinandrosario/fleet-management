@@ -25,4 +25,23 @@ RSpec.describe Subscription, type: :model do
     create(:subscription, razorpay_subscription_id: nil)
     expect(build(:subscription, razorpay_subscription_id: nil)).to be_valid
   end
+
+  describe "#gst_breakdown" do
+    let(:plan) { create(:plan, price_paise: 100000) }
+    let(:subscription) { create(:subscription, plan: plan) }
+
+    it "calculates same-state CGST/SGST" do
+      breakdown = subscription.gst_breakdown(same_state: true)
+      expect(breakdown[:cgst_paise]).to eq(9000)
+      expect(breakdown[:sgst_paise]).to eq(9000)
+      expect(breakdown[:igst_paise]).to eq(0)
+    end
+
+    it "calculates inter-state IGST" do
+      breakdown = subscription.gst_breakdown(same_state: false)
+      expect(breakdown[:cgst_paise]).to eq(0)
+      expect(breakdown[:sgst_paise]).to eq(0)
+      expect(breakdown[:igst_paise]).to eq(18000)
+    end
+  end
 end

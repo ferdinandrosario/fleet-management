@@ -12,15 +12,7 @@ module Api
 
           render_success(
             data: {
-              vehicle_models: scope.map do |vm|
-                {
-                  id: vm.uuid,
-                  uuid: vm.uuid,
-                  make: vm.make,
-                  name: vm.name,
-                  category: vm.category
-                }
-              end
+              vehicle_models: scope.map { |vm| VehicleModelSerializer.call(vm) }
             }
           )
         end

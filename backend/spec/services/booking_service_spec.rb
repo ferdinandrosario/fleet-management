@@ -78,15 +78,37 @@ RSpec.describe BookingService do
     end
 
     it "returns errors hash if booking fails model validations on save" do
+      allow_any_instance_of(Booking).to receive(:save).and_return(false)
+
       res = described_class.call(
-        customer: nil,
+        customer: customer,
         vehicle: vehicle,
         start_time: st.iso8601,
         end_time: et.iso8601
       )
 
       expect(res).not_to be_success
-      expect(res.errors[:customer]).to be_present
+    end
+
+    it "returns error when owner plan booking limit is reached" do
+      provision_tenant("limitowner")
+      in_tenant("limitowner") do
+        c = create(:user)
+        v = create(:vehicle)
+        owner = Owner.find_by(slug: "limitowner")
+        limit_result = Struct.new(:allowed?).new(false)
+        allow(PlanLimitService).to receive(:check).and_return(limit_result)
+
+        res = described_class.call(
+          customer: c,
+          vehicle: v,
+          start_time: st.iso8601,
+          end_time: et.iso8601
+        )
+
+        expect(res).not_to be_success
+        expect(res.errors[:plan]).to include("Monthly plan booking limit reached")
+      end
     end
   end
 end

@@ -7,7 +7,7 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
 
 ## Stack
 
-- Ruby 4.0.6, Rails 8.1.3 (pinned `= 8.1.3` in `backend/Gemfile`), API-only.
+- Ruby 4.0.6, Rails 8.1.3.1 (pinned `= 8.1.3.1` in `backend/Gemfile`), API-only.
 - **PostgreSQL only.** No SQLite, no MySQL, no swapping.
 - **Rails defaults only:** Solid Queue (jobs), Solid Cache (cache),
   Solid Cable (websockets), Propshaft (assets).
@@ -24,7 +24,7 @@ Backend-specific:
 - **Ruby:** pinned in `backend/.ruby-version` and `backend/Gemfile` —
   both must match. The root `.ruby-version` exists for tool discovery
   and must match as well; the version-bump audit catches drift.
-- **Rails:** pin exact in `Gemfile` (`gem "rails", "= 8.1.3"`). Stay on
+- **Rails:** pin exact in `Gemfile` (`gem "rails", "= 8.1.3.1"`). Stay on
   the actively-maintained branch — never a `.beta`, `.rc`, or EOL'd minor.
 - **Audit before each release:** `bundle exec bundler-audit check --update`
   (expected: `No vulnerabilities found`).

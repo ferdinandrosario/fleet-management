@@ -89,21 +89,24 @@ RSpec.configure do |config|
           Vehicle: {
             type: :object,
             properties: {
-              uuid: { type: :string, format: :uuid },
+              id: { type: :string, format: :uuid },
+              vehicle_model_id: { type: :string, format: :uuid, nullable: true },
+              name: { type: :string, example: 'Mahindra 575 DI Tractor' },
+              category: { type: :string, example: 'tractor' },
               registration_number: { type: :string, example: 'KA01AB1234' },
-              vehicle_type: { type: :string, example: 'tractor' },
-              make: { type: :string, example: 'Mahindra' },
-              model: { type: :string, example: '575 DI' },
-              year: { type: :integer, example: 2024 },
-              base_rate_per_hour: { type: :string, example: '850.00' },
-              base_rate_per_day: { type: :string, example: '6500.00' },
+              model_year: { type: :integer, example: 2024 },
+              hourly_rate_cents: { type: :integer, example: 85000 },
+              daily_rate_cents: { type: :integer, example: 650000 },
               status: { type: :string, example: 'available' },
+              address: { type: :string, nullable: true, example: 'Bengaluru, Karnataka' },
               latitude: { type: :number, nullable: true, example: 12.9716 },
               longitude: { type: :number, nullable: true, example: 77.5946 },
-              created_at: { type: :string, format: :'date-time' },
-              updated_at: { type: :string, format: :'date-time' }
+              average_rating: { type: :number, example: 4.8 },
+              reviews_count: { type: :integer, example: 12 },
+              specs: { type: :object },
+              created_at: { type: :string, format: :'date-time' }
             },
-            required: [ 'uuid', 'registration_number', 'vehicle_type', 'make', 'model', 'status' ]
+            required: [ 'id', 'registration_number', 'category', 'status', 'hourly_rate_cents', 'daily_rate_cents' ]
           },
           Booking: {
             type: :object,

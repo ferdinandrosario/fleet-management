@@ -16,15 +16,7 @@ module Api
 
           render_success(
             data: {
-              vehicle_models: vehicle_models.map do |vm|
-                {
-                  id: vm.uuid,
-                  make: vm.make,
-                  name: vm.name,
-                  category: vm.category,
-                  active: vm.active
-                }
-              end,
+              vehicle_models: vehicle_models.map { |vm| VehicleModelSerializer.call(vm) },
               pagination: {
                 page: pagy.page,
                 pages: pagy.pages,

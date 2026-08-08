@@ -37,4 +37,24 @@ RSpec.describe User, type: :model do
     expect(build(:user).phone_verified?).to be(false)
     expect(build(:user, :verified).phone_verified?).to be(true)
   end
+
+  describe "#formatted_phone" do
+    it "returns blank phone directly" do
+      user = build(:user)
+      user.phone = nil
+      expect(user.formatted_phone).to be_nil
+    end
+
+    it "formats 10-digit Indian phone with +91 prefix" do
+      user = build(:user)
+      user.phone = "9876543210"
+      expect(user.formatted_phone).to eq("+919876543210")
+    end
+
+    it "returns already prefixed phone unchanged" do
+      user = build(:user)
+      user.phone = "+919876543210"
+      expect(user.formatted_phone).to eq("+919876543210")
+    end
+  end
 end

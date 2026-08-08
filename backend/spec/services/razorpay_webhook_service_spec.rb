@@ -128,31 +128,54 @@ RSpec.describe RazorpayWebhookService do
     end
 
     context "with payment and order events" do
-      it "handles payment.captured" do
-        event = {
+      let(:slug) { "demotenantwebhook" }
+
+      before do
+        provision_tenant(slug)
+      end
+
+      it "updates booking payment status on payment.captured and payment.failed" do
+        Apartment::Tenant.switch(slug) do
+          customer = create(:user, role: :customer)
+          vehicle = create(:vehicle)
+          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_captured_123", payment_status: :pending)
+          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_failed_123", payment_status: :pending)
+        end
+
+        captured_event = {
           "event" => "payment.captured",
-          "payload" => { "payment" => { "entity" => { "id" => "pay_123" } } }
+          "payload" => { "payment" => { "entity" => { "order_id" => "order_captured_123", "status" => "captured", "notes" => { "tenant_slug" => slug } } } }
         }
-        result = described_class.call(event: event)
-        expect(result).to be_success
-      end
+        expect(described_class.call(event: captured_event)).to be_success
 
-      it "handles payment.failed" do
-        event = {
+        failed_event = {
           "event" => "payment.failed",
-          "payload" => { "payment" => { "entity" => { "id" => "pay_123" } } }
+          "payload" => { "payment" => { "entity" => { "order_id" => "order_failed_123", "status" => "failed", "notes" => { "tenant_slug" => slug } } } }
         }
-        result = described_class.call(event: event)
-        expect(result).to be_success
+        expect(described_class.call(event: failed_event)).to be_success
+
+        Apartment::Tenant.switch(slug) do
+          expect(Booking.find_by(razorpay_order_id: "order_captured_123").payment_status).to eq("advance_paid")
+          expect(Booking.find_by(razorpay_order_id: "order_failed_123").payment_status).to eq("pending")
+        end
       end
 
-      it "handles order.paid" do
-        event = {
+      it "updates booking payment status on order.paid" do
+        Apartment::Tenant.switch(slug) do
+          customer = create(:user, role: :customer)
+          vehicle = create(:vehicle)
+          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_paid_123", payment_status: :pending)
+        end
+
+        order_event = {
           "event" => "order.paid",
-          "payload" => { "order" => { "entity" => { "id" => "order_123" } } }
+          "payload" => { "order" => { "entity" => { "id" => "order_paid_123", "status" => "paid", "notes" => { "tenant_slug" => slug } } } }
         }
-        result = described_class.call(event: event)
-        expect(result).to be_success
+        expect(described_class.call(event: order_event)).to be_success
+
+        Apartment::Tenant.switch(slug) do
+          expect(Booking.find_by(razorpay_order_id: "order_paid_123").payment_status).to eq("advance_paid")
+        end
       end
     end
 
@@ -164,6 +187,12 @@ RSpec.describe RazorpayWebhookService do
         }
         result = described_class.call(event: event)
         expect(result).to be_success
+      end
+
+      it "returns success early if event_id is already cached" do
+        event = { "event_id" => "evt_duplicate_999", "event" => "payment.captured", "payload" => {} }
+        Rails.cache.write("razorpay_webhook_event:evt_duplicate_999", true)
+        expect(described_class.call(event: event)).to be_success
       end
     end
 

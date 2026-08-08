@@ -2,17 +2,8 @@
 class ReportingService
   class << self
     def system_info
-      pg_version = begin
-        ActiveRecord::Base.connection.select_value("SHOW server_version;").to_s.strip
-      rescue StandardError => e
-        "Error: #{e.message}"
-      end
-
-      postgis_version = begin
-        ActiveRecord::Base.connection.select_value("SELECT PostGIS_Lib_Version();").to_s.strip
-      rescue StandardError => e
-        "Error: #{e.message}"
-      end
+      pg_version = ActiveRecord::Base.connection.select_value("SHOW server_version;").to_s.strip
+      postgis_version = ActiveRecord::Base.connection.select_value("SELECT PostGIS_Lib_Version();").to_s.strip
 
       {
         postgresql_version: pg_version,
@@ -114,8 +105,6 @@ class ReportingService
       require "etc"
       u = Etc.uname
       "#{u[:sysname]} #{u[:release]}"
-    rescue StandardError => e
-      "Error: #{e.message}"
     end
   end
 end

@@ -94,7 +94,7 @@ module Seeds
         v4.save!
 
         # Expanded commercial fleet equipment for pagination & lazy loading testing (85+ vehicles)
-        categories = [:tractor, :jcb, :heavy_vehicle, :bus, :crane, :harvester]
+        categories = [ :tractor, :jcb, :heavy_vehicle, :bus, :crane, :harvester ]
         vehicle_catalog = [
           # Tractors
           { name: "Mahindra 575 DI Tractor", category: :tractor, hourly: 80000, daily: 500000, year: 2023 },
@@ -169,7 +169,7 @@ module Seeds
 
         # Generate 85 total vehicles across districts to populate paginated pages (Pagy limit = 20)
         all_vehicles = []
-        tn_districts = [1, 2, 3, 4, 5, 7, 10, 11, 12, 15, 18, 20, 33, 37, 39, 45, 55, 60]
+        tn_districts = [ 1, 2, 3, 4, 5, 7, 10, 11, 12, 15, 18, 20, 33, 37, 39, 45, 55, 60 ]
 
         85.times do |idx|
           item = vehicle_catalog[idx % vehicle_catalog.length]
@@ -184,7 +184,7 @@ module Seeds
           v.name = "#{item[:name]} ##{(idx / vehicle_catalog.length) + 1}" if idx >= vehicle_catalog.length
           v.name ||= item[:name]
           v.category = item[:category]
-          v.status = [:available, :available, :available, :booked, :maintenance][idx % 5]
+          v.status = [ :available, :available, :available, :booked, :maintenance ][idx % 5]
           v.hourly_rate_cents = item[:hourly] + ((idx % 5) * 5000)
           v.daily_rate_cents = item[:daily] + ((idx % 5) * 20000)
           v.model_year = item[:year]
@@ -200,8 +200,8 @@ module Seeds
         pricing_rule.save!
 
         # Seed 50+ Bookings for Pagination Testing
-        statuses = [:confirmed, :in_progress, :completed, :cancelled]
-        payment_statuses = [:pending, :advance_paid, :fully_paid, :refunded]
+        statuses = [ :confirmed, :in_progress, :completed, :cancelled ]
+        payment_statuses = [ :pending, :advance_paid, :fully_paid, :refunded ]
 
         55.times do |b_idx|
           veh = all_vehicles[b_idx % all_vehicles.length]
@@ -236,7 +236,7 @@ module Seeds
           payroll.bonus_cents = 200000 + (p_idx * 10000)
           payroll.deductions_cents = 50000
           payroll.total_payout_cents = payroll.base_pay_cents + payroll.bonus_cents - payroll.deductions_cents
-          payroll.status = [:draft, :approved, :paid][p_idx % 3]
+          payroll.status = [ :draft, :approved, :paid ][p_idx % 3]
           payroll.save!
         end
 
@@ -248,8 +248,8 @@ module Seeds
             start_date: l_start
           )
           leave.end_date = l_start + 1.day
-          leave.reason = ["Medical Checkup", "Personal Work", "Family Event", "Harvest Season Duty"][l_idx % 4]
-          leave.status = [:pending, :approved, :rejected][l_idx % 3]
+          leave.reason = [ "Medical Checkup", "Personal Work", "Family Event", "Harvest Season Duty" ][l_idx % 4]
+          leave.status = [ :pending, :approved, :rejected ][l_idx % 3]
           leave.approved_by = owner_user if leave.approved?
           leave.save!
         end
@@ -265,7 +265,7 @@ module Seeds
           )
           rev.vehicle = b_target.vehicle
           rev.customer = customer_user
-          rev.rating = [4, 5, 5, 3, 4, 5][r_idx % 6]
+          rev.rating = [ 4, 5, 5, 3, 4, 5 ][r_idx % 6]
           rev.comment = [
             "Excellent machinery performance for soil excavation!",
             "Tractor engine ran smooth for all agricultural operations.",

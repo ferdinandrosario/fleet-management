@@ -7,7 +7,7 @@
 if ENV["COVERAGE"]
   require "simplecov"
   SimpleCov.start "rails" do
-    add_filter "/spec/"
+    skip "/spec/"
     minimum_coverage line: 100
   end
 end

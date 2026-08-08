@@ -7,7 +7,7 @@ import { Badge } from '../../components/ui/Badge';
 import { FleetRevenueChart } from '../../components/ui/FleetRevenueChart';
 import { DataTable, TableColumn } from '../../components/ui/DataTable';
 import { AddVehicleModal, VehicleData } from './AddVehicleModal';
-import { apiRequest } from '../../lib/api';
+import { apiRequest, getAuthToken, getTenantSlug } from '../../lib/api';
 import { t } from '../../lib/i18n';
 
 export interface SystemInfo {
@@ -156,7 +156,27 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
 
   const handleExportCsv = async () => {
     const baseUrl = import.meta.env.VITE_API_URL || '';
-    window.open(`${baseUrl}/api/v1/reports/bookings_csv`, '_blank');
+    const headers: Record<string, string> = {};
+    const token = getAuthToken();
+    const tenant = getTenantSlug();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (tenant) headers['X-Tenant'] = tenant;
+
+    try {
+      const res = await fetch(`${baseUrl}/api/v1/reports/bookings_csv`, { headers });
+      if (!res.ok) throw new Error('Export failed');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bookings_export_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Failed to export CSV. Please check authentication and try again.');
+    }
   };
 
   const handleVehicleCreated = (newVehicle: VehicleData) => {

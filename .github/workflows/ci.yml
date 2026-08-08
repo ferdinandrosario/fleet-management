@@ -106,7 +106,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '26.5.1'
 
       - name: Install Dependencies
         run: npm ci
@@ -116,6 +116,34 @@ jobs:
         run: npm run typecheck
         working-directory: web-admin
 
+      - name: Run Tests
+        run: npm test
+        working-directory: web-admin
+
       - name: Production Build
         run: npm run build
         working-directory: web-admin
+
+  mobile-ci:
+    name: Mobile React Native Build & Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26.5.1'
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: mobile
+
+      - name: Run Typecheck
+        run: npm run typecheck
+        working-directory: mobile
+
+      - name: Run Jest Tests
+        run: npm test
+        working-directory: mobile

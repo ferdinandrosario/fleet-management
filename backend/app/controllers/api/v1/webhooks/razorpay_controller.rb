@@ -12,12 +12,13 @@ module Api
           signature = request.headers["X-Razorpay-Signature"]
           payload = request.raw_post
 
-          # In a real environment with keys set:
-          # begin
-          #   Razorpay::Utility.verify_webhook_signature(payload, signature, ENV['RAZORPAY_WEBHOOK_SECRET'])
-          # rescue SecurityError
-          #   return head :unauthorized
-          # end
+          secret = ENV["RAZORPAY_WEBHOOK_SECRET"]
+          if secret.present? && signature.present?
+            expected_signature = OpenSSL::HMAC.hexdigest("SHA256", secret, payload)
+            return head :unauthorized unless ActiveSupport::SecurityUtils.secure_compare(expected_signature, signature.to_s)
+          elsif Rails.env.production?
+            return head :unauthorized
+          end
 
           # 2. Process webhook idempotently
           event_payload = params.to_unsafe_h.except(:controller, :action, :razorpay)

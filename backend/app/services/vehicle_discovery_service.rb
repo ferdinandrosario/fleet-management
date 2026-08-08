@@ -5,7 +5,7 @@ class VehicleDiscoveryService
 
   class << self
     def call(latitude: nil, longitude: nil, radius_km: 50.0, category: nil, start_time: nil, end_time: nil)
-      scope = Vehicle.available_only
+      scope = Vehicle.available_only.includes(:vehicle_model)
       scope = scope.by_category(category) if category.present?
 
       if start_time.present? && end_time.present?

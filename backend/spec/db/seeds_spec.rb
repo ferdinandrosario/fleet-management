@@ -14,7 +14,7 @@ RSpec.describe "Database Seeds" do
       Rails.application.load_seed
     }.not_to raise_error
 
-    expect(Plan.where(tier: [ :basic, :pro, :enterprise ]).count).to eq(3)
+    expect(Plan.where(tier: [ :basic, :pro, :enterprise ], active: true).count).to eq(3)
     expect(SuperAdmin.exists?(email: "admin@example.com")).to be true
 
     super_admin = SuperAdmin.find_by(email: "admin@example.com")
@@ -34,6 +34,6 @@ RSpec.describe "Database Seeds" do
       Rails.application.load_seed
     }.not_to raise_error
 
-    expect(Plan.where(tier: [ :basic, :pro, :enterprise ]).count).to eq(3)
+    expect(Plan.where(tier: [ :basic, :pro, :enterprise ], active: true).count).to eq(3)
   end
 end

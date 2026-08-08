@@ -24,9 +24,14 @@ class User < ApplicationRecord
     phone_verified_at.present?
   end
 
+  def formatted_phone
+    return phone if phone.blank?
+    phone =~ /\A[6-9]\d{9}\z/ ? "+91#{phone}" : phone
+  end
+
   private
 
   def normalize_phone
-    self.phone = phone.to_s.strip.delete(" ").presence
+    self.phone = phone.to_s.strip.delete(" ").delete("-").presence
   end
 end

@@ -19,6 +19,14 @@ class BookingService
         return Result.new(success: false, errors: { vehicle: [ "is not available for booking" ] })
       end
 
+      owner = Owner.find_by(slug: Current.tenant)
+      if owner
+        limit_check = PlanLimitService.check(owner, :bookings, current_count: Booking.where("created_at >= ?", Time.current.beginning_of_month).count)
+        unless limit_check.allowed?
+          return Result.new(success: false, errors: { plan: [ "Monthly plan booking limit reached" ] })
+        end
+      end
+
       # Check availability conflicts
       has_hold = vehicle.vehicle_availabilities.where("start_time < ? AND end_time > ?", et, st).exists?
       has_booking = vehicle.bookings.active.overlapping_range(st, et).exists?

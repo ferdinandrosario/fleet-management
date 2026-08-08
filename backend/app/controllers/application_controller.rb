@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   # Resolve the request locale around every action (Accept-Language now; the
   # authenticated user's saved preference takes over in Session 3).
   around_action :switch_locale
+  around_action :tag_logger_context
 
   # Default-deny authorization: a Pundit failure anywhere becomes a 403 in the
   # standard envelope. Per-controller `verify_authorized` enforcement is turned
@@ -58,6 +59,14 @@ class ApplicationController < ActionController::API
 
   def switch_locale(&action)
     I18n.with_locale(locale_from_request, &action)
+  end
+
+  def tag_logger_context(&action)
+    tenant_tag = (defined?(Current) && Current.respond_to?(:tenant) && Current.tenant.present?) ? Current.tenant : "public"
+    user_tag = (defined?(Current) && Current.respond_to?(:user) && Current.user.present?) ? Current.user.uuid : "anonymous"
+    tags = [ "tenant:#{tenant_tag}", "user:#{user_tag}" ]
+    tags << "req:#{request.request_id}" if request.respond_to?(:request_id) && request.request_id.present?
+    Rails.logger.tagged(*tags, &action)
   end
 
   # Best available locale from the Accept-Language header, else the default.

@@ -46,7 +46,7 @@ describe('AuthContext', () => {
     );
     expect(screen.getByTestId('user-id').textContent).toBe('none');
     expect(screen.getByTestId('role').textContent).toBe('owner');
-    expect(screen.getByTestId('tenant').textContent).toBe('demo');
+    expect(screen.getByTestId('tenant').textContent).toBe('demo_tenant');
   });
 
   it('loads user from sessionStorage if available', () => {

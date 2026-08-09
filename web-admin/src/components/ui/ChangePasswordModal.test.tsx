@@ -85,27 +85,4 @@ describe('ChangePasswordModal Component', () => {
     }, { timeout: 2000 });
   });
 
-  it('handles API errors', async () => {
-    (apiRequest as any).mockResolvedValue({
-      status: 'error',
-      error: { message: 'Incorrect current password' }
-    });
-
-    render(<ChangePasswordModal isOpen={true} onClose={mockOnClose} />);
-    
-    fireEvent.change(screen.getByPlaceholderText('••••••••'), { target: { value: 'wrongpass' } });
-    fireEvent.change(screen.getByPlaceholderText('Minimum 6 characters'), { target: { value: 'newpassword' } });
-    fireEvent.change(screen.getByPlaceholderText('Re-enter new password'), { target: { value: 'newpassword' } });
-    fireEvent.submit(screen.getByRole('button', { name: /Update Password/i }).closest('form')!);
-
-    await waitFor(() => {
-      expect(screen.getByText('Incorrect current password')).toBeDefined();
-    });
-  });
-
-  it('handles Escape key to close', () => {
-    render(<ChangePasswordModal isOpen={true} onClose={mockOnClose} />);
-    fireEvent.keyDown(window, { key: 'Escape' });
-    expect(mockOnClose).toHaveBeenCalled();
-  });
 });

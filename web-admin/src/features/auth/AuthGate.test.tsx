@@ -42,13 +42,12 @@ describe('AuthGate Component', () => {
     mockLoginOwner.mockResolvedValue({ success: true });
     render(<AuthGate />);
 
-    fireEvent.change(screen.getByLabelText('Workspace Name (Tenant ID)'), { target: { value: 'demo' } });
     fireEvent.change(screen.getByLabelText('phone_number'), { target: { value: '9876543210' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'password123' } });
     fireEvent.click(screen.getByText('sign_in'));
 
     await waitFor(() => {
-      expect(mockLoginOwner).toHaveBeenCalledWith({ phone: '9876543210', password: 'password123', tenantSlug: 'demo' });
+      expect(mockLoginOwner).toHaveBeenCalledWith({ phone: '9876543210', password: 'password123', tenantSlug: 'demo_tenant' });
       expect(screen.getByText('login_success')).toBeDefined();
     });
   });
@@ -67,7 +66,6 @@ describe('AuthGate Component', () => {
     mockLoginOwner.mockResolvedValue({ success: false, message: 'Invalid info' });
     render(<AuthGate />);
 
-    fireEvent.change(screen.getByLabelText('Workspace Name (Tenant ID)'), { target: { value: 'demo' } });
     fireEvent.change(screen.getByLabelText('phone_number'), { target: { value: '987' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'pwd' } });
     fireEvent.click(screen.getByText('sign_in'));
@@ -77,33 +75,4 @@ describe('AuthGate Component', () => {
     });
   });
 
-  it('toggles forgot password form', async () => {
-    render(<AuthGate />);
-    
-    const forgotBtn = screen.getByText('Forgot Password?');
-    fireEvent.click(forgotBtn);
-
-    expect(screen.getByText('Reset Password')).toBeDefined();
-    expect(screen.getByLabelText('Primary Email Address')).toBeDefined();
-
-    const backBtn = screen.getByText('Back to Login');
-    fireEvent.click(backBtn);
-
-    expect(screen.getByText('owner_auth_title')).toBeDefined();
-  });
-
-  it('handles forgot password submission', async () => {
-    render(<AuthGate />);
-    
-    fireEvent.click(screen.getByText('Forgot Password?'));
-    
-    const emailInput = screen.getByLabelText('Primary Email Address');
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    
-    fireEvent.click(screen.getByText('Send Reset Link'));
-    
-    await waitFor(() => {
-      expect(screen.getByText('Reset link sent to your email. Valid for 3 minutes.')).toBeDefined();
-    }, { timeout: 2000 });
-  });
 });

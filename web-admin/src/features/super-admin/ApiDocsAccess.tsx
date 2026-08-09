@@ -27,7 +27,7 @@ export const ApiDocsAccess: React.FC = () => {
     setLoading(true);
     const res = await apiRequest('/api/v1/super_admin/api_doc_grants');
     if (res.status === 'success') {
-      setGrants(res.data);
+      setGrants(res.data || []);
     }
     setLoading(false);
   };
@@ -144,6 +144,7 @@ export const ApiDocsAccess: React.FC = () => {
                     <button
                       onClick={() => copyToken(grant.token)}
                       type="button"
+                      aria-label="Copy token"
                       className="transition-colors cursor-pointer"
                       style={{ color: 'var(--text-muted)' }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-main)')}
@@ -152,7 +153,7 @@ export const ApiDocsAccess: React.FC = () => {
                       {copiedToken === grant.token ? <CheckCircle className="w-3 h-3" style={{ color: 'var(--success-color)' }} /> : <Copy className="w-3 h-3" />}
                     </button>
                   </div>
-                  <Button variant="danger" onClick={() => revokeGrant(grant.id)} className="p-2 h-auto">
+                  <Button variant="danger" aria-label="Revoke grant" onClick={() => revokeGrant(grant.id)} className="p-2 h-auto">
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>

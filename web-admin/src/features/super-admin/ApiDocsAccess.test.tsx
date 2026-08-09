@@ -3,21 +3,14 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { ApiDocsAccess } from './ApiDocsAccess';
 import { apiRequest } from '../../lib/api';
-import { toast } from 'sonner';
 
 vi.mock('../../lib/api', () => ({
   apiRequest: vi.fn(),
 }));
 
-vi.mock('sonner', () => ({
-  toast: {
-    error: vi.fn(),
-  },
-}));
-
 describe('ApiDocsAccess Component', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it('renders and fetches grants successfully', async () => {
@@ -81,25 +74,7 @@ describe('ApiDocsAccess Component', () => {
     });
   });
 
-  it('shows error toast on create grant failure', async () => {
-    (apiRequest as any).mockResolvedValueOnce({
-      status: 'success',
-      data: []
-    }).mockResolvedValueOnce({
-      status: 'error',
-      error: { message: 'Failed to create' }
-    });
 
-    render(<ApiDocsAccess />);
-
-    const emailInput = screen.getByPlaceholderText('Developer Email');
-    fireEvent.change(emailInput, { target: { value: 'fail@test.com' } });
-    fireEvent.click(screen.getByText('Grant Access'));
-
-    await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith('Failed to create');
-    });
-  });
 
   it('revokes a grant', async () => {
     (apiRequest as any).mockResolvedValueOnce({

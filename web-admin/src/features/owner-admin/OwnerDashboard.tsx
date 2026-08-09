@@ -133,8 +133,8 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         setMetrics(res.data.dashboard);
         setError(null);
       } else {
-        setMetrics(defaultOwnerMetrics);
-        setError(null);
+        setMetrics(null);
+        setError(res.error?.message || 'Failed to load dashboard metrics');
       }
 
       await fetchVehiclesPage(1, false);

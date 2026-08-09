@@ -66,8 +66,8 @@ RSpec.describe "Api::V1::Vehicles", :tenant_schema, type: :request do
         category: "jcb",
         registration_number: "TN-09-CB-9999",
         model_year: 2023,
-        hourly_rate_cents: 80000,
-        daily_rate_cents: 600000
+        hourly_rate_paise: 80000,
+        daily_rate_paise: 600000
       }
 
       expect(response).to have_http_status(:created)
@@ -82,7 +82,7 @@ RSpec.describe "Api::V1::Vehicles", :tenant_schema, type: :request do
         name: "Exceeded Vehicle",
         category: "tractor",
         registration_number: "TN-01-XX-0000",
-        hourly_rate_cents: 50000
+        hourly_rate_paise: 50000
       }
 
       expect(response).to have_http_status(:forbidden)
@@ -141,13 +141,13 @@ RSpec.describe "Api::V1::Vehicles", :tenant_schema, type: :request do
 
   describe "GET /api/v1/vehicles/:id/quote" do
     it "calculates rental price quote" do
-      vehicle = in_tenant(slug) { create(:vehicle, hourly_rate_cents: 50000, daily_rate_cents: 350000) }
+      vehicle = in_tenant(slug) { create(:vehicle, hourly_rate_paise: 50000, daily_rate_paise: 350000) }
 
       get "/api/v1/vehicles/#{vehicle.uuid}/quote", headers: headers, params: { hours: 5, days: 0 }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json["data"]["final_cents"]).to eq(250000)
+      expect(json["data"]["final_paise"]).to eq(250000)
     end
 
     it "returns 404 on quote when vehicle is missing" do

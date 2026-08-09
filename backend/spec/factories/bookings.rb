@@ -9,8 +9,8 @@ FactoryBot.define do
     pickup_longitude { 78.1198 }
     status { :pending_payment }
     payment_status { :pending }
-    total_cents { 400000 }
-    advance_cents { 80000 }
+    total_paise { 400000 }
+    advance_paise { 80000 }
     sequence(:razorpay_order_id) { |n| "order_test_#{n}" }
   end
 end

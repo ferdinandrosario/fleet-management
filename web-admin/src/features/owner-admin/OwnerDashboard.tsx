@@ -18,7 +18,7 @@ export interface SystemInfo {
 }
 
 interface OwnerMetrics {
-  total_revenue_cents: number;
+  total_revenue_paise: number;
   completed_jobs_count: number;
   total_vehicles_count: number;
   active_vehicles_count: number;
@@ -68,7 +68,7 @@ const mockFleetVehicles: VehicleData[] = [
 ];
 
 const defaultOwnerMetrics: OwnerMetrics = {
-  total_revenue_cents: 48500000,
+  total_revenue_paise: 48500000,
   completed_jobs_count: 34,
   total_vehicles_count: 8,
   active_vehicles_count: 6,
@@ -107,7 +107,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
         category: v.category?.replace('_', ' ').toUpperCase() || 'EQUIPMENT',
         registration: v.registration_number,
         status: v.status === 'available' ? 'active' : v.status === 'booked' ? 'on_trip' : v.status === 'maintenance' ? 'in_service' : v.status,
-        rate: `₹${(v.hourly_rate_cents / 100).toLocaleString('en-IN')}/hr`,
+        rate: `₹${(v.hourly_rate_paise / 100).toLocaleString('en-IN')}/hr`,
         driver: 'Assigned Driver',
       }));
 
@@ -250,7 +250,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({ activeTab = 'ove
   }
 
   const formattedRevenue = metrics
-    ? `₹${(metrics.total_revenue_cents / 100).toLocaleString('en-IN')}`
+    ? `₹${(metrics.total_revenue_paise / 100).toLocaleString('en-IN')}`
     : '₹0';
 
   // --- Fleet Equipment Dedicated View ---

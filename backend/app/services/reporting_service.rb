@@ -19,7 +19,7 @@ class ReportingService
       active_vehicles_count = Vehicle.where(status: :available).count
       completed_bookings = Booking.where(status: :completed)
 
-      total_revenue_cents = completed_bookings.sum(:total_cents)
+      total_revenue_paise = completed_bookings.sum(:total_paise)
       completed_jobs_count = completed_bookings.count
       active_drivers_count = User.where(role: :driver).count
       average_rating = Vehicle.average(:average_rating).to_f.round(2)
@@ -27,7 +27,7 @@ class ReportingService
       utilization_pct = vehicles_count.positive? ? ((active_vehicles_count.to_f / vehicles_count) * 100).round(1) : 0.0
 
       {
-        total_revenue_cents: total_revenue_cents,
+        total_revenue_paise: total_revenue_paise,
         completed_jobs_count: completed_jobs_count,
         total_vehicles_count: vehicles_count,
         active_vehicles_count: active_vehicles_count,
@@ -63,7 +63,7 @@ class ReportingService
       end
 
       rows = [
-        [ "Booking ID", "Customer", "Vehicle", "Driver", "Start Time", "End Time", "Status", "Payment Status", "Total Cents" ]
+        [ "Booking ID", "Customer", "Vehicle", "Driver", "Start Time", "End Time", "Status", "Payment Status", "Total Paise" ]
       ]
 
       scope.find_each do |b|
@@ -76,7 +76,7 @@ class ReportingService
           b.end_time.iso8601,
           b.status,
           b.payment_status,
-          b.total_cents
+          b.total_paise
         ]
       end
 

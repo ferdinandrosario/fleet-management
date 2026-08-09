@@ -129,7 +129,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ active
         schema: `tenant_${o.slug}`,
         plan: o.plan?.name || o.plan?.tier?.toUpperCase() || 'Pro Fleet',
         status: o.status || 'active',
-        mrr: `₹${(o.mrr_cents ? o.mrr_cents / 100 : 8999).toLocaleString('en-IN')}/mo`,
+        mrr: `₹${(o.mrr_paise ? o.mrr_paise / 100 : 8999).toLocaleString('en-IN')}/mo`,
         vehiclesCount: o.vehicles_count || 12,
       }));
 

@@ -9,7 +9,7 @@ Canonical reference for third-party production payment gateway integration (Razo
 The application integrates with Razorpay for 20% advance token deposits on commercial vehicle bookings.
 
 ### Production Workflow
-1. **Order Creation**: Client calls `POST /api/v1/bookings` which initializes a Razorpay order via Razorpay API SDK (`Razorpay::Order.create(amount: advance_cents, currency: 'INR', receipt: booking.uuid)`).
+1. **Order Creation**: Client calls `POST /api/v1/bookings` which initializes a Razorpay order via Razorpay API SDK (`Razorpay::Order.create(amount: advance_paise, currency: 'INR', receipt: booking.uuid)`).
 2. **Client Checkout**: Front-end renders Razorpay Checkout SDK modal with `order_id` and `amount`.
 3. **Payment Verification**: `PaymentVerificationService` validates signature via HMAC-SHA256:
 

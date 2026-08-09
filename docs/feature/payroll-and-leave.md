@@ -22,11 +22,11 @@ Driver / Owner Admin (tenant schema context)
 
 When an owner admin initiates payroll calculation for a target driver and period range:
 
-$$\text{base\_pay\_cents} = \sum (\text{booking.total\_cents} \times 0.40)$$
+$$\text{base\_pay\_paise} = \sum (\text{booking.total\_paise} \times 0.40)$$
 
 $$\text{total\_hours\_worked} = \sum \frac{\text{job\_finished\_at} - \text{job\_started\_at}}{3600}$$
 
-$$\text{total\_payout\_cents} = \max(\text{base\_pay\_cents} + \text{bonus\_cents} - \text{deductions\_cents}, 0)$$
+$$\text{total\_payout\_paise} = \max(\text{base\_pay\_paise} + \text{bonus\_paise} - \text{deductions\_paise}, 0)$$
 
 ## API Reference
 

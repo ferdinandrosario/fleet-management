@@ -17,7 +17,7 @@ Owner Admin / Super Admin
 ## Metrics Breakdown
 
 ### Owner Dashboard Metrics
-- `total_revenue_cents`: Total sum of completed booking amounts.
+- `total_revenue_paise`: Total sum of completed booking amounts.
 - `completed_jobs_count`: Total number of completed booking jobs.
 - `total_vehicles_count`: Total registered vehicles in fleet.
 - `active_vehicles_count`: Number of available vehicles.

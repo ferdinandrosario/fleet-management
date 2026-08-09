@@ -22,11 +22,11 @@ class Subscription < ApplicationRecord
   # 18% GST tax breakdown (paise) for Indian B2B invoicing
   def gst_breakdown(same_state: true)
     base_price = plan&.price_paise.to_i
-    tax_cents = (base_price * 0.18).round
+    tax_paise = (base_price * 0.18).round
     if same_state
-      { cgst_paise: tax_cents / 2, sgst_paise: tax_cents / 2, igst_paise: 0, total_paise: base_price + tax_cents }
+      { cgst_paise: tax_paise / 2, sgst_paise: tax_paise / 2, igst_paise: 0, total_paise: base_price + tax_paise }
     else
-      { cgst_paise: 0, sgst_paise: 0, igst_paise: tax_cents, total_paise: base_price + tax_cents }
+      { cgst_paise: 0, sgst_paise: 0, igst_paise: tax_paise, total_paise: base_price + tax_paise }
     end
   end
 end

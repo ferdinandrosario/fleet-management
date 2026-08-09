@@ -8,8 +8,8 @@ class CreateVehicles < ActiveRecord::Migration[8.1]
       t.integer :category, null: false, default: 0
       t.string :registration_number, null: false
       t.integer :model_year
-      t.integer :hourly_rate_cents, null: false, default: 0
-      t.integer :daily_rate_cents, null: false, default: 0
+      t.integer :hourly_rate_paise, null: false, default: 0
+      t.integer :daily_rate_paise, null: false, default: 0
       t.integer :status, null: false, default: 0
       t.jsonb :specs, null: false, default: {}
 
@@ -39,8 +39,8 @@ class CreateVehicles < ActiveRecord::Migration[8.1]
       t.references :vehicle, null: false, foreign_key: { on_delete: :cascade }
       t.integer :min_duration_hours, null: false, default: 0
       t.decimal :discount_percentage, precision: 5, scale: 2, null: false, default: 0.0
-      t.integer :override_hourly_rate_cents
-      t.integer :override_daily_rate_cents
+      t.integer :override_hourly_rate_paise
+      t.integer :override_daily_rate_paise
       t.date :start_date
       t.date :end_date
       t.boolean :active, null: false, default: true

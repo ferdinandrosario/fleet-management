@@ -10,7 +10,7 @@ RSpec.describe PayrollService do
         :booking,
         driver: driver,
         status: :completed,
-        total_cents: 100000,
+        total_paise: 100000,
         job_started_at: 2.hours.ago,
         job_finished_at: 1.hour.ago
       )
@@ -19,15 +19,15 @@ RSpec.describe PayrollService do
         driver: driver,
         period_start: 1.day.ago.to_date,
         period_end: Date.current,
-        bonus_cents: 5000,
-        deductions_cents: 1000
+        bonus_paise: 5000,
+        deductions_paise: 1000
       )
 
       expect(res).to be_success
       expect(res.payroll.completed_jobs_count).to eq(1)
       expect(res.payroll.total_hours_worked.to_f).to eq(1.0)
-      expect(res.payroll.base_pay_cents).to eq(40000)
-      expect(res.payroll.total_payout_cents).to eq(44000)
+      expect(res.payroll.base_pay_paise).to eq(40000)
+      expect(res.payroll.total_payout_paise).to eq(44000)
     end
 
     it "returns error if driver is nil or non-driver" do

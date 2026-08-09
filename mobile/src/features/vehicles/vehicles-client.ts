@@ -17,8 +17,8 @@ export type CreateVehicleRequest = {
   category: string;
   registration_number: string;
   model_year?: number;
-  hourly_rate_cents: number;
-  daily_rate_cents: number;
+  hourly_rate_paise: number;
+  daily_rate_paise: number;
 };
 
 export async function createVehicle(data: CreateVehicleRequest) {

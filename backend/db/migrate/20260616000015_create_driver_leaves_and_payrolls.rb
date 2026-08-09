@@ -25,10 +25,10 @@ class CreateDriverLeavesAndPayrolls < ActiveRecord::Migration[8.1]
       t.date :period_end, null: false
       t.integer :completed_jobs_count, null: false, default: 0
       t.decimal :total_hours_worked, precision: 10, scale: 2, null: false, default: 0.0
-      t.integer :base_pay_cents, null: false, default: 0
-      t.integer :bonus_cents, null: false, default: 0
-      t.integer :deductions_cents, null: false, default: 0
-      t.integer :total_payout_cents, null: false, default: 0
+      t.integer :base_pay_paise, null: false, default: 0
+      t.integer :bonus_paise, null: false, default: 0
+      t.integer :deductions_paise, null: false, default: 0
+      t.integer :total_payout_paise, null: false, default: 0
       t.integer :status, null: false, default: 0
 
       t.timestamps

@@ -4,8 +4,8 @@ FactoryBot.define do
     category { :tractor }
     sequence(:registration_number) { |n| "TN-01-AB-#{1000 + n}" }
     model_year { 2023 }
-    hourly_rate_cents { 50000 } # ₹500/hr
-    daily_rate_cents { 350000 } # ₹3500/day
+    hourly_rate_paise { 50000 } # ₹500/hr
+    daily_rate_paise { 350000 } # ₹3500/day
     status { :available }
     specs { { horsepower: 45, fuel_type: "diesel" } }
   end

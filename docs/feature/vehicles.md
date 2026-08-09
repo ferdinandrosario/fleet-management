@@ -38,9 +38,9 @@ To support dependent dropdowns in the frontend UI (Make -> Variety/Model), a glo
 
 ### 1. `PricingCalculatorService`
 Calculates instant quotes for duration requests (hours and/or days):
-- Computes standard base cost using `hourly_rate_cents` and `daily_rate_cents`.
+- Computes standard base cost using `hourly_rate_paise` and `daily_rate_paise`.
 - Evaluates active `PricingRule` matching `min_duration_hours` and date range (`start_date` .. `end_date`).
-- Applies rate overrides (`override_hourly_rate_cents`, `override_daily_rate_cents`) or percentage discounts (`discount_percentage`).
+- Applies rate overrides (`override_hourly_rate_paise`, `override_daily_rate_paise`) or percentage discounts (`discount_percentage`).
 
 ### 2. Plan Limit Enforcement
 `VehiclesController#create` checks `PlanLimitService.check(owner, :vehicles, current_count: Vehicle.count)` before persisting new vehicle listings. If the plan cap is reached, returns `HTTP 403 Forbidden` (`code: "plan_limit_exceeded"`).

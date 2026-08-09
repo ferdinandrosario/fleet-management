@@ -43,13 +43,13 @@ class BookingService
         hours = duration_hours % 24
 
         quote = PricingCalculatorService.call(vehicle: vehicle, hours: hours, days: days, date: st.to_date)
-        total_cents = quote.final_cents
+        total_paise = quote.final_paise
 
         # Require advance token payment (configurable %, minimum configurable paise)
         advance_pct = ENV.fetch("BOOKING_ADVANCE_PERCENTAGE", 0.20).to_f
-        min_advance = ENV.fetch("BOOKING_ADVANCE_MINIMUM_CENTS", 50000).to_i
-        advance_cents = [ (total_cents * advance_pct).round, min_advance ].max
-        advance_cents = total_cents if advance_cents > total_cents
+        min_advance = ENV.fetch("BOOKING_ADVANCE_MINIMUM_PAISE", 50000).to_i
+        advance_paise = [ (total_paise * advance_pct).round, min_advance ].max
+        advance_paise = total_paise if advance_paise > total_paise
 
         razorpay_order_id = "order_#{SecureRandom.hex(10)}"
 
@@ -60,8 +60,8 @@ class BookingService
           pickup_address: pickup_address,
           pickup_latitude: pickup_latitude,
           pickup_longitude: pickup_longitude,
-          total_cents: total_cents,
-          advance_cents: advance_cents,
+          total_paise: total_paise,
+          advance_paise: advance_paise,
           status: :pending_payment,
           payment_status: :pending,
           razorpay_order_id: razorpay_order_id
@@ -70,7 +70,7 @@ class BookingService
         if booking.save
           razorpay_payload = {
             order_id: razorpay_order_id,
-            amount_cents: advance_cents,
+            amount_paise: advance_paise,
             currency: "INR",
             customer_name: customer.name,
             customer_phone: customer.phone

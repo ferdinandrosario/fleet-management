@@ -18,8 +18,8 @@ RSpec.describe Vehicle, :tenant_schema, type: :model do
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:registration_number) }
-    it { is_expected.to validate_numericality_of(:hourly_rate_cents).is_greater_than_or_equal_to(0) }
-    it { is_expected.to validate_numericality_of(:daily_rate_cents).is_greater_than_or_equal_to(0) }
+    it { is_expected.to validate_numericality_of(:hourly_rate_paise).is_greater_than_or_equal_to(0) }
+    it { is_expected.to validate_numericality_of(:daily_rate_paise).is_greater_than_or_equal_to(0) }
 
     it "validates registration number uniqueness" do
       create(:vehicle, registration_number: "TN-01-AA-1234")

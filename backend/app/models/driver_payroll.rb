@@ -10,10 +10,10 @@ class DriverPayroll < ApplicationRecord
   validates :period_end, presence: true
   validates :completed_jobs_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :total_hours_worked, numericality: { greater_than_or_equal_to: 0 }
-  validates :base_pay_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :bonus_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :deductions_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :total_payout_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :base_pay_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :bonus_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :deductions_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :total_payout_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :period_end_after_period_start
 
   scope :chronological, -> { order(period_start: :desc) }

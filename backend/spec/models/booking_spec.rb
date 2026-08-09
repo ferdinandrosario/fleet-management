@@ -20,11 +20,11 @@ RSpec.describe Booking, type: :model do
       expect(booking.errors[:end_time]).to include("must be after start time")
     end
 
-    it "validates total_cents and advance_cents numericality" do
-      booking = build(:booking, total_cents: -1, advance_cents: -5)
+    it "validates total_paise and advance_paise numericality" do
+      booking = build(:booking, total_paise: -1, advance_paise: -5)
       expect(booking).not_to be_valid
-      expect(booking.errors[:total_cents]).to include("must be greater than or equal to 0")
-      expect(booking.errors[:advance_cents]).to include("must be greater than or equal to 0")
+      expect(booking.errors[:total_paise]).to include("must be greater than or equal to 0")
+      expect(booking.errors[:advance_paise]).to include("must be greater than or equal to 0")
     end
   end
 

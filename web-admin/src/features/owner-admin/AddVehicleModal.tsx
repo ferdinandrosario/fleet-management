@@ -113,8 +113,8 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
     const errors: Record<string, string> = {};
     if (!name.trim()) errors.name = 'Vehicle name is required';
     if (!registrationNumber.trim()) errors.registration_number = 'Registration number is required';
-    if (!hourlyRate || Number(hourlyRate) < 0) errors.hourly_rate_cents = 'Valid hourly rate is required';
-    if (!dailyRate || Number(dailyRate) < 0) errors.daily_rate_cents = 'Valid daily rate is required';
+    if (!hourlyRate || Number(hourlyRate) < 0) errors.hourly_rate_paise = 'Valid hourly rate is required';
+    if (!dailyRate || Number(dailyRate) < 0) errors.daily_rate_paise = 'Valid daily rate is required';
 
     let parsedSpecs = {};
     if (specsJson.trim()) {
@@ -138,8 +138,8 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
       vehicle_model_id: vehicleModelId || undefined,
       registration_number: registrationNumber.trim().toUpperCase(),
       model_year: Number(modelYear) || new Date().getFullYear(),
-      hourly_rate_cents: Math.round(Number(hourlyRate) * 100),
-      daily_rate_cents: Math.round(Number(dailyRate) * 100),
+      hourly_rate_paise: Math.round(Number(hourlyRate) * 100),
+      daily_rate_paise: Math.round(Number(dailyRate) * 100),
       specs: parsedSpecs,
     };
 
@@ -158,7 +158,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
         category: CATEGORY_OPTIONS.find((c) => c.value === v.category)?.label || v.category,
         registration: v.registration_number,
         status: 'active',
-        rate: `₹${(v.hourly_rate_cents / 100).toLocaleString('en-IN')}/hr`,
+        rate: `₹${(v.hourly_rate_paise / 100).toLocaleString('en-IN')}/hr`,
         driver: 'Unassigned',
       };
 
@@ -370,7 +370,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
                 placeholder="800"
                 value={hourlyRate}
                 onChange={(e) => setHourlyRate(e.target.value)}
-                error={fieldErrors.hourly_rate_cents}
+                error={fieldErrors.hourly_rate_paise}
                 required
               />
               <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>Per hour in ₹ — converted to paise on save</p>
@@ -383,7 +383,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
                 placeholder="6000"
                 value={dailyRate}
                 onChange={(e) => setDailyRate(e.target.value)}
-                error={fieldErrors.daily_rate_cents}
+                error={fieldErrors.daily_rate_paise}
                 required
               />
               <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>Per day in ₹ — converted to paise on save</p>

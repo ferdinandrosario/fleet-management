@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe BookingService do
   let(:customer) { create(:user) }
-  let(:vehicle) { create(:vehicle, status: :available, hourly_rate_cents: 50000, daily_rate_cents: 350000) }
+  let(:vehicle) { create(:vehicle, status: :available, hourly_rate_paise: 50000, daily_rate_paise: 350000) }
   let(:st) { 2.hours.from_now }
   let(:et) { 6.hours.from_now }
 
@@ -19,12 +19,12 @@ RSpec.describe BookingService do
       expect(res).to be_success
       expect(res.booking).to be_persisted
       expect(res.booking.status).to eq("pending_payment")
-      expect(res.booking.total_cents).to eq(200000)
+      expect(res.booking.total_paise).to eq(200000)
       expect(res.razorpay_order[:order_id]).to be_present
     end
 
-    it "caps advance_cents at total_cents when total is lower than minimum advance" do
-      cheap_vehicle = create(:vehicle, hourly_rate_cents: 5000)
+    it "caps advance_paise at total_paise when total is lower than minimum advance" do
+      cheap_vehicle = create(:vehicle, hourly_rate_paise: 5000)
       res = described_class.call(
         customer: customer,
         vehicle: cheap_vehicle,
@@ -33,8 +33,8 @@ RSpec.describe BookingService do
       )
 
       expect(res).to be_success
-      expect(res.booking.total_cents).to eq(5000)
-      expect(res.booking.advance_cents).to eq(5000)
+      expect(res.booking.total_paise).to eq(5000)
+      expect(res.booking.advance_paise).to eq(5000)
     end
 
     it "returns error for invalid time range" do

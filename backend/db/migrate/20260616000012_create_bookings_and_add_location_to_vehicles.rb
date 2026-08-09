@@ -23,8 +23,8 @@ class CreateBookingsAndAddLocationToVehicles < ActiveRecord::Migration[8.1]
       t.integer :status, null: false, default: 0
       t.integer :payment_status, null: false, default: 0
 
-      t.integer :total_cents, null: false, default: 0
-      t.integer :advance_cents, null: false, default: 0
+      t.integer :total_paise, null: false, default: 0
+      t.integer :advance_paise, null: false, default: 0
 
       t.string :razorpay_order_id
       t.string :razorpay_payment_id

@@ -95,8 +95,8 @@ RSpec.configure do |config|
               category: { type: :string, example: 'tractor' },
               registration_number: { type: :string, example: 'KA01AB1234' },
               model_year: { type: :integer, example: 2024 },
-              hourly_rate_cents: { type: :integer, example: 85000 },
-              daily_rate_cents: { type: :integer, example: 650000 },
+              hourly_rate_paise: { type: :integer, example: 85000 },
+              daily_rate_paise: { type: :integer, example: 650000 },
               status: { type: :string, example: 'available' },
               address: { type: :string, nullable: true, example: 'Bengaluru, Karnataka' },
               latitude: { type: :number, nullable: true, example: 12.9716 },
@@ -106,7 +106,7 @@ RSpec.configure do |config|
               specs: { type: :object },
               created_at: { type: :string, format: :'date-time' }
             },
-            required: [ 'id', 'registration_number', 'category', 'status', 'hourly_rate_cents', 'daily_rate_cents' ]
+            required: [ 'id', 'registration_number', 'category', 'status', 'hourly_rate_paise', 'daily_rate_paise' ]
           },
           Booking: {
             type: :object,

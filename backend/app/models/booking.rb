@@ -19,8 +19,8 @@ class Booking < ApplicationRecord
 
   validates :start_time, presence: true
   validates :end_time, presence: true
-  validates :total_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :advance_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :total_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :advance_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :start_meter_reading, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :end_meter_reading, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validate :end_time_after_start_time

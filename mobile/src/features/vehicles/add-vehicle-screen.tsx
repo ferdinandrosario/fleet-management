@@ -65,8 +65,8 @@ export function AddVehicleScreen({ navigation }: Props) {
       name,
       category,
       registration_number: registrationNumber,
-      hourly_rate_cents: Math.round(parseFloat(hourlyRate) * 100),
-      daily_rate_cents: Math.round(parseFloat(dailyRate) * 100),
+      hourly_rate_paise: Math.round(parseFloat(hourlyRate) * 100),
+      daily_rate_paise: Math.round(parseFloat(dailyRate) * 100),
       model_year: modelYear ? parseInt(modelYear, 10) : undefined,
     })
       .then((result) => {

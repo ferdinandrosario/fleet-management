@@ -7,8 +7,8 @@ class PricingRule < ApplicationRecord
 
   validates :min_duration_hours, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :discount_percentage, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
-  validates :override_hourly_rate_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :override_daily_rate_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :override_hourly_rate_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :override_daily_rate_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
 
   scope :active, -> { where(active: true) }
 end

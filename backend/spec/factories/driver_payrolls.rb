@@ -5,10 +5,10 @@ FactoryBot.define do
     period_end { Date.current }
     completed_jobs_count { 5 }
     total_hours_worked { 32.5 }
-    base_pay_cents { 1500000 }
-    bonus_cents { 50000 }
-    deductions_cents { 0 }
-    total_payout_cents { 1550000 }
+    base_pay_paise { 1500000 }
+    bonus_paise { 50000 }
+    deductions_paise { 0 }
+    total_payout_paise { 1550000 }
     status { :draft }
   end
 end

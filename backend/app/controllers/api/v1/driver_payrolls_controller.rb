@@ -29,8 +29,8 @@ module Api
           driver: driver,
           period_start: params[:period_start],
           period_end: params[:period_end],
-          bonus_cents: params[:bonus_cents],
-          deductions_cents: params[:deductions_cents]
+          bonus_paise: params[:bonus_paise],
+          deductions_paise: params[:deductions_paise]
         )
 
         if result.success?

@@ -22,8 +22,8 @@ class Vehicle < ApplicationRecord
 
   validates :name, presence: true
   validates :registration_number, presence: true, uniqueness: { case_sensitive: false }
-  validates :hourly_rate_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :daily_rate_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :hourly_rate_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :daily_rate_paise, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :model_year, numericality: {
     only_integer: true,
     greater_than: 1900,

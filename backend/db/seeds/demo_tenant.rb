@@ -50,8 +50,8 @@ module Seeds
         v1.name = "Mahindra 575 DI Tractor"
         v1.category = :tractor
         v1.status = :available
-        v1.hourly_rate_cents = 80000
-        v1.daily_rate_cents = 500000
+        v1.hourly_rate_paise = 80000
+        v1.daily_rate_paise = 500000
         v1.model_year = 2023
         v1.latitude = 13.0827
         v1.longitude = 80.2707
@@ -62,8 +62,8 @@ module Seeds
         v2.name = "JCB 3DX Backhoe Loader"
         v2.category = :jcb
         v2.status = :available
-        v2.hourly_rate_cents = 150000
-        v2.daily_rate_cents = 1000000
+        v2.hourly_rate_paise = 150000
+        v2.daily_rate_paise = 1000000
         v2.model_year = 2024
         v2.latitude = 13.0850
         v2.longitude = 80.2750
@@ -74,8 +74,8 @@ module Seeds
         v3.name = "Tata Ace Gold"
         v3.category = :heavy_vehicle
         v3.status = :available
-        v3.hourly_rate_cents = 50000
-        v3.daily_rate_cents = 400000
+        v3.hourly_rate_paise = 50000
+        v3.daily_rate_paise = 400000
         v3.model_year = 2022
         v3.latitude = 13.0810
         v3.longitude = 80.2710
@@ -86,8 +86,8 @@ module Seeds
         v4.name = "Ashok Leyland Dost+"
         v4.category = :heavy_vehicle
         v4.status = :available
-        v4.hourly_rate_cents = 60000
-        v4.daily_rate_cents = 450000
+        v4.hourly_rate_paise = 60000
+        v4.daily_rate_paise = 450000
         v4.model_year = 2023
         v4.latitude = 13.0830
         v4.longitude = 80.2730
@@ -185,8 +185,8 @@ module Seeds
           v.name ||= item[:name]
           v.category = item[:category]
           v.status = [ :available, :available, :available, :booked, :maintenance ][idx % 5]
-          v.hourly_rate_cents = item[:hourly] + ((idx % 5) * 5000)
-          v.daily_rate_cents = item[:daily] + ((idx % 5) * 20000)
+          v.hourly_rate_paise = item[:hourly] + ((idx % 5) * 5000)
+          v.daily_rate_paise = item[:daily] + ((idx % 5) * 20000)
           v.model_year = item[:year]
           v.latitude = 13.0 + ((idx % 20) * 0.015)
           v.longitude = 80.2 + ((idx % 20) * 0.015)
@@ -215,8 +215,8 @@ module Seeds
           )
           booking.driver = driver_user
           booking.end_time = end_date
-          booking.total_cents = veh.daily_rate_cents * 2
-          booking.advance_cents = (veh.daily_rate_cents * 0.2).round
+          booking.total_paise = veh.daily_rate_paise * 2
+          booking.advance_paise = (veh.daily_rate_paise * 0.2).round
           booking.status = statuses[b_idx % statuses.length]
           booking.payment_status = payment_statuses[b_idx % payment_statuses.length]
           booking.save!
@@ -232,10 +232,10 @@ module Seeds
           payroll.period_end = start_dt + 1.month - 1.day
           payroll.completed_jobs_count = 10 + (p_idx % 8)
           payroll.total_hours_worked = 80.0 + (p_idx * 2)
-          payroll.base_pay_cents = 2500000 + (p_idx * 50000)
-          payroll.bonus_cents = 200000 + (p_idx * 10000)
-          payroll.deductions_cents = 50000
-          payroll.total_payout_cents = payroll.base_pay_cents + payroll.bonus_cents - payroll.deductions_cents
+          payroll.base_pay_paise = 2500000 + (p_idx * 50000)
+          payroll.bonus_paise = 200000 + (p_idx * 10000)
+          payroll.deductions_paise = 50000
+          payroll.total_payout_paise = payroll.base_pay_paise + payroll.bonus_paise - payroll.deductions_paise
           payroll.status = [ :draft, :approved, :paid ][p_idx % 3]
           payroll.save!
         end

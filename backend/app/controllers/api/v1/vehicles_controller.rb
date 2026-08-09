@@ -86,9 +86,9 @@ module Api
         render_success(
           data: {
             vehicle_id: vehicle.uuid,
-            base_cents: quote_result.base_cents,
-            discount_cents: quote_result.discount_cents,
-            final_cents: quote_result.final_cents,
+            base_paise: quote_result.base_paise,
+            discount_paise: quote_result.discount_paise,
+            final_paise: quote_result.final_paise,
             applied_rule: PricingRuleSerializer.call(quote_result.applied_rule)
           }
         )
@@ -100,7 +100,7 @@ module Api
       private
 
       def vehicle_params
-        params.permit(:name, :category, :registration_number, :model_year, :hourly_rate_cents, :daily_rate_cents, :status, :vehicle_model_id, specs: {})
+        params.permit(:name, :category, :registration_number, :model_year, :hourly_rate_paise, :daily_rate_paise, :status, :vehicle_model_id, specs: {})
       end
     end
   end

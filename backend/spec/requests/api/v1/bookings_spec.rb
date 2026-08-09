@@ -29,7 +29,7 @@ RSpec.describe "Api::V1::Bookings", :tenant_schema, type: :request do
   end
 
   let(:vehicle) do
-    in_tenant(slug) { create(:vehicle, status: :available, hourly_rate_cents: 50000) }
+    in_tenant(slug) { create(:vehicle, status: :available, hourly_rate_paise: 50000) }
   end
 
   describe "GET /api/v1/bookings" do

@@ -26,8 +26,8 @@ describe("vehicles-client", () => {
         name: "Test Vehicle",
         category: "Test Category",
         registration_number: "TEST-123",
-        hourly_rate_cents: 1000,
-        daily_rate_cents: 5000,
+        hourly_rate_paise: 1000,
+        daily_rate_paise: 5000,
       };
       await createVehicle(payload);
       expect(request).toHaveBeenCalledWith("/api/v1/vehicles", {

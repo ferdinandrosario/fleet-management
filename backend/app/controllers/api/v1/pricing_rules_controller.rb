@@ -40,7 +40,7 @@ module Api
       end
 
       def pricing_rule_params
-        params.permit(:min_duration_hours, :discount_percentage, :override_hourly_rate_cents, :override_daily_rate_cents, :start_date, :end_date, :active)
+        params.permit(:min_duration_hours, :discount_percentage, :override_hourly_rate_paise, :override_daily_rate_paise, :start_date, :end_date, :active)
       end
     end
   end

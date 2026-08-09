@@ -51,14 +51,14 @@ RSpec.describe ReportingService do
       Booking.delete_all
 
       vehicle = create(:vehicle, status: :available)
-      create(:booking, vehicle: vehicle, status: :completed, total_cents: 25000)
+      create(:booking, vehicle: vehicle, status: :completed, total_paise: 25000)
 
       metrics = described_class.owner_dashboard
 
       expect(metrics[:total_vehicles_count]).to eq(1)
       expect(metrics[:active_vehicles_count]).to eq(1)
       expect(metrics[:completed_jobs_count]).to eq(1)
-      expect(metrics[:total_revenue_cents]).to eq(25000)
+      expect(metrics[:total_revenue_paise]).to eq(25000)
       expect(metrics[:vehicle_utilization_pct]).to eq(100.0)
     end
 
@@ -94,20 +94,20 @@ RSpec.describe ReportingService do
   describe ".export_bookings_csv" do
     it "generates valid CSV string with date filtering and assigned driver" do
       driver = create(:user, :driver, name: "Ramesh Kumar")
-      booking = create(:booking, driver: driver, status: :completed, total_cents: 15000)
+      booking = create(:booking, driver: driver, status: :completed, total_paise: 15000)
 
       csv_output = described_class.export_bookings_csv(
         start_date: 1.day.ago.to_date,
         end_date: Date.current
       )
 
-      expect(csv_output).to include("Booking ID,Customer,Vehicle,Driver,Start Time,End Time,Status,Payment Status,Total Cents")
+      expect(csv_output).to include("Booking ID,Customer,Vehicle,Driver,Start Time,End Time,Status,Payment Status,Total Paise")
       expect(csv_output).to include("Ramesh Kumar")
       expect(csv_output).to include("completed")
     end
 
     it "handles unassigned driver and missing date parameters" do
-      booking = create(:booking, driver: nil, status: :pending_payment, total_cents: 10000)
+      booking = create(:booking, driver: nil, status: :pending_payment, total_paise: 10000)
 
       csv_output = described_class.export_bookings_csv
 

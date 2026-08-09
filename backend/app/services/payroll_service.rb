@@ -7,7 +7,7 @@ class PayrollService
   end
 
   class << self
-    def calculate_payroll(driver:, period_start:, period_end:, bonus_cents: 0, deductions_cents: 0)
+    def calculate_payroll(driver:, period_start:, period_end:, bonus_paise: 0, deductions_paise: 0)
       if driver.nil?
         return Result.new(success: false, errors: { driver: [ "driver is required" ] })
       end
@@ -33,11 +33,11 @@ class PayrollService
       total_seconds = completed_bookings.sum("EXTRACT(EPOCH FROM (job_finished_at - job_started_at))")
       total_hours = (total_seconds / 3600.0)
 
-      base_pay_sum = (completed_bookings.sum(:total_cents) * 0.40).round
+      base_pay_sum = (completed_bookings.sum(:total_paise) * 0.40).round
 
-      b_cents = bonus_cents.to_i
-      d_cents = deductions_cents.to_i
-      total_payout = [ base_pay_sum + b_cents - d_cents, 0 ].max
+      b_paise = bonus_paise.to_i
+      d_paise = deductions_paise.to_i
+      total_payout = [ base_pay_sum + b_paise - d_paise, 0 ].max
 
       payroll = DriverPayroll.new(
         driver: driver,
@@ -45,10 +45,10 @@ class PayrollService
         period_end: period_end,
         completed_jobs_count: jobs_count,
         total_hours_worked: total_hours.round(2),
-        base_pay_cents: base_pay_sum,
-        bonus_cents: b_cents,
-        deductions_cents: d_cents,
-        total_payout_cents: total_payout,
+        base_pay_paise: base_pay_sum,
+        bonus_paise: b_paise,
+        deductions_paise: d_paise,
+        total_payout_paise: total_payout,
         status: :draft
       )
 

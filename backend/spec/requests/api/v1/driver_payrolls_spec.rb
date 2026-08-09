@@ -50,8 +50,8 @@ RSpec.describe "Api::V1::DriverPayrolls", :tenant_schema, type: :request do
         driver_id: driver_user.uuid,
         period_start: 7.days.ago.to_date,
         period_end: Date.current,
-        bonus_cents: 10000,
-        deductions_cents: 0
+        bonus_paise: 10000,
+        deductions_paise: 0
       }
 
       expect(response).to have_http_status(:created)

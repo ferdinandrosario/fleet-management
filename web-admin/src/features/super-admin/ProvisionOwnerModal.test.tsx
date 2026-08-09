@@ -1,0 +1,153 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { ProvisionOwnerModal } from './ProvisionOwnerModal';
+import { apiRequest } from '../../lib/api';
+
+vi.mock('../../lib/api', () => ({
+  apiRequest: vi.fn(),
+}));
+
+describe('ProvisionOwnerModal Component', () => {
+  const mockOnClose = vi.fn();
+  const mockOnSuccess = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('does not render when isOpen is false', () => {
+    render(<ProvisionOwnerModal isOpen={false} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    expect(screen.queryByText('New Fleet Owner')).toBeNull();
+  });
+
+  it('renders and handles validation errors on submit', async () => {
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    const submitBtn = screen.getByRole('button', { name: /Provision Fleet Owner/i });
+    fireEvent.submit(submitBtn.closest('form')!);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Please resolve all validation errors below.')).toBeDefined();
+    });
+  });
+
+  it('submits form successfully and calls onSuccess', async () => {
+    (apiRequest as any).mockResolvedValue({ status: 'success' });
+
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test Company' } });
+    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test Owner' } });
+    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+
+    fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
+
+    await waitFor(() => {
+      expect(apiRequest).toHaveBeenCalledWith('/api/v1/super_admin/owners', expect.objectContaining({
+        method: 'POST',
+      }));
+      expect(screen.getByText('Tenant Fleet Owner Provisioned!')).toBeDefined();
+    });
+
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalled();
+    }, { timeout: 2000 });
+  });
+
+  it('handles API errors', async () => {
+    (apiRequest as any).mockResolvedValue({
+      status: 'error',
+      error: { message: 'Provision failed' }
+    });
+
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test Company' } });
+    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test Owner' } });
+    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+
+    fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
+
+    await waitFor(() => {
+      expect(screen.getByText('Provision failed')).toBeDefined();
+    });
+  });
+
+  it('shows advanced settings when toggled', () => {
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    fireEvent.click(screen.getByText('Show Advanced Settings'));
+    expect(screen.getByPlaceholderText('Tenant')).toBeDefined();
+    expect(screen.getByPlaceholderText('Office Address')).toBeDefined();
+  });
+
+  it('validates minimum password length', async () => {
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '123' } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: '123' } }); // < 6
+    
+    fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Please resolve all validation errors below.')).toBeDefined();
+    });
+  });
+
+  it('generates slug automatically and stops when manually edited', async () => {
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    // Toggle advanced to see slug
+    fireEvent.click(screen.getByText('Show Advanced Settings'));
+    
+    // Type company name
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Hello World!' } });
+    
+    const tenantInput = screen.getByPlaceholderText('Tenant') as HTMLInputElement;
+    expect(tenantInput.value).toBe('hello_world');
+    
+    // Manually edit slug
+    fireEvent.change(tenantInput, { target: { value: 'my_slug' } });
+    
+    // Type company name again, slug shouldn't change
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Other' } });
+    expect(tenantInput.value).toBe('my_slug');
+  });
+
+  it('handles field-specific array errors from API', async () => {
+    (apiRequest as any).mockResolvedValue({
+      status: 'error',
+      error: { fields: { owner_phone: ['has already been taken'] } }
+    });
+
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '123' } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+
+    fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
+
+    await waitFor(() => {
+      expect(screen.getByText('Failed to provision tenant fleet owner.')).toBeDefined();
+    });
+  });
+
+  it('resets form when modal is closed', () => {
+    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test' } });
+    
+    const closeBtn = screen.getByLabelText('Close');
+    fireEvent.click(closeBtn);
+    
+    expect(mockOnClose).toHaveBeenCalled();
+  });
+});

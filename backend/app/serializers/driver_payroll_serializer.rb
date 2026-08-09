@@ -13,10 +13,10 @@ module DriverPayrollSerializer
       period_end: payroll.period_end.iso8601,
       completed_jobs_count: payroll.completed_jobs_count,
       total_hours_worked: payroll.total_hours_worked.to_f,
-      base_pay_cents: payroll.base_pay_cents,
-      bonus_cents: payroll.bonus_cents,
-      deductions_cents: payroll.deductions_cents,
-      total_payout_cents: payroll.total_payout_cents,
+      base_pay_paise: payroll.base_pay_paise,
+      bonus_paise: payroll.bonus_paise,
+      deductions_paise: payroll.deductions_paise,
+      total_payout_paise: payroll.total_payout_paise,
       status: payroll.status,
       created_at: payroll.created_at.iso8601
     }

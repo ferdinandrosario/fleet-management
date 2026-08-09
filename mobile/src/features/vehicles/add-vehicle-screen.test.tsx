@@ -128,8 +128,8 @@ describe("AddVehicleScreen", () => {
         name: "My Tractor",
         category: "Tractor",
         registration_number: "MH121234",
-        hourly_rate_cents: 50000,
-        daily_rate_cents: 400000,
+        hourly_rate_paise: 50000,
+        daily_rate_paise: 400000,
         model_year: 2023,
       });
     });

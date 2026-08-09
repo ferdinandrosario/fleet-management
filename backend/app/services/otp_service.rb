@@ -4,8 +4,8 @@
 module OtpService
   module_function
 
-  EXPIRY = 10.minutes
-  CODE_LENGTH = 6
+  EXPIRY = ENV.fetch("OTP_EXPIRY_MINUTES", 10).to_i.minutes
+  CODE_LENGTH = ENV.fetch("OTP_CODE_LENGTH", 6).to_i
 
   Result = Struct.new(:ok, :error, keyword_init: true)
 

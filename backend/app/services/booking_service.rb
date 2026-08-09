@@ -45,8 +45,10 @@ class BookingService
         quote = PricingCalculatorService.call(vehicle: vehicle, hours: hours, days: days, date: st.to_date)
         total_cents = quote.final_cents
 
-        # Require 20% advance token payment (minimum 50000 paise / ₹500)
-        advance_cents = [ (total_cents * 0.20).round, 50000 ].max
+        # Require advance token payment (configurable %, minimum configurable paise)
+        advance_pct = ENV.fetch("BOOKING_ADVANCE_PERCENTAGE", 0.20).to_f
+        min_advance = ENV.fetch("BOOKING_ADVANCE_MINIMUM_CENTS", 50000).to_i
+        advance_cents = [ (total_cents * advance_pct).round, min_advance ].max
         advance_cents = total_cents if advance_cents > total_cents
 
         razorpay_order_id = "order_#{SecureRandom.hex(10)}"

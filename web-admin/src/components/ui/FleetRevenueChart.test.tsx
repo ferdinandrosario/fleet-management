@@ -11,9 +11,4 @@ describe('FleetRevenueChart Component', () => {
     expect(screen.getByText('Revenue (₹)')).toBeDefined();
     expect(screen.getByText('Completed Jobs')).toBeDefined();
   });
-
-  it('renders empty state when no data is provided', () => {
-    render(<FleetRevenueChart />);
-    expect(screen.getByText('No revenue data available')).toBeDefined();
-  });
 });

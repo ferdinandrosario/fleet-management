@@ -40,7 +40,7 @@ describe('OwnerDashboard Component', () => {
           status: 'success',
           data: {
             dashboard: {
-              total_revenue_cents: 100000,
+              total_revenue_paise: 100000,
               completed_jobs_count: 5,
               total_vehicles_count: 2,
               active_vehicles_count: 1,
@@ -56,10 +56,10 @@ describe('OwnerDashboard Component', () => {
           status: 'success',
           data: {
             vehicles: [
-              { id: '1', name: 'Tractor 1', status: 'available', hourly_rate_cents: 80000 },
-              { id: '2', name: 'Tractor 2', status: 'booked', hourly_rate_cents: 80000 },
-              { id: '3', name: 'Tractor 3', status: 'maintenance', hourly_rate_cents: 80000 },
-              { id: '4', name: 'Tractor 4', status: 'inactive', hourly_rate_cents: 80000 },
+              { id: '1', name: 'Tractor 1', status: 'available', hourly_rate_paise: 80000 },
+              { id: '2', name: 'Tractor 2', status: 'booked', hourly_rate_paise: 80000 },
+              { id: '3', name: 'Tractor 3', status: 'maintenance', hourly_rate_paise: 80000 },
+              { id: '4', name: 'Tractor 4', status: 'inactive', hourly_rate_paise: 80000 },
             ],
             pagination: { page: 1, pages: 2, count: 4, limit: 2 }
           }

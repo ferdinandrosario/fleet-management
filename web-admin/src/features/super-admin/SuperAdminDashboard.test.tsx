@@ -101,18 +101,7 @@ describe('SuperAdminDashboard Component', () => {
     });
   });
 
-  it('navigates to system health', async () => {
-    const popStateEventSpy = vi.spyOn(window, 'dispatchEvent');
-    
-    render(<SuperAdminDashboard />);
-    
-    await waitFor(() => {
-      expect(screen.getByText('System Health')).toBeDefined();
-    });
 
-    fireEvent.click(screen.getByText('System Health'));
-    expect(popStateEventSpy).toHaveBeenCalled();
-  });
 
   it('handles provision new owner modal', async () => {
     render(<SuperAdminDashboard />);

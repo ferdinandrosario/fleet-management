@@ -26,7 +26,7 @@ export interface SystemInfo {
   os_version: string;
 }
 
-export const TechnicalArchitecture: React.FC = () => {
+export const SystemHealth: React.FC = () => {
   const { role } = useAuth();
   const [systemInfo, setSystemInfo] = React.useState<SystemInfo | null>(null);
   const [fetchError, setFetchError] = React.useState<string | null>(null);
@@ -81,7 +81,7 @@ export const TechnicalArchitecture: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-color)] pb-6">
         <div>
           <div className="flex items-center gap-3">
-            <Button onClick={handleBackToDashboard} variant="secondary" className="p-2 h-auto text-xs">
+            <Button aria-label="Back to dashboard" onClick={handleBackToDashboard} variant="secondary" className="p-2 h-auto text-xs">
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex items-center gap-2">

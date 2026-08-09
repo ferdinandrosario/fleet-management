@@ -193,6 +193,7 @@ export function DataTable<T extends { id: string | number }>({
               <Button
                 variant="outline"
                 size="sm"
+                aria-label="Previous Page"
                 onClick={() => onPageChange?.(currentPage - 1)}
                 disabled={currentPage <= 1}
                 className="p-1.5"
@@ -211,6 +212,7 @@ export function DataTable<T extends { id: string | number }>({
                     <button
                       key={p}
                       type="button"
+                      aria-label={`Page ${p}`}
                       onClick={() => onPageChange?.(p)}
                       className={`px-3 py-1 text-xs font-semibold rounded-lg border transition-all ${
                         p === currentPage
@@ -242,6 +244,7 @@ export function DataTable<T extends { id: string | number }>({
               <Button
                 variant="outline"
                 size="sm"
+                aria-label="Next Page"
                 onClick={() => onPageChange?.(currentPage + 1)}
                 disabled={currentPage >= totalPages}
                 className="p-1.5"

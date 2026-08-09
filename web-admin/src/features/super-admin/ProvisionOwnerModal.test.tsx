@@ -37,10 +37,10 @@ describe('ProvisionOwnerModal Component', () => {
 
     render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test Company' } });
-    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test Owner' } });
-    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '1234567890' } });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Test Company' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Ramesh Kumar'), { target: { value: 'Test Owner' } });
+    fireEvent.change(screen.getByPlaceholderText('+91 98765 43210'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByPlaceholderText('Minimum 6 characters'), { target: { value: 'password123' } });
 
     fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
 
@@ -65,10 +65,10 @@ describe('ProvisionOwnerModal Component', () => {
 
     render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test Company' } });
-    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test Owner' } });
-    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '1234567890' } });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Test Company' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Ramesh Kumar'), { target: { value: 'Test Owner' } });
+    fireEvent.change(screen.getByPlaceholderText('+91 98765 43210'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByPlaceholderText('Minimum 6 characters'), { target: { value: 'password123' } });
 
     fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
 
@@ -77,21 +77,14 @@ describe('ProvisionOwnerModal Component', () => {
     });
   });
 
-  it('shows advanced settings when toggled', () => {
-    render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
-    
-    fireEvent.click(screen.getByText('Show Advanced Settings'));
-    expect(screen.getByPlaceholderText('Tenant')).toBeDefined();
-    expect(screen.getByPlaceholderText('Office Address')).toBeDefined();
-  });
-
+  
   it('validates minimum password length', async () => {
     render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test' } });
-    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test' } });
-    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '123' } });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: '123' } }); // < 6
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Ramesh Kumar'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('+91 98765 43210'), { target: { value: '123' } });
+    fireEvent.change(screen.getByPlaceholderText('Minimum 6 characters'), { target: { value: '123' } }); // < 6
     
     fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
     
@@ -104,19 +97,19 @@ describe('ProvisionOwnerModal Component', () => {
     render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
     
     // Toggle advanced to see slug
-    fireEvent.click(screen.getByText('Show Advanced Settings'));
+    
     
     // Type company name
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Hello World!' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Hello World!' } });
     
-    const tenantInput = screen.getByPlaceholderText('Tenant') as HTMLInputElement;
+    const tenantInput = screen.getByPlaceholderText('salem_transports') as HTMLInputElement;
     expect(tenantInput.value).toBe('hello_world');
     
     // Manually edit slug
     fireEvent.change(tenantInput, { target: { value: 'my_slug' } });
     
     // Type company name again, slug shouldn't change
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Other' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Other' } });
     expect(tenantInput.value).toBe('my_slug');
   });
 
@@ -128,10 +121,10 @@ describe('ProvisionOwnerModal Component', () => {
 
     render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test' } });
-    fireEvent.change(screen.getByPlaceholderText('Owner Name'), { target: { value: 'Test' } });
-    fireEvent.change(screen.getByPlaceholderText('Phone Number'), { target: { value: '123' } });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Ramesh Kumar'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('+91 98765 43210'), { target: { value: '123' } });
+    fireEvent.change(screen.getByPlaceholderText('Minimum 6 characters'), { target: { value: 'password123' } });
 
     fireEvent.submit(screen.getByRole('button', { name: /Provision Fleet Owner/i }).closest('form')!);
 
@@ -143,7 +136,7 @@ describe('ProvisionOwnerModal Component', () => {
   it('resets form when modal is closed', () => {
     render(<ProvisionOwnerModal isOpen={true} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText('Company Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('e.g. Salem Heavy Transports'), { target: { value: 'Test' } });
     
     const closeBtn = screen.getByLabelText('Close');
     fireEvent.click(closeBtn);

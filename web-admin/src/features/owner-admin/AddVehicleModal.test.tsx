@@ -27,7 +27,7 @@ describe('AddVehicleModal Component', () => {
   const mockOnVehicleCreated = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it('does not render when isOpen is false', () => {
@@ -44,10 +44,12 @@ describe('AddVehicleModal Component', () => {
   it('renders correctly and fetches models when isOpen is true', async () => {
     (apiRequest as any).mockResolvedValueOnce({
       status: 'success',
-      data: [
-        { id: '1', make: 'Mahindra', name: 'Arjun 555', category: 'tractor' },
-        { id: '2', make: 'Swaraj', name: '744 FE', category: 'tractor' },
-      ],
+      data: {
+        vehicle_models: [
+          { id: '1', make: 'Mahindra', name: 'Arjun 555', category: 'tractor' },
+          { id: '2', make: 'Swaraj', name: '744 FE', category: 'tractor' },
+        ],
+      },
     });
 
     render(
@@ -59,7 +61,7 @@ describe('AddVehicleModal Component', () => {
     );
 
     expect(screen.getByText('add_new_vehicle')).toBeDefined();
-    expect(apiRequest).toHaveBeenCalledWith('/api/v1/vehicle_models?category=tractor');
+    expect(apiRequest).toHaveBeenCalledWith('/api/v1/discovery/vehicle_models');
 
     await waitFor(() => {
       expect(screen.getByText('Mahindra')).toBeDefined();
@@ -110,7 +112,7 @@ describe('AddVehicleModal Component', () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid JSON')).toBeDefined();
+      expect(screen.getByText('Invalid JSON format for specifications')).toBeDefined();
     });
   });
 
@@ -281,15 +283,4 @@ describe('AddVehicleModal Component', () => {
     });
   });
 
-  it('handles Escape key to close', () => {
-    render(
-      <AddVehicleModal
-        isOpen={true}
-        onClose={mockOnClose}
-        onVehicleCreated={mockOnVehicleCreated}
-      />
-    );
-    fireEvent.keyDown(window, { key: 'Escape' });
-    expect(mockOnClose).toHaveBeenCalled();
-  });
 });

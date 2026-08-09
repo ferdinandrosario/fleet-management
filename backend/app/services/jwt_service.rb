@@ -8,8 +8,8 @@
 module JwtService
   module_function
 
-  ACCESS_TTL = 15.minutes
-  REFRESH_TTL = 30.days
+  ACCESS_TTL = ENV.fetch("JWT_ACCESS_TTL_MINUTES", 15).to_i.minutes
+  REFRESH_TTL = ENV.fetch("JWT_REFRESH_TTL_DAYS", 30).to_i.days
   ALGORITHM = "HS256"
 
   def encode_access(subject:, role:, tenant:)

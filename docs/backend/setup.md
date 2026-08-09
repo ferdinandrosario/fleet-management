@@ -117,6 +117,17 @@ bin/rubocop        # rubocop-rails-omakase
 bin/rubocop -a     # autofix
 ```
 
+## Configuration
+
+The backend can be configured via environment variables. Defaults are provided in the code, but you can override them in your `.env` file:
+
+- `BOOKING_ADVANCE_PERCENTAGE`: The percentage of the total booking cost required as an advance token payment (default: `0.20`).
+- `BOOKING_ADVANCE_MINIMUM_CENTS`: The minimum advance payment amount in paise (default: `50000`).
+- `OTP_EXPIRY_MINUTES`: Expiry duration for OTPs in minutes (default: `10`).
+- `OTP_CODE_LENGTH`: The length of the generated OTPs (default: `6`).
+- `JWT_ACCESS_TTL_MINUTES`: The lifespan of access tokens in minutes (default: `15`).
+- `JWT_REFRESH_TTL_DAYS`: The lifespan of refresh tokens in days (default: `30`).
+
 ## Troubleshooting
 
 Boot or bundler errors (e.g. `undefined method 'filter_map'`, or a gem

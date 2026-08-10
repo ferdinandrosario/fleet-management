@@ -1,29 +1,11 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
+
 import 'leaflet/dist/leaflet.css';
-import { Badge } from './Badge';
 
 // Coordinates for Manaparai, Tiruchirappalli, Tamil Nadu
 const center: [number, number] = [10.6094, 78.4119];
 
-const createNeonIcon = (color: string) => {
-  return L.divIcon({
-    className: 'custom-neon-marker',
-    html: `
-      <div style="
-        width: 14px; 
-        height: 14px; 
-        background-color: ${color}; 
-        border-radius: 50%; 
-        box-shadow: 0 0 10px ${color}, 0 0 20px ${color};
-        border: 2px solid #1e293b;
-      "></div>
-    `,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
-  });
-};
 
 export const LiveMap: React.FC = () => {
   return (

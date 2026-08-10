@@ -1,17 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import React from 'react';
 import { AuthGate } from './AuthGate';
 import { useAuth } from './AuthContext';
-import { t } from '../../lib/i18n';
 
 vi.mock('./AuthContext', () => ({
   useAuth: vi.fn(),
 }));
 
-vi.mock('../../lib/i18n', () => ({
-  t: (key: string) => key,
-}));
 
 describe('AuthGate Component', () => {
   const mockLoginOwner = vi.fn();

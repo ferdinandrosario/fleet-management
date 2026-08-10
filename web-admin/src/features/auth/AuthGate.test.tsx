@@ -7,6 +7,10 @@ vi.mock('./AuthContext', () => ({
   useAuth: vi.fn(),
 }));
 
+vi.mock('../../lib/i18n', () => ({
+  t: (key: string) => key,
+}));
+
 
 describe('AuthGate Component', () => {
   const mockLoginOwner = vi.fn();

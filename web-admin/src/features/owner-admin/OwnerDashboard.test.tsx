@@ -161,6 +161,7 @@ describe('OwnerDashboard Component', () => {
   
   it('handles CSV export error', async () => {
     global.fetch = vi.fn().mockRejectedValue(new Error('Export failed'));
+    vi.spyOn(window, 'alert').mockImplementation(() => {});
     
     render(<OwnerDashboard />);
     

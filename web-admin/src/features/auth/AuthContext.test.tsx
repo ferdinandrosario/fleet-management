@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import React from 'react';
+
 import { AuthProvider, useAuth } from './AuthContext';
 import { loginOwnerApi, loginSuperAdminApi, logoutApi } from './auth-client';
 import { setAuthToken, setTenantSlug } from '../../lib/api';

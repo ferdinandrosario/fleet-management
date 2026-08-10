@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SuperAdminDashboard } from './features/super-admin/SuperAdminDashboard';
-import { TechnicalArchitecture } from './features/super-admin/TechnicalArchitecture';
+
 import { OwnerDashboard } from './features/owner-admin/OwnerDashboard';
 
 import { FontSizeProvider } from './lib/fontSize';
@@ -195,8 +195,6 @@ const DashboardContent: React.FC = () => {
               </div>
             </Card>
           </div>
-        ) : isTechnicalRoute ? (
-          <TechnicalArchitecture />
         ) : role === 'owner' ? (
           <OwnerDashboard activeTab={activeTab} />
         ) : (

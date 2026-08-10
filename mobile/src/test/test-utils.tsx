@@ -1,8 +1,7 @@
 import React, { type ReactElement, type ReactNode } from "react";
 
-import { QueryClient, QueryClientProvider, QueryCache, MutationCache, notifyManager } from "@tanstack/react-query";
-import { NavigationContainer } from "@react-navigation/native";
-import { render, act } from "@testing-library/react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render } from "@testing-library/react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Configure React testing environment for React 18/19 act support

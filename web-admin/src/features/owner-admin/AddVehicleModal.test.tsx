@@ -71,6 +71,7 @@ describe('AddVehicleModal Component', () => {
 
   it('handles API failure gracefully when fetching models', async () => {
     (apiRequest as any).mockRejectedValueOnce(new Error('Network error'));
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <AddVehicleModal
@@ -83,6 +84,7 @@ describe('AddVehicleModal Component', () => {
     await waitFor(() => {
       expect(screen.queryByText('Mahindra')).toBeNull();
     });
+    consoleSpy.mockRestore();
   });
 
   it('validates form inputs', async () => {

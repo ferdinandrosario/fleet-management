@@ -31,7 +31,8 @@ gem "bootsnap", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "= 1.14.0"
+gem "image_processing", "= 2.0.3"
+gem "ruby-vips", "~> 2.2"
 gem "aws-sdk-s3", "= 1.229.0", require: false
 
 # Cross-Origin Resource Sharing — locked to a strict allowlist (no "*").

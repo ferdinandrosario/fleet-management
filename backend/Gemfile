@@ -32,7 +32,7 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "= 1.14.0"
-gem "aws-sdk-s3", "= 1.228.2", require: false
+gem "aws-sdk-s3", "= 1.229.0", require: false
 
 # Cross-Origin Resource Sharing — locked to a strict allowlist (no "*").
 gem "rack-cors"

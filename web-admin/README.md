@@ -24,6 +24,6 @@ npm run build
 ## Tech Stack
 
 - React 19.2 (Vite)
-- TypeScript 5.7
+- TypeScript 7.0
 - Tailwind CSS 3.4.17
 - Vitest 4.1.10

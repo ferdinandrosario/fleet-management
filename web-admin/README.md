@@ -26,4 +26,4 @@ npm run build
 - React 19.2 (Vite)
 - TypeScript 5.7
 - Tailwind CSS 3.4.17
-- Vitest 3.0.5
+- Vitest 4.1.10

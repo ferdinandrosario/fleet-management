@@ -126,13 +126,13 @@ describe('OwnerDashboard Component', () => {
     (getAuthToken as any).mockReturnValue('token');
     (getTenantSlug as any).mockReturnValue('tenant');
 
-    global.fetch = vi.fn().mockResolvedValue({
+    globalThis.fetch = vi.fn().mockResolvedValue({
       ok: true,
       blob: () => Promise.resolve(new Blob(['test'], { type: 'text/csv' }))
-    });
+    }) as any;
 
-    global.URL.createObjectURL = vi.fn();
-    global.URL.revokeObjectURL = vi.fn();
+    globalThis.URL.createObjectURL = vi.fn();
+    globalThis.URL.revokeObjectURL = vi.fn();
 
     render(<OwnerDashboard />);
     
@@ -144,7 +144,7 @@ describe('OwnerDashboard Component', () => {
     fireEvent.click(exportBtn);
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
+      expect(globalThis.fetch).toHaveBeenCalledWith(
         expect.stringContaining('/api/v1/reports/bookings_csv'),
         expect.objectContaining({
           headers: {
@@ -160,7 +160,7 @@ describe('OwnerDashboard Component', () => {
   });
   
   it('handles CSV export error', async () => {
-    global.fetch = vi.fn().mockRejectedValue(new Error('Export failed'));
+    globalThis.fetch = vi.fn().mockRejectedValue(new Error('Export failed')) as any;
     vi.spyOn(window, 'alert').mockImplementation(() => {});
     
     render(<OwnerDashboard />);

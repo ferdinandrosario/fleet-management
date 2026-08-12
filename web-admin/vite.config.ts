@@ -13,15 +13,15 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          icons: ['lucide-react'],
+        manualChunks(id) {
+          if (id.includes('node_modules/lucide-react')) return 'icons';
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'vendor';
         },
       },
     },

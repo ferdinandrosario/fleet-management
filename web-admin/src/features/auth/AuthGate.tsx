@@ -75,7 +75,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
   return (
     <div
       className="min-h-screen flex flex-col justify-center items-center px-4 py-8 sm:py-12"
-      style={{ background: 'var(--bg-primary)', color: 'var(--text-main)', position: 'relative', overflow: 'hidden' }}
+      style={{ background: 'var(--bg-primary)', color: 'var(--text-main)', position: 'relative', overflowX: 'hidden' }}
     >
       {/* Decorative background rings — depth without noise */}
       <div

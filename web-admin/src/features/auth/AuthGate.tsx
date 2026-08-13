@@ -240,7 +240,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
           >
             {activeRole === 'super_admin'
               ? 'Platform operator access — credentials issued by the platform team.'
-              : 'Fleet owner access · Switch to super admin at /superadmin'}
+              : 'Fleet owner access'}
           </p>
         </Card>
 

@@ -133,15 +133,15 @@ export const AuthGate: React.FC<AuthGateProps> = ({
           {/* Demo pre-fill notice */}
           {isDemoRoute && (
             <div
-              className="p-3 rounded-xl text-xs flex items-center gap-2.5"
+              className="p-3 rounded-xl text-xs flex items-start gap-2.5 text-left"
               style={{
                 background: 'rgba(99,102,241,0.09)',
                 border: '1px solid rgba(99,102,241,0.22)',
                 color: '#a5b4fc',
               }}
             >
-              <Zap className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>
+              <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <span className="leading-relaxed">
                 Demo credentials pre-filled for {activeRole === 'owner' ? 'Fleet Owner' : 'Super Admin'} portal.
               </span>
             </div>
@@ -187,30 +187,30 @@ export const AuthGate: React.FC<AuthGateProps> = ({
             {/* Inline error */}
             {errorMessage && (
               <div
-                className="p-3 rounded-xl text-sm flex items-center gap-2.5"
+                className="p-3 rounded-xl text-sm flex items-start gap-2.5 text-left"
                 style={{
                   background: 'rgba(244,63,94,0.10)',
                   border: '1px solid rgba(244,63,94,0.28)',
                   color: 'var(--danger-color)',
                 }}
               >
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>{errorMessage}</span>
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{errorMessage}</span>
               </div>
             )}
 
             {/* Auth success — brief flash; page navigates away immediately after login */}
             {successMessage && (
               <div
-                className="p-3 rounded-xl text-sm flex items-center gap-2.5"
+                className="p-3 rounded-xl text-sm flex items-start gap-2.5 text-left"
                 style={{
                   background: 'rgba(16,185,129,0.10)',
                   border: '1px solid rgba(16,185,129,0.28)',
                   color: 'var(--success-color)',
                 }}
               >
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>{successMessage}</span>
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{successMessage}</span>
               </div>
             )}
 

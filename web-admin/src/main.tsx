@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SuperAdminDashboard } from './features/super-admin/SuperAdminDashboard';
+import { SystemHealth } from './features/super-admin/SystemHealth';
 
 import { OwnerDashboard } from './features/owner-admin/OwnerDashboard';
 
@@ -41,14 +42,14 @@ const DashboardContent: React.FC = () => {
   };
 
   const isDemoRoute = currentPath === '/demo';
-  const isSuperAdminRoute = currentPath === '/superadmin' || currentPath === '/tech';
-  const isTechnicalRoute = currentPath === '/tech' && role === 'super_admin';
-  const isTechUnauthorized = currentPath === '/tech' && role !== 'super_admin';
+  const isSuperAdminRoute = currentPath === '/superadmin' || currentPath === '/health';
+  const isHealthRoute = currentPath === '/health' && role === 'super_admin';
+  const isHealthUnauthorized = currentPath === '/health' && role !== 'super_admin';
   const isUnknownRoute =
     currentPath !== '/' &&
     currentPath !== '/demo' &&
     currentPath !== '/superadmin' &&
-    currentPath !== '/tech';
+    currentPath !== '/health';
 
   if (!isAuthenticated) {
     return <AuthGate isDemoRoute={isDemoRoute} isSuperAdminRoute={isSuperAdminRoute} />;
@@ -77,10 +78,10 @@ const DashboardContent: React.FC = () => {
                       <Zap className="w-2.5 h-2.5 inline mr-0.5" />
                       /demo
                     </Badge>
-                  ) : isTechnicalRoute ? (
+                  ) : isHealthRoute ? (
                     <Badge variant="info" className="text-[10px] px-1.5 py-0 shrink-0">
                       <Code2 className="w-2.5 h-2.5 inline mr-0.5" />
-                      /tech
+                      /health
                     </Badge>
                   ) : (
                     <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-indigo-500/12 text-indigo-300 border border-indigo-500/25 shrink-0">
@@ -103,11 +104,11 @@ const DashboardContent: React.FC = () => {
             <button
               type="button"
               onClick={() => {
-                if (isTechnicalRoute) navigate('/');
+                if (isHealthRoute) navigate('/superadmin');
                 setActiveTab('overview');
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 rounded-lg transition-all cursor-pointer shrink-0 ${
-                activeTab === 'overview' && !isTechnicalRoute
+                activeTab === 'overview' && !isHealthRoute
                   ? 'bg-[var(--primary-accent)] text-white shadow-sm font-semibold'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-secondary)]/50'
               }`}
@@ -118,11 +119,11 @@ const DashboardContent: React.FC = () => {
             <button
               type="button"
               onClick={() => {
-                if (isTechnicalRoute) navigate('/');
+                if (isHealthRoute) navigate('/superadmin');
                 setActiveTab('fleet');
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 rounded-lg transition-all cursor-pointer shrink-0 ${
-                activeTab === 'fleet' && !isTechnicalRoute
+                activeTab === 'fleet' && !isHealthRoute
                   ? 'bg-[var(--primary-accent)] text-white shadow-sm font-semibold'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-secondary)]/50'
               }`}
@@ -133,11 +134,11 @@ const DashboardContent: React.FC = () => {
             <button
               type="button"
               onClick={() => {
-                if (isTechnicalRoute) navigate('/');
+                if (isHealthRoute) navigate('/superadmin');
                 setActiveTab('telemetry');
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 rounded-lg transition-all cursor-pointer shrink-0 ${
-                activeTab === 'telemetry' && !isTechnicalRoute
+                activeTab === 'telemetry' && !isHealthRoute
                   ? 'bg-[var(--primary-accent)] text-white shadow-sm font-semibold'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-secondary)]/50'
               }`}
@@ -176,7 +177,7 @@ const DashboardContent: React.FC = () => {
               </div>
             </Card>
           </div>
-        ) : isTechUnauthorized ? (
+        ) : isHealthUnauthorized ? (
           <div className="max-w-md mx-auto my-12">
             <Card className="border-rose-500/30 text-center space-y-4 py-10 px-6" style={{ background: 'rgba(244,63,94,0.05)' }}>
               <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
@@ -185,7 +186,7 @@ const DashboardContent: React.FC = () => {
               <div className="space-y-1.5">
                 <h2 className="text-xl font-bold text-[var(--text-main)]">403 Authorization Required</h2>
                 <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Technical details at <code className="font-mono text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded">/tech</code> are strictly restricted to Super Administrators.
+                  System health details at <code className="font-mono text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded">/health</code> are strictly restricted to Super Administrators.
                 </p>
               </div>
               <div className="pt-2">
@@ -197,6 +198,8 @@ const DashboardContent: React.FC = () => {
           </div>
         ) : role === 'owner' ? (
           <OwnerDashboard activeTab={activeTab} />
+        ) : isHealthRoute ? (
+          <SystemHealth />
         ) : (
           <SuperAdminDashboard activeTab={activeTab} />
         )}
@@ -231,11 +234,11 @@ const DashboardContent: React.FC = () => {
             
             {role === 'super_admin' ? (
               <button
-                onClick={() => navigate('/tech')}
+                onClick={() => navigate('/health')}
                 className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 border border-indigo-500/20 transition-all font-mono text-[11px] cursor-pointer"
               >
                 <Code2 className="w-3 h-3" />
-                <span>Technical Architecture & Versions (/tech)</span>
+                <span>System Health & Technical Architecture (/health)</span>
               </button>
             ) : (
               <div className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">

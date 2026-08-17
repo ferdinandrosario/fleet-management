@@ -47,7 +47,7 @@ bin/rails server
 
 ### Production Docker Container Deployment
 
-To launch the full production stack (`api`, `db`, `worker`, `web-admin`):
+To launch the full production stack (`api`, `db`, `worker`, `web`):
 
 ```bash
 cp ../.env.production.example ../.env

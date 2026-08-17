@@ -24,7 +24,7 @@ npx expo start              # Metro on :8081 — press i (iOS) / a (Android) / w
 **Terminal 3 — web admin (React / Vite):**
 
 ```bash
-cd web-admin
+cd web
 npm install                 # first time only
 npm run dev                 # Vite dev server on http://localhost:5173
 ```
@@ -92,7 +92,7 @@ npm run lint
 **Web Admin:**
 
 ```bash
-cd web-admin
+cd web
 npm test                                         # Vitest one-shot
 npm run typecheck                                # tsc --noEmit
 npm run lint

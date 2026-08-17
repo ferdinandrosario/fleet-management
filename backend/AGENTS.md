@@ -228,7 +228,7 @@ table alone. Add the row in the same change as the code that reads the var.
 | `DATABASE_URL` | unset (uses `database.yml` + OS user) | Rails default |
 | `COVERAGE` | unset (gate off); set `full` to enforce the 100% line gate + emit `coverage/index.html` | `spec/spec_helper.rb`, `config/environments/test.rb` |
 | `CI` | unset locally (set by the CI runner) | `config/environments/test.rb` (eager-load so coverage sees every file) |
-| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173,http://localhost:8081` (web-admin + Expo web dev) | `config/initializers/cors.rb` |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173,http://localhost:8081` (web + Expo web dev) | `config/initializers/cors.rb` |
 | `AR_ENCRYPTION_PRIMARY_KEY` | dev/test: non-secret default; **prod: required (boot fails if unset)** | `config/application.rb` |
 | `AR_ENCRYPTION_DETERMINISTIC_KEY` | dev/test: non-secret default; **prod: required** | `config/application.rb` |
 | `AR_ENCRYPTION_KEY_DERIVATION_SALT` | dev/test: non-secret default; **prod: required** | `config/application.rb` |

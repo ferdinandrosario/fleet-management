@@ -5,7 +5,7 @@ module Api
       class OwnersController < BaseController
         def index
           authorize Owner
-          scope = Owner.order(created_at: :desc)
+          scope = Owner.includes(subscription: :plan).order(created_at: :desc)
           scope = scope.where(status: params[:status]) if params[:status].present?
 
           pagy, owners = pagy(scope)

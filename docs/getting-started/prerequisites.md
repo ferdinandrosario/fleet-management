@@ -13,7 +13,7 @@ version-bump audit (`AGENTS.md` → VERSION & STABILITY) keeps them honest.
 | **Rails** | 8.1.3 | backend framework (pinned `= 8.1.3` in Gemfile) | `bin/rails -v` → `Rails 8.1.3` |
 | **PostgreSQL** | 18.x | primary database | `psql --version` → `psql (PostgreSQL) 18.x` |
 | **PostGIS** | 3.6.x | geospatial discovery (installed in the public schema — see [multi-tenancy](../feature/multi-tenancy.md)) | `psql -d fleet_management_development -c 'SELECT postgis_version();'` |
-| **Node.js** | 26.5.1 (pinned `.mise.toml`) | mobile (Expo) + web-admin tooling | `node -v` → `v26.5.1` |
+| **Node.js** | 26.5.1 (pinned `.mise.toml`) | mobile (Expo) + web tooling | `node -v` → `v26.5.1` |
 | **mise** | latest | pins/activates Ruby (and Node) per directory | `mise --version` |
 
 > **Ruby and Node are managed by `mise`.** With mise activated in your shell
@@ -56,5 +56,5 @@ the per-codebase setup pages.
 
 - Backend: [`backend/setup.md`](../backend/setup.md)
 - Mobile: [`mobile/setup.md`](../mobile/setup.md)
-- Web Admin: [`web-admin/AGENTS.md`](../../web-admin/AGENTS.md)
+- Web Admin: [`web/AGENTS.md`](../../web/AGENTS.md)
 - Then run them together: [`running-locally.md`](running-locally.md)

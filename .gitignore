@@ -9,7 +9,7 @@
 !.env.example
 !.env.sample
 
-# Node / JS (mobile, web-admin)
+# Node / JS (mobile, web)
 node_modules/
 dist/
 build/

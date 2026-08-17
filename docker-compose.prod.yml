@@ -78,9 +78,9 @@ services:
       AWS_REGION: ${AWS_REGION:-ap-south-1}
       AWS_BUCKET: ${AWS_BUCKET}
 
-  web-admin:
+  web:
     build:
-      context: ./web-admin
+      context: ./web
       dockerfile: Dockerfile
     restart: always
     depends_on:

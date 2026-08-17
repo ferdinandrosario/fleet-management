@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { setAuthToken, getAuthToken, setTenantSlug, getTenantSlug } from './api';
 
-describe('web-admin API client in-memory token handling', () => {
+describe('web API client in-memory token handling', () => {
   beforeEach(() => {
     setAuthToken(null);
     setTenantSlug(null);

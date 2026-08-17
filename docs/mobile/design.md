@@ -103,4 +103,4 @@ Role-based dashboards arrive from Session 5.
 ## Web admin
 
 The web admin (Session 10) reuses these tokens and the English i18next
-setup with shadcn/ui + Tremor. See `web-admin/AGENTS.md`.
+setup with shadcn/ui + Tremor. See `web/AGENTS.md`.

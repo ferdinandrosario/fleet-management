@@ -4,7 +4,7 @@ module Api
     class VehiclesController < AuthenticatedController
       def index
         authorize Vehicle
-        scope = Vehicle.order(created_at: :desc)
+        scope = Vehicle.includes(:vehicle_model).order(created_at: :desc)
         scope = scope.by_category(params[:category])
         scope = scope.where(status: params[:status]) if params[:status].present?
 

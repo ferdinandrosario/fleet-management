@@ -25,7 +25,7 @@ reach another tenant's data. This is the product's #1 security property.
 ```
 backend/    Rails 8.1.3 API (Ruby 4.0.6) · PostgreSQL + PostGIS · serves all clients
 mobile/     Expo / React Native · customer + driver + owner field ops
-web-admin/  React 19 (Vite) · super-admin + owner reporting · Theme Provider (Dark Fleet, Light, Obsidian), SVG charts, status badges
+web/  React 19 (Vite) · super-admin + owner reporting · Theme Provider (Dark Fleet, Light, Obsidian), SVG charts, status badges
 docs/       source of truth (this folder)
 ```
 
@@ -71,7 +71,7 @@ filename prefixes. Set up a fresh box top-to-bottom, or jump to a topic:
 | Install the tools | [getting-started/prerequisites.md](getting-started/prerequisites.md) |
 | Run the API | [backend/setup.md](backend/setup.md) |
 | Run the mobile app | [mobile/setup.md](mobile/setup.md) |
-| Run the web admin app | [web-admin/AGENTS.md](../web-admin/AGENTS.md) |
+| Run the web admin app | [web/AGENTS.md](../web/AGENTS.md) |
 | Run services together (daily workflow) | [getting-started/running-locally.md](getting-started/running-locally.md) |
 | Understand how it fits together | [architecture/overview.md](architecture/overview.md) |
 | Read the API contract | [api/reference.md](api/reference.md) |

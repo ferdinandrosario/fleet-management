@@ -34,7 +34,7 @@ module Api
         vehicle = Vehicle.find_by!(uuid: params[:id])
         authorize Review, :index?
 
-        scope = vehicle.reviews.chronological
+        scope = vehicle.reviews.includes(:booking, :customer, :driver).chronological
         pagy, reviews = pagy(scope)
 
         render_success(

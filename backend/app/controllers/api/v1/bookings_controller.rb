@@ -12,7 +12,7 @@ module Api
                   Booking.where(customer_id: Current.user.id)
         end
 
-        scope = scope.order(created_at: :desc)
+        scope = scope.includes({ vehicle: :vehicle_model }, :customer, :driver).order(created_at: :desc)
         pagy, bookings = pagy(scope)
 
         render_success(

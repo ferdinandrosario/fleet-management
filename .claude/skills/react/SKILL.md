@@ -1,11 +1,11 @@
 ---
 name: react
-description: Use for idiomatic React (web) best-practice/how-to questions in this repo's `web-admin/` admin SPA (components, hooks, state/data, effects, lists/keys, forms, testing). For directory edits under `web-admin/` use the `web-admin` skill. For mobile use `react-native`.
+description: Use for idiomatic React (web) best-practice/how-to questions in this repo's `web/` admin SPA (components, hooks, state/data, effects, lists/keys, forms, testing). For directory edits under `web/` use the `web` skill. For mobile use `react-native`.
 ---
 
 # React — idiomatic (this repo)
 
-This repo's only React frontend is the **`web-admin/`** admin SPA (React +
+This repo's only React frontend is the **`web/`** admin SPA (React +
 Vite, shadcn/ui + Tremor).
 
 For **general, idiomatic React best practices** that apply across all of
@@ -18,7 +18,7 @@ fetching, forms/a11y, testing.
 For **this project's binding rules** (stack, version delta, UI stack,
 forbidden list, approved libraries, API contract, folder layout, commands,
 env vars, testing/coverage policy), read
-[`web-admin/AGENTS.md`](../../../web-admin/AGENTS.md) — it is the
+[`web/AGENTS.md`](../../../web/AGENTS.md) — it is the
 single source of truth and **overrides** the general best-practice skill on
 any conflict.
 

@@ -8,7 +8,7 @@ response is the standard JSON envelope. Clients hold their own UI and state.
 
 ```
 mobile (Expo) ─┐
-web-admin (Vite)┼─▶  Rails 8.1 API  ─▶  PostgreSQL 18 + PostGIS
+web (Vite)┼─▶  Rails 8.1 API  ─▶  PostgreSQL 18 + PostGIS
                 │     (api_only)          (schema-per-tenant)
                 │       │
                 │       ├─ Solid Queue (jobs), Solid Cache, Solid Cable

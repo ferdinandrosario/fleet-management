@@ -96,7 +96,7 @@ jobs:
           bundle exec rubocop
         working-directory: backend
 
-  web-admin-ci:
+  web-ci:
     name: Web Admin TypeScript Build & Verification
     runs-on: ubuntu-latest
 
@@ -110,19 +110,19 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-        working-directory: web-admin
+        working-directory: web
 
       - name: Run Typecheck
         run: npm run typecheck
-        working-directory: web-admin
+        working-directory: web
 
       - name: Run Tests
         run: npm test
-        working-directory: web-admin
+        working-directory: web
 
       - name: Production Build
         run: npm run build
-        working-directory: web-admin
+        working-directory: web
 
   mobile-ci:
     name: Mobile React Native Build & Verification

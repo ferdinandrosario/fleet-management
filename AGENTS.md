@@ -21,7 +21,7 @@ Prioritize **simplicity, maintainability, and clarity over cleverness**.
 ```
 backend/   → Rails 8.1.3 API (Ruby 4.0.6, PostgreSQL + PostGIS, Rails defaults only — Solid Queue, Cache, Cable, Propshaft)
 mobile/    → React Native 0.85 + Expo SDK 56 (TypeScript, React 19.2) — NativeWind v4 + react-native-reusables
-web-admin/ → React + TypeScript (Vite) — shadcn/ui + Tremor; super-admin + owner reporting, built Session 10
+web/ → React + TypeScript (Vite) — shadcn/ui + Tremor; super-admin + owner reporting, built Session 10
 docs/      → source of truth
 ```
 
@@ -36,11 +36,11 @@ Every project stamped from the `agent-rules` template carries the same
 top-level structure — this repo's instance of it:
 
 - `AGENTS.md` — this canonical ruleset, plus one `AGENTS.md` per
-  codebase (`backend/`, `mobile/`, `web-admin/`, `docs/`).
+  codebase (`backend/`, `mobile/`, `web/`, `docs/`).
 - `.claude/skills/` — the shared skill set, kept in lockstep across
   repos (see "Skill & rule sync").
 - `backend/` — all backend (API) code.
-- `web-admin/` — all front-end (browser) code; this app's rename of the
+- `web/` — all front-end (browser) code; this app's rename of the
   standard `web/`, named for what the client is (super-admin + owner SPA).
 - `mobile/` — all mobile source code.
 - `docs/` — all documentation, grouped by use: topic folders plus
@@ -308,7 +308,7 @@ matching `.claude/skills/<dir>/SKILL.md`, which redirects to it.
 
 - [`backend/AGENTS.md`](backend/AGENTS.md) — Rails API rules
 - [`mobile/AGENTS.md`](mobile/AGENTS.md) — Expo + RN rules
-- [`web-admin/AGENTS.md`](web-admin/AGENTS.md) — React (Vite) admin rules (scaffolded Session 10)
+- [`web/AGENTS.md`](web/AGENTS.md) — React (Vite) admin rules (scaffolded Session 10)
 - [`docs/AGENTS.md`](docs/AGENTS.md) — `docs/`-only changes (topic-folder layout, feature checklist)
 
 ## Agent-specific entry points

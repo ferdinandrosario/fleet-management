@@ -1,6 +1,6 @@
 # Feature: Reporting, Dashboards, Exports & Web Admin (Session 10)
 
-Source of truth for owner fleet analytics dashboards, super-admin platform metrics, CSV booking export generation, and the Web Admin SPA (`web-admin/`).
+Source of truth for owner fleet analytics dashboards, super-admin platform metrics, CSV booking export generation, and the Web Admin SPA (`web/`).
 
 ## Overview & Architecture
 
@@ -44,7 +44,7 @@ Owner Admin / Super Admin
 
 ## Web Admin Design System, Theme Provider & Authentication
 
-The `web-admin/` application implements a full-featured theme system, authentication gate, and UI component suite:
+The `web/` application implements a full-featured theme system, authentication gate, and UI component suite:
 
 - **Authentication Gate (`AuthGate`) & Session Persistence**: Restricts unauthenticated access to dashboards based on URL routes. The landing page (`/`) renders strictly the **Fleet Owner login form** (phone + password). Appending `/superadmin` or `/tech` when unauthenticated renders strictly the **Super Admin login form** (email + password). Tokens and active session details are stored in `sessionStorage` (`fm_user`, `fm_token`, `fm_tenant`) so session state persists through direct URL entry, browser refreshes, and `/tech` navigation.
 - **Header Navigation Bar**: Modern glassmorphic sticky top navbar (`bg-[var(--bg-secondary)]/85 backdrop-blur-md border-b border-[var(--border-color)]`) featuring brand logo with live status pulse indicator, navigation tab items (`Overview`, `Fleet Equipment`, `Telemetry & System`), theme toggle, and authenticated user profile chip with role badges. Tab clicks pass `activeTab` down to `OwnerDashboard` and `SuperAdminDashboard` to render dedicated views for overview analytics, fleet machinery inventory, and live telemetry & system health.

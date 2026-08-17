@@ -31,7 +31,7 @@ session-by-session — see the [documentation map](#documentation) and
 |---|---|---|
 | [`backend/`](backend/) | Rails 8.1.3 API (Ruby 4.0.6, PostgreSQL + PostGIS) | **running** — health endpoint, multi-tenancy, security baseline, public models |
 | [`mobile/`](mobile/) | Expo / React Native app (customer · driver · owner) | **running** — nav, NativeWind, i18n, API client, secure session |
-| [`web-admin/`](web-admin/) | React (Vite) admin SPA (super-admin · owner reporting) | rules only — built Session 10 |
+| [`web/`](web/) | React (Vite) admin SPA (super-admin · owner reporting) | rules only — built Session 10 |
 | [`docs/`](docs/) | Source of truth (topic folders + per-feature files) | grows each session |
 
 Rules every contributor (human or agent) follows: [`AGENTS.md`](AGENTS.md)
@@ -72,12 +72,12 @@ The app opens on the **Welcome** screen (app name + language picker). Point it
 at your running backend with `EXPO_PUBLIC_API_BASE_URL` — see
 [`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md).
 
-## Quickstart — web-admin
+## Quickstart — web
 
-Full walkthrough: [`web-admin/AGENTS.md`](web-admin/AGENTS.md) and [`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md).
+Full walkthrough: [`web/AGENTS.md`](web/AGENTS.md) and [`docs/getting-started/running-locally.md`](docs/getting-started/running-locally.md).
 
 ```bash
-cd web-admin
+cd web
 npm install
 npm run dev           # Vite dev server on http://localhost:5173
 ```

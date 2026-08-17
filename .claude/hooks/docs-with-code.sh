@@ -2,7 +2,7 @@
 # Stop — non-blocking reminder for AGENTS.md "every code change requires a
 # doc update in the same response". Warns (never blocks) when the session's
 # work — uncommitted changes plus commits not yet on the default branch —
-# touches backend/mobile/web-admin but nothing under docs/.
+# touches backend/mobile/web but nothing under docs/.
 # Anchored to this repo via $0 so it works whatever the session cwd is.
 set -eu
 
@@ -17,10 +17,10 @@ changed=$( { git diff --name-only "$base" 2>/dev/null; \
              git ls-files --others --exclude-standard 2>/dev/null; } | sort -u )
 [ -n "$changed" ] || exit 0
 
-code=$(printf '%s\n' "$changed" | grep -E '^(backend|mobile|web-admin)/' || true)
+code=$(printf '%s\n' "$changed" | grep -E '^(backend|mobile|web)/' || true)
 docs=$(printf '%s\n' "$changed" | grep -E '^docs/' || true)
 
 if [ -n "$code" ] && [ -z "$docs" ]; then
-  printf '{"systemMessage":"⚠ Code changed under backend/mobile/web-admin but docs/ is untouched this session — AGENTS.md requires a same-turn doc update (setup · architecture · running · troubleshooting)."}\n'
+  printf '{"systemMessage":"⚠ Code changed under backend/mobile/web but docs/ is untouched this session — AGENTS.md requires a same-turn doc update (setup · architecture · running · troubleshooting)."}\n'
 fi
 exit 0

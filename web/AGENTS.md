@@ -1,8 +1,8 @@
 # Web admin — React (Vite)
 
-Canonical ruleset for `web-admin/`. Agents that resolve the nearest
+Canonical ruleset for `web/`. Agents that resolve the nearest
 `AGENTS.md` (Codex, Cursor, …) load this automatically when editing this
-tree; Claude Code reaches it via `.claude/skills/web-admin/SKILL.md`.
+tree; Claude Code reaches it via `.claude/skills/web/SKILL.md`.
 Universal rules: [`AGENTS.md`](../AGENTS.md).
 
 > **Status: Scaffolded with full Auth Gate, Theme System & UI Component Library.** The web admin
@@ -19,7 +19,7 @@ Universal rules: [`AGENTS.md`](../AGENTS.md).
   user-facing strings** — every label comes from a translation file.
 - ESLint with the Vite/React TS config. **No Prettier** (matches mobile).
 
-## Version & stability (web-admin delta)
+## Version & stability (web delta)
 
 Universal rule in [`AGENTS.md`](../AGENTS.md) "VERSION & STABILITY".
 - **Node.js: `26.5.1`** — pinned exact in [`.mise.toml`](../.mise.toml), shared with mobile.
@@ -92,7 +92,7 @@ Read transport success, then `body.status`; render `body.data` or
 ## Folder layout
 
 ```
-web-admin/
+web/
   index.html
   src/
     components/ui/    # shadcn owned source — composed, not edited from features

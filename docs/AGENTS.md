@@ -32,7 +32,7 @@ docs/
 ```
 
 Folders that appear as their subject lands (Sessions 4+): `development/`
-(conventions), `operations/` (tuning), `deployment/`, and `web-admin/`
+(conventions), `operations/` (tuning), `deployment/`, and `web/`
 docs — each added under its own folder, listed in
 [`README.md`](README.md) at that point.
 

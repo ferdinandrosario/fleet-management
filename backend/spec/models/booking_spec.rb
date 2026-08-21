@@ -26,6 +26,16 @@ RSpec.describe Booking, type: :model do
       expect(booking.errors[:total_paise]).to include("must be greater than or equal to 0")
       expect(booking.errors[:advance_paise]).to include("must be greater than or equal to 0")
     end
+
+    it "validates no overlapping bookings or holds" do
+      vehicle = create(:vehicle)
+      customer = create(:user)
+      create(:vehicle_availability, vehicle: vehicle, start_time: 1.day.from_now, end_time: 2.days.from_now)
+      
+      booking = build(:booking, vehicle: vehicle, customer: customer, start_time: 1.day.from_now + 1.hour, end_time: 1.day.from_now + 3.hours)
+      expect(booking).not_to be_valid
+      expect(booking.errors[:vehicle]).to include("is already booked or unavailable for selected time range")
+    end
   end
 
   describe "scopes" do

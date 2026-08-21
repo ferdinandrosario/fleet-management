@@ -41,12 +41,13 @@ describe('AuthGate Component', () => {
     mockLoginOwner.mockResolvedValue({ success: true });
     render(<AuthGate />);
 
+    fireEvent.change(screen.getByLabelText('tenant_slug'), { target: { value: 'my_tenant' } });
     fireEvent.change(screen.getByLabelText('phone_number'), { target: { value: '9876543210' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'password123' } });
     fireEvent.click(screen.getByText('sign_in'));
 
     await waitFor(() => {
-      expect(mockLoginOwner).toHaveBeenCalledWith({ phone: '9876543210', password: 'password123', tenantSlug: 'demo_tenant' });
+      expect(mockLoginOwner).toHaveBeenCalledWith({ phone: '9876543210', password: 'password123', tenantSlug: 'my_tenant' });
       expect(screen.getByText('login_success')).toBeDefined();
     });
   });
@@ -65,6 +66,7 @@ describe('AuthGate Component', () => {
     mockLoginOwner.mockResolvedValue({ success: false, message: 'Invalid info' });
     render(<AuthGate />);
 
+    fireEvent.change(screen.getByLabelText('tenant_slug'), { target: { value: 'my_tenant' } });
     fireEvent.change(screen.getByLabelText('phone_number'), { target: { value: '987' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'pwd' } });
     fireEvent.click(screen.getByText('sign_in'));

@@ -24,7 +24,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
   const [password, setPassword] = useState<string>(
     isPrefillAllowed ? (activeRole === 'owner' ? 'password123' : 'adminsecret123') : ''
   );
-  const tenantSlug = 'demo_tenant';
+  const [tenantSlug, setTenantSlug] = useState<string>(isPrefillAllowed ? 'demo' : '');
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -51,7 +51,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({
 
     try {
       if (activeRole === 'owner') {
-        const res = await loginOwner({ phone, password, tenantSlug: tenantSlug || 'demo_tenant' });
+        const res = await loginOwner({ phone, password, tenantSlug: tenantSlug.trim() || 'demo' });
         if (res.success) {
           setSuccessMessage(t('login_success'));
         } else {
@@ -149,17 +149,28 @@ export const AuthGate: React.FC<AuthGateProps> = ({
 
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {activeRole === 'owner' ? (
-              <Input
-                id="auth-phone"
-                label={t('phone_number')}
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder={t('phone_placeholder')}
-                helperText="Include country code, e.g. +91 98765 43210"
-                required
-                autoComplete="tel"
-              />
+              <>
+                <Input
+                  id="auth-tenant"
+                  label={t('tenant_slug')}
+                  type="text"
+                  value={tenantSlug}
+                  onChange={(e) => setTenantSlug(e.target.value)}
+                  placeholder={t('tenant_slug_placeholder')}
+                  autoComplete="off"
+                />
+                <Input
+                  id="auth-phone"
+                  label={t('phone_number')}
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder={t('phone_placeholder')}
+                  helperText="Include country code, e.g. +91 98765 43210"
+                  required
+                  autoComplete="tel"
+                />
+              </>
             ) : (
               <Input
                 id="auth-email"

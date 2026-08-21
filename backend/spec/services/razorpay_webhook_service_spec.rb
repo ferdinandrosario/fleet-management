@@ -137,9 +137,10 @@ RSpec.describe RazorpayWebhookService do
       it "updates booking payment status on payment.captured and payment.failed" do
         Apartment::Tenant.switch(slug) do
           customer = create(:user, role: :customer)
-          vehicle = create(:vehicle)
-          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_captured_123", payment_status: :pending)
-          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_failed_123", payment_status: :pending)
+          vehicle1 = create(:vehicle)
+          vehicle2 = create(:vehicle)
+          create(:booking, vehicle: vehicle1, customer: customer, razorpay_order_id: "order_captured_123", payment_status: :pending)
+          create(:booking, vehicle: vehicle2, customer: customer, razorpay_order_id: "order_failed_123", payment_status: :pending)
         end
 
         captured_event = {

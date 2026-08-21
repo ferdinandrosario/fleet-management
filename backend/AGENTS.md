@@ -46,6 +46,10 @@ Backend-specific:
   (`default: -> { Current.user }`) and audit stamping
   (`self.updated_by = Current.user`) — never in scopes, `where` clauses,
   or business conditionals.
+  - *Data Integrity/Overlap Validation*: Any scheduling constraint or overlap 
+    validation (e.g., overlapping bookings or blocks) MUST be implemented 
+    here as a model validation, rather than in service objects, ensuring 
+    the model is the absolute source of truth.
 - **Services** (`app/services/`) — orchestration across models. Use a `.call`
   class-method interface; return a typed result object. One public entry point
   per service. Don't create the directory until a real service is needed.

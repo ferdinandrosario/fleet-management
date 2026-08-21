@@ -24,6 +24,7 @@ class Booking < ApplicationRecord
   validates :start_meter_reading, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :end_meter_reading, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validate :end_time_after_start_time
+  validate :no_overlapping_bookings
 
   scope :active, -> { where(status: [ :pending_payment, :confirmed, :in_progress ]) }
   scope :overlapping_range, ->(start_t, end_t) {
@@ -31,6 +32,25 @@ class Booking < ApplicationRecord
   }
 
   private
+
+  def no_overlapping_bookings
+    return if start_time.blank? || end_time.blank? || vehicle_id.blank?
+    return if cancelled? || completed?
+
+    has_hold = VehicleAvailability.where(vehicle_id: vehicle_id)
+                                  .where("start_time < ? AND end_time > ?", end_time, start_time)
+                                  .exists?
+
+    has_booking = Booking.active
+                         .where(vehicle_id: vehicle_id)
+                         .overlapping_range(start_time, end_time)
+                         .where.not(id: id)
+                         .exists?
+
+    if has_hold || has_booking
+      errors.add(:vehicle, "is already booked or unavailable for selected time range")
+    end
+  end
 
   def end_time_after_start_time
     return if start_time.blank? || end_time.blank?

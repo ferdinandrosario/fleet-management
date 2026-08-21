@@ -210,9 +210,9 @@ module Seeds
 
           booking = Booking.find_or_initialize_by(
             vehicle: veh,
-            customer: customer_user,
-            start_time: start_date
+            customer: customer_user
           )
+          booking.start_time = start_date
           booking.driver = driver_user
           booking.end_time = end_date
           booking.total_paise = veh.daily_rate_paise * 2

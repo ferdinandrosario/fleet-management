@@ -29,14 +29,6 @@ class BookingService
 
       # Serialize concurrent booking requests for this vehicle to prevent double bookings
       vehicle.with_lock do
-        # Check availability conflicts inside lock
-        has_hold = vehicle.vehicle_availabilities.where("start_time < ? AND end_time > ?", et, st).exists?
-        has_booking = vehicle.bookings.active.overlapping_range(st, et).exists?
-
-        if has_hold || has_booking
-          return Result.new(success: false, errors: { vehicle: [ "is already booked or unavailable for selected time range" ] })
-        end
-
         # Calculate pricing quote
         duration_hours = ((et - st) / 1.hour).ceil
         days = duration_hours / 24

@@ -39,7 +39,7 @@ const translations: Record<Locale, Record<string, string>> = {
     password: "Password",
     password_placeholder: "••••••••",
     tenant_slug: "Tenant Slug",
-    tenant_slug_placeholder: "demo_tenant",
+    tenant_slug_placeholder: "demo",
     sign_in: "Sign In",
     signing_in: "Signing In...",
     authenticated_as: "Signed in as",

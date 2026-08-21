@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch {
       // ignore
     }
-    return 'demo_tenant';
+    return 'demo';
   });
 
   const setTenant = (slug: string) => {

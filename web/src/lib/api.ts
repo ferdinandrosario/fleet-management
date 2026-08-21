@@ -43,14 +43,12 @@ export async function apiRequest<T = any>(
     headers['X-Tenant'] = currentTenant;
   }
 
+  let res: Response;
   try {
-    const res = await fetch(`${baseUrl}${endpoint}`, {
+    res = await fetch(`${baseUrl}${endpoint}`, {
       ...options,
       headers,
     });
-
-    const body: ApiResponse<T> = await res.json();
-    return body;
   } catch (err: any) {
     return {
       status: 'error',
@@ -58,6 +56,20 @@ export async function apiRequest<T = any>(
       error: {
         code: 'network_error',
         message: err.message || 'Failed to connect to backend server.',
+      },
+    };
+  }
+
+  try {
+    const body: ApiResponse<T> = await res.json();
+    return body;
+  } catch (err: any) {
+    return {
+      status: 'error',
+      data: null,
+      error: {
+        code: 'invalid_response',
+        message: 'Malformed server response.',
       },
     };
   }

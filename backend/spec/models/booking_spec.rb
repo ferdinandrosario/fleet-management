@@ -31,7 +31,7 @@ RSpec.describe Booking, type: :model do
       vehicle = create(:vehicle)
       customer = create(:user)
       create(:vehicle_availability, vehicle: vehicle, start_time: 1.day.from_now, end_time: 2.days.from_now)
-      
+
       booking = build(:booking, vehicle: vehicle, customer: customer, start_time: 1.day.from_now + 1.hour, end_time: 1.day.from_now + 3.hours)
       expect(booking).not_to be_valid
       expect(booking.errors[:vehicle]).to include("is already booked or unavailable for selected time range")

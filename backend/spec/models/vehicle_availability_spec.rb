@@ -29,7 +29,7 @@ RSpec.describe VehicleAvailability, :tenant_schema, type: :model do
     it "validates no overlapping blocks" do
       vehicle = create(:vehicle)
       create(:vehicle_availability, vehicle: vehicle, start_time: 1.day.from_now, end_time: 2.days.from_now)
-      
+
       overlapping = build(:vehicle_availability, vehicle: vehicle, start_time: 1.day.from_now + 1.hour, end_time: 1.day.from_now + 3.hours)
       expect(overlapping).not_to be_valid
       expect(overlapping.errors[:vehicle]).to include("is already booked or unavailable for selected time range")

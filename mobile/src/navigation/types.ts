@@ -10,4 +10,5 @@ export type AuthStackParamList = {
 export type AppStackParamList = {
   Home: undefined;
   AddVehicle: undefined;
+  LiveMap: undefined;
 };

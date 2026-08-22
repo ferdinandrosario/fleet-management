@@ -36,7 +36,7 @@ export function WelcomeScreen({ navigation }: Props) {
             {VALUE_PROPS.map(({ title, body }) => (
               <View key={title} className="gap-1 rounded-card bg-surface-muted p-4">
                 <View className="flex-row items-center gap-2">
-                  <View className="h-2 w-2 rounded-full bg-brand" />
+                  <View className="h-2 w-2 rounded-full bg-brand" accessible={false} importantForAccessibility="no" />
                   <Text className="text-base font-medium text-ink">{t(title)}</Text>
                 </View>
                 <Text className="text-sm text-ink-muted">{t(body)}</Text>

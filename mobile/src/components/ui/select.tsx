@@ -14,9 +14,11 @@ export type SelectProps = {
   options: SelectOption[];
   onSelect: (value: string) => void;
   placeholder?: string;
+  /** Inline validation error rendered below the trigger; mirrors TextField. */
+  error?: string;
 };
 
-export function Select({ label, value, options, onSelect, placeholder }: SelectProps) {
+export function Select({ label, value, options, onSelect, placeholder, error }: SelectProps) {
   const [open, setOpen] = useState(false);
   const selectedOption = options.find((o) => o.value === value);
 
@@ -26,22 +28,37 @@ export function Select({ label, value, options, onSelect, placeholder }: SelectP
       <TouchableOpacity
         testID={`select-${label.toLowerCase()}`}
         accessibilityLabel={label}
-        className="min-h-touch justify-center rounded-card border border-line px-4 bg-white"
+        // bg-surface instead of bg-white: respects dark / AMOLED theme.
+        className={`min-h-touch justify-center rounded-card border px-4 bg-surface ${
+          error ? 'border-danger' : 'border-line'
+        }`}
         onPress={() => setOpen(true)}
       >
-        <Text className={cn("text-base", value ? "text-ink" : "text-[#94a3b8]")}>
+        {/* text-ink-muted instead of the hardcoded #94a3b8 hex. */}
+        <Text className={cn("text-base", value ? "text-ink" : "text-ink-muted")}>
           {selectedOption ? selectedOption.label : placeholder}
         </Text>
       </TouchableOpacity>
+      {error ? (
+        <Text className="text-sm text-danger" accessibilityLiveRegion="assertive">
+          {error}
+        </Text>
+      ) : null}
 
       {open && (
-        <Modal visible={open} transparent animationType="none">
+        <Modal visible={open} transparent animationType="slide">
           <View className="flex-1 justify-end bg-black/50">
             <SafeAreaView className="max-h-[70%] bg-surface rounded-t-card">
               <View className="flex-row items-center justify-between border-b border-line p-4">
                 <Text className="text-lg font-medium text-ink">{label}</Text>
-                <TouchableOpacity onPress={() => setOpen(false)}>
-                  <Text className="text-primary text-base font-medium">Done</Text>
+                {/* accessibilityRole + accessibilityLabel so screen-reader users can close the picker. */}
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  accessibilityLabel="Dismiss picker"
+                  onPress={() => setOpen(false)}
+                >
+                  {/* text-brand instead of the undefined text-primary token. */}
+                  <Text className="text-brand text-base font-medium">Done</Text>
                 </TouchableOpacity>
               </View>
               <FlatList
@@ -50,16 +67,18 @@ export function Select({ label, value, options, onSelect, placeholder }: SelectP
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     testID={`option-${item.value}`}
+                    accessibilityRole="menuitem"
                     className="border-b border-line p-4"
                     onPress={() => {
                       onSelect(item.value);
                       setOpen(false);
                     }}
                   >
+                    {/* text-brand instead of the undefined text-primary token for the selected state. */}
                     <Text
                       className={cn(
                         "text-base",
-                        item.value === value ? "font-bold text-primary" : "text-ink"
+                        item.value === value ? "font-bold text-brand" : "text-ink"
                       )}
                     >
                       {item.label}

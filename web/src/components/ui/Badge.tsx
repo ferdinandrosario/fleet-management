@@ -16,10 +16,10 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variantStyles: Record<BadgeVariant, string> = {
-    success: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    warning: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    danger: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
-    info: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
+    success: 'bg-[color-mix(in_srgb,var(--success-color)_15%,transparent)] text-[var(--success-color)] border-[color-mix(in_srgb,var(--success-color)_30%,transparent)]',
+    warning: 'bg-[color-mix(in_srgb,var(--warning-color)_15%,transparent)] text-[var(--warning-color)] border-[color-mix(in_srgb,var(--warning-color)_30%,transparent)]',
+    danger:  'bg-[color-mix(in_srgb,var(--danger-color)_15%,transparent)]  text-[var(--danger-color)]  border-[color-mix(in_srgb,var(--danger-color)_30%,transparent)]',
+    info:    'bg-[color-mix(in_srgb,var(--info-color)_15%,transparent)]    text-[var(--info-color)]    border-[color-mix(in_srgb,var(--info-color)_30%,transparent)]',
     neutral: 'bg-[var(--color-surface-sunken)] text-[var(--text-muted)] border-[var(--border-color)]',
   };
 

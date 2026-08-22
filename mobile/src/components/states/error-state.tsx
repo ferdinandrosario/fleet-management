@@ -9,6 +9,7 @@ export function ErrorState({ onRetry }: { onRetry?: () => void }) {
       title={t("states.errorTitle")}
       actionLabel={onRetry ? t("common.retry") : undefined}
       onAction={onRetry}
+      liveRegion="assertive"
     />
   );
 }

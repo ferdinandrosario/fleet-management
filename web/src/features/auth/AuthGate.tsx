@@ -230,7 +230,6 @@ export const AuthGate: React.FC<AuthGateProps> = ({
               type="submit"
               variant="primary"
               className="w-full justify-center"
-              style={{ minHeight: 44 }}
               disabled={loading}
             >
               {loading ? (

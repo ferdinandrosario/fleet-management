@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   User,
   ChevronDown,
@@ -19,16 +19,34 @@ export const ProfileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Close on click-outside and on Escape — returning focus to the trigger
+  // button on close so keyboard users don't lose their position in the page.
+  const close = useCallback(() => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        close();
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        event.stopPropagation();
+        close();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, close]);
 
   const displayName = user?.name || user?.email || user?.phone || 'Fleet User';
   const displaySub = user?.email || user?.phone || (role === 'super_admin' ? 'admin@platform' : 'tenant@fleet');
@@ -39,15 +57,15 @@ export const ProfileMenu: React.FC = () => {
     .substring(0, 2)
     .toUpperCase();
 
-
-
   return (
     <div className="relative" ref={menuRef}>
       {/* Trigger Button */}
       <button
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 bg-[var(--input-bg)] hover:bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-[var(--primary-accent)] px-3 py-1.5 rounded-2xl transition-all duration-200 cursor-pointer group shadow-sm"
         aria-label="User Profile Menu"
+        aria-haspopup="menu"
         aria-expanded={isOpen}
       >
         {/* Avatar Circle */}
@@ -76,9 +94,13 @@ export const ProfileMenu: React.FC = () => {
 
       {/* Dropdown Menu Panel */}
       {isOpen && (
-        <div className="absolute right-0 mt-2.5 w-72 max-w-[calc(100vw-1.5rem)] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl shadow-2xl backdrop-blur-xl p-3.5 z-50 space-y-3.5 animate-fade-in">
-          {/* Identity Header */}
-          <div className="flex items-center gap-3 p-2.5 bg-[var(--input-bg)]/60 rounded-xl border border-[var(--border-color)]">
+        <div
+          role="menu"
+          aria-label="User profile options"
+          className="absolute right-0 mt-2.5 w-72 max-w-[calc(100vw-1.5rem)] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl shadow-2xl backdrop-blur-xl p-3.5 z-50 space-y-3.5 animate-fade-in"
+        >
+          {/* Identity Header — presentational, not interactive */}
+          <div aria-hidden="true" className="flex items-center gap-3 p-2.5 bg-[var(--input-bg)]/60 rounded-xl border border-[var(--border-color)]">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md shrink-0">
               {role === 'super_admin' ? <Crown className="w-5 h-5" /> : initials || <User className="w-5 h-5" />}
             </div>
@@ -95,8 +117,8 @@ export const ProfileMenu: React.FC = () => {
             </div>
           </div>
 
-
-          <div className="space-y-1.5">
+          {/* Font Size Controls — labelled group, not individual menu items */}
+          <div className="space-y-1.5" role="group" aria-label="Font size">
             <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1.5">
               <Type className="w-3 h-3 text-indigo-400" />
               <span>Font Size</span>
@@ -104,15 +126,18 @@ export const ProfileMenu: React.FC = () => {
             <div className="grid grid-cols-3 gap-1 bg-[var(--input-bg)] p-1 rounded-xl border border-[var(--border-color)] text-xs">
               <button
                 type="button"
+                role="menuitem"
                 onClick={decreaseFontSize}
                 disabled={fontSize === 'sm'}
                 className="py-1.5 rounded-lg font-bold text-xs text-center transition-all cursor-pointer text-[var(--text-main)] hover:bg-[var(--bg-secondary)] disabled:opacity-30 disabled:cursor-not-allowed"
                 title="Decrease font size (A-)"
+                aria-label="Decrease font size"
               >
                 A-
               </button>
               <button
                 type="button"
+                role="menuitem"
                 onClick={resetFontSize}
                 className={`py-1.5 rounded-lg text-[11px] font-semibold text-center transition-all cursor-pointer ${
                   fontSize === 'md'
@@ -120,25 +145,30 @@ export const ProfileMenu: React.FC = () => {
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                 }`}
                 title="Reset to Original Font Size"
+                aria-label="Reset font size to default"
+                aria-pressed={fontSize === 'md'}
               >
                 Original
               </button>
               <button
                 type="button"
+                role="menuitem"
                 onClick={increaseFontSize}
                 disabled={fontSize === 'xl'}
                 className="py-1.5 rounded-lg font-bold text-xs text-center transition-all cursor-pointer text-[var(--text-main)] hover:bg-[var(--bg-secondary)] disabled:opacity-30 disabled:cursor-not-allowed"
                 title="Increase font size (A+)"
+                aria-label="Increase font size"
               >
                 A+
               </button>
             </div>
           </div>
 
-          {/* Account Security / Change Password Action */}
+          {/* Account Actions */}
           <div className="border-t border-[var(--border-color)] pt-2 space-y-1">
             <button
               type="button"
+              role="menuitem"
               onClick={() => {
                 setIsOpen(false);
                 setIsPasswordModalOpen(true);
@@ -154,6 +184,7 @@ export const ProfileMenu: React.FC = () => {
 
             <button
               type="button"
+              role="menuitem"
               onClick={() => {
                 setIsOpen(false);
                 logout();

@@ -5,12 +5,20 @@ import { cn } from "../../lib/utils";
 
 // Owned primitive (mobile/AGENTS.md). Large touch target, high contrast.
 // Extend variants by editing the cva map here — never from a feature folder.
+//
+// Variant alignment with web Button:
+//   primary   ↔ primary   (filled brand colour)
+//   danger    ↔ danger    (filled danger colour)
+//   ghost     ↔ outline   (transparent, border-only)
+//   secondary → alias for ghost — matches web Button's "secondary" intent so
+//               cross-platform code uses the same name without a separate style.
 const container = cva("min-h-touch flex-row items-center justify-center rounded-card px-5", {
   variants: {
     variant: {
-      primary: "bg-brand",
-      danger: "bg-danger",
-      ghost: "border border-line bg-transparent",
+      primary:   "bg-brand",
+      danger:    "bg-danger",
+      ghost:     "border border-line bg-transparent",
+      secondary: "border border-line bg-transparent",
     },
     disabled: { true: "opacity-50", false: "" },
   },
@@ -20,9 +28,10 @@ const container = cva("min-h-touch flex-row items-center justify-center rounded-
 const label = cva("text-base font-medium", {
   variants: {
     variant: {
-      primary: "text-ink-inverse",
-      danger: "text-ink-inverse",
-      ghost: "text-ink",
+      primary:   "text-ink-inverse",
+      danger:    "text-ink-inverse",
+      ghost:     "text-ink",
+      secondary: "text-ink",
     },
   },
   defaultVariants: { variant: "primary" },
@@ -31,7 +40,7 @@ const label = cva("text-base font-medium", {
 export type ButtonProps = {
   title: string;
   onPress?: () => void;
-  variant?: "primary" | "danger" | "ghost";
+  variant?: "primary" | "danger" | "ghost" | "secondary";
   disabled?: boolean;
 };
 

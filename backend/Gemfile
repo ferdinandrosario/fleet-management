@@ -95,5 +95,5 @@ group :test do
   gem "webmock"
   gem "vcr"
   # Line-coverage gate (100% mandatory — backend/AGENTS.md "Coverage enforcement")
-  gem "simplecov", require: false
+  gem "simplecov", "= 1.1.1", require: false
 end

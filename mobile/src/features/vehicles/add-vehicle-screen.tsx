@@ -23,7 +23,7 @@ export function AddVehicleScreen({ navigation }: Props) {
   const [hourlyRate, setHourlyRate] = useState("");
   const [dailyRate, setDailyRate] = useState("");
   const [modelYear, setModelYear] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const { data: modelsResult } = useQuery({
     queryKey: ["vehicle_models"],
@@ -53,11 +53,19 @@ export function AddVehicleScreen({ navigation }: Props) {
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = () => {
-    setErrorMsg("");
-    if (!varietyId || !name || !registrationNumber || !hourlyRate || !dailyRate) {
-      setErrorMsg("Please fill all required fields.");
-      return;
-    }
+    // Validate per-field and collect all errors before submitting so the user
+    // sees every problem at once rather than fixing one at a time.
+    const errors: Record<string, string> = {};
+    if (!category) errors.category = "Category is required.";
+    if (!make) errors.make = "Make is required.";
+    if (!varietyId) errors.varietyId = "Variety is required.";
+    if (!name.trim()) errors.name = "Display name is required.";
+    if (!registrationNumber.trim()) errors.registrationNumber = "Registration number is required.";
+    if (!hourlyRate || isNaN(parseFloat(hourlyRate))) errors.hourlyRate = "Enter a valid hourly rate.";
+    if (!dailyRate || isNaN(parseFloat(dailyRate))) errors.dailyRate = "Enter a valid daily rate.";
+
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     setSubmitting(true);
     createVehicle({
@@ -75,12 +83,12 @@ export function AddVehicleScreen({ navigation }: Props) {
           queryClient.invalidateQueries({ queryKey: ["vehicles"] });
           navigation.goBack();
         } else {
-          setErrorMsg(result.error.message);
+          setFieldErrors({ _form: result.error.message });
         }
       })
       .catch(() => {
         setSubmitting(false);
-        setErrorMsg("An unexpected error occurred.");
+        setFieldErrors({ _form: "An unexpected error occurred." });
       });
   };
 
@@ -89,17 +97,23 @@ export function AddVehicleScreen({ navigation }: Props) {
       <ScrollView contentContainerClassName="p-4 gap-4">
         <Text className="text-2xl font-bold text-ink mb-2">Add Vehicle</Text>
 
-        {errorMsg ? <Text className="text-red-500 mb-2">{errorMsg}</Text> : null}
+        {fieldErrors._form ? (
+          <Text className="text-sm text-danger" accessibilityLiveRegion="assertive">
+            {fieldErrors._form}
+          </Text>
+        ) : null}
 
         <Select
           label="Category"
           value={category}
           options={categories}
           placeholder="Select a category"
+          error={fieldErrors.category}
           onSelect={(val) => {
             setCategory(val);
             setMake("");
             setVarietyId("");
+            setFieldErrors((e) => ({ ...e, category: "", make: "", varietyId: "" }));
           }}
         />
 
@@ -112,6 +126,7 @@ export function AddVehicleScreen({ navigation }: Props) {
             onSelect={(val) => {
               setMake(val);
               setVarietyId("");
+              setFieldErrors((e) => ({ ...e, make: "", varietyId: "" }));
             }}
           />
         ) : null}
@@ -131,6 +146,7 @@ export function AddVehicleScreen({ navigation }: Props) {
           value={name}
           onChangeText={setName}
           placeholder="e.g. Tata Ace Gold #1"
+          error={fieldErrors.name}
         />
 
         <TextField
@@ -139,6 +155,7 @@ export function AddVehicleScreen({ navigation }: Props) {
           onChangeText={setRegistrationNumber}
           placeholder="e.g. MH12AB1234"
           autoCapitalize="words"
+          error={fieldErrors.registrationNumber}
         />
 
         <TextField
@@ -146,7 +163,7 @@ export function AddVehicleScreen({ navigation }: Props) {
           value={modelYear}
           onChangeText={setModelYear}
           placeholder="e.g. 2022"
-          keyboardType="phone-pad"
+          keyboardType="numeric"
         />
 
         <TextField
@@ -154,7 +171,8 @@ export function AddVehicleScreen({ navigation }: Props) {
           value={hourlyRate}
           onChangeText={setHourlyRate}
           placeholder="e.g. 500"
-          keyboardType="phone-pad"
+          keyboardType="decimal-pad"
+          error={fieldErrors.hourlyRate}
         />
 
         <TextField
@@ -162,7 +180,8 @@ export function AddVehicleScreen({ navigation }: Props) {
           value={dailyRate}
           onChangeText={setDailyRate}
           placeholder="e.g. 4000"
-          keyboardType="phone-pad"
+          keyboardType="decimal-pad"
+          error={fieldErrors.dailyRate}
         />
 
         <View className="mt-4">

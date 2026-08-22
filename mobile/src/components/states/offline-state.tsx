@@ -10,6 +10,7 @@ export function OfflineState({ onRetry }: { onRetry?: () => void }) {
       body={t("states.offlineBody")}
       actionLabel={onRetry ? t("common.retry") : undefined}
       onAction={onRetry}
+      liveRegion="assertive"
     />
   );
 }

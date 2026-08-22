@@ -1,13 +1,7 @@
 @import "tailwindcss";
 
-@theme {
-  --color-fleet-dark: #0b0f19;
-  --color-fleet-card: #111827;
-  --color-fleet-accent: #3b82f6;
-  --color-fleet-success: #10b981;
-  --color-fleet-warning: #f59e0b;
-  --color-fleet-danger: #ef4444;
-}
+
+
 
 /*
  * Fleet Management — Midnight Slate design system.
@@ -88,9 +82,15 @@ body {
     radial-gradient(ellipse 40% 30% at 85% 60%,  rgba(79, 70, 229, 0.05) 0%, transparent 50%);
 }
 
-h1, h2, h3, h4, h5, h6, .font-display {
+h1, h2, h3, .font-display {
   font-family: 'Outfit', 'Inter', system-ui, sans-serif;
   letter-spacing: -0.018em;
+}
+
+/* h4-h6 are often used at body scale; -0.018em is too tight below ~18px. */
+h4, h5, h6 {
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 code, kbd, samp, pre, .font-mono {
@@ -154,15 +154,21 @@ textarea:focus {
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ─── Touch targets — WCAG AA minimum ────────────────────────────────────── */
+/* Form controls: 44 px on every viewport — data entry is equally hard with a
+   fat finger on a desktop trackpad or a phone in a bumpy field vehicle. */
+input, select, textarea { min-height: 44px; }
+
+/* Buttons: handled intrinsically by Button.tsx (md/lg → min-h-[2.75rem]).
+   The media query remains only as a safety net for any unstyled <button>
+   that isn't rendered through the Button component. */
 @media (max-width: 640px) {
-  button, input, select, textarea { min-height: 44px; }
+  button { min-height: 44px; }
 }
 
 /* ─── Table container ─────────────────────────────────────────────────────── */
 .table-responsive-container {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ─── Animations ──────────────────────────────────────────────────────────── */

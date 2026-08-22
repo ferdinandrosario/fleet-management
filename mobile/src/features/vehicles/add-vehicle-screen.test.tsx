@@ -78,13 +78,21 @@ describe("AddVehicleScreen", () => {
   });
 
   it("shows validation error if required fields are missing", async () => {
-    const { getByText, findByTestId } = await renderScreen();
+    const { getByText, findByTestId, queryByText } = await renderScreen();
     await findByTestId("select-category"); // wait for initial load
     await fireEvent.press(getByText("Save Vehicle"));
 
+    // The generic banner is gone — each required field surfaces its own error
+    // inline. Verify a representative subset: the three fields visible before
+    // any cascading selection is made.
     await waitFor(() => {
-      expect(getByText("Please fill all required fields.")).toBeTruthy();
+      expect(getByText("Category is required.")).toBeTruthy();
+      expect(getByText("Display name is required.")).toBeTruthy();
+      expect(getByText("Registration number is required.")).toBeTruthy();
     });
+
+    // Confirm the old generic string is no longer shown.
+    expect(queryByText("Please fill all required fields.")).toBeNull();
   });
 
   it("submits the form successfully and navigates back", async () => {

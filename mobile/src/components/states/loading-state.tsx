@@ -15,6 +15,7 @@ export function LoadingState() {
       <ActivityIndicator
         color={palette(colorScheme === "dark" ? "dark" : "light").brand}
         accessibilityRole="progressbar"
+        accessibilityLabel={t("states.loadingTitle")}
       />
       <Text className="text-base text-ink-muted">{t("states.loadingTitle")}</Text>
     </View>

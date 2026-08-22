@@ -100,9 +100,15 @@ const DashboardContent: React.FC = () => {
           </div>
 
           {/* Navigation Bar Tabs (Scrollable on mobile) */}
-          <nav className="flex items-center gap-1 bg-[var(--input-bg)] p-1 rounded-xl border border-[var(--border-color)] text-xs font-medium w-full md:w-auto overflow-x-auto no-scrollbar whitespace-nowrap justify-start md:justify-center">
+          <nav
+            role="tablist"
+            aria-label="Dashboard sections"
+            className="flex items-center gap-1 bg-[var(--input-bg)] p-1 rounded-xl border border-[var(--border-color)] text-xs font-medium w-full md:w-auto overflow-x-auto no-scrollbar whitespace-nowrap justify-start md:justify-center"
+          >
             <button
               type="button"
+              role="tab"
+              aria-selected={activeTab === 'overview' && !isHealthRoute}
               onClick={() => {
                 if (isHealthRoute) navigate('/superadmin');
                 setActiveTab('overview');
@@ -118,6 +124,8 @@ const DashboardContent: React.FC = () => {
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={activeTab === 'fleet' && !isHealthRoute}
               onClick={() => {
                 if (isHealthRoute) navigate('/superadmin');
                 setActiveTab('fleet');
@@ -133,6 +141,8 @@ const DashboardContent: React.FC = () => {
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={activeTab === 'telemetry' && !isHealthRoute}
               onClick={() => {
                 if (isHealthRoute) navigate('/superadmin');
                 setActiveTab('telemetry');

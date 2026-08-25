@@ -6,7 +6,7 @@ module Api
 
       def index
         authorize Vehicle
-        rules = @vehicle.pricing_rules.order(min_duration_hours: :asc)
+        rules = @vehicle.pricing_rules.includes(:vehicle).order(min_duration_hours: :asc)
         render_success(data: { rules: rules.map { |r| PricingRuleSerializer.call(r) } })
       end
 

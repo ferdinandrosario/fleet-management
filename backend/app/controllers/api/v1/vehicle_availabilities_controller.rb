@@ -6,7 +6,7 @@ module Api
 
       def index
         authorize Vehicle
-        availabilities = @vehicle.vehicle_availabilities.order(start_time: :asc)
+        availabilities = @vehicle.vehicle_availabilities.includes(:vehicle).order(start_time: :asc)
         render_success(data: { availabilities: availabilities.map { |a| VehicleAvailabilitySerializer.call(a) } })
       end
 

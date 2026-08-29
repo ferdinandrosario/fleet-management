@@ -218,4 +218,67 @@ describe("AddVehicleScreen", () => {
       expect(getByText("An unexpected error occurred.")).toBeTruthy();
     });
   });
+
+  it("submits the form without a modelYear if not provided", async () => {
+    createVehicleMock.mockResolvedValueOnce({ ok: true, data: { vehicle: { uuid: "v_123" } } });
+    
+    const { getByText, findByTestId, getByPlaceholderText } = await renderScreen();
+
+    // Wait for initial load
+    const selectCat = await findByTestId("select-category");
+
+    // Select category -> make -> variety
+    await fireEvent.press(selectCat);
+    await fireEvent.press(await findByTestId("option-Tractor"));
+
+    await fireEvent.press(await findByTestId("select-make"));
+    await fireEvent.press(await findByTestId("option-Mahindra"));
+
+    await fireEvent.press(await findByTestId("select-variety"));
+    await fireEvent.press(await findByTestId("option-1"));
+
+    // Fill text inputs EXCEPT modelYear
+    await fireEvent.changeText(getByPlaceholderText("e.g. Tata Ace Gold #1"), "My Tractor");
+    await fireEvent.changeText(getByPlaceholderText("e.g. MH12AB1234"), "MH121234");
+    await fireEvent.changeText(getByPlaceholderText("e.g. 500"), "500");
+    await fireEvent.changeText(getByPlaceholderText("e.g. 4000"), "4000");
+
+    // Submit
+    await waitFor(() => {
+      expect(getByText("Save Vehicle")).not.toBeDisabled();
+    });
+    await fireEvent.press(getByText("Save Vehicle"));
+
+    await waitFor(() => {
+      expect(createVehicleMock).toHaveBeenCalledWith({
+        vehicle_model_id: "1",
+        name: "My Tractor",
+        category: "Tractor",
+        registration_number: "MH121234",
+        hourly_rate_paise: 50000,
+        daily_rate_paise: 400000,
+        model_year: undefined,
+      });
+    });
+  });
+
+  it("handles failure to fetch vehicle models", async () => {
+    // Override the mock for this test
+    const fetchVehicleModelsMock = vehiclesClient.fetchVehicleModels as jest.Mock;
+    fetchVehicleModelsMock.mockImplementationOnce(() =>
+      Promise.resolve({ ok: false, error: { message: "Failed" } })
+    );
+
+    const client = createTestQueryClient(); // empty client so it actually runs the query function
+    const { getByText } = await render(
+      <SafeAreaProvider initialMetrics={initialMetrics}>
+        <QueryClientProvider client={client}>
+          <AddVehicleScreen navigation={navProp()} route={{} as never} />
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    );
+
+    expect(getByText("Add Vehicle")).toBeTruthy();
+    // In this state, catalog is empty, so clicking category select won't show anything, but we just want to ensure it doesn't crash
+  });
 });

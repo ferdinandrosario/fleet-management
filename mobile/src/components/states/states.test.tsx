@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import { useColorScheme } from "nativewind";
 
 import { initI18n } from "../../lib/i18n";
 import { EmptyState } from "./empty-state";
@@ -6,9 +7,17 @@ import { ErrorState } from "./error-state";
 import { LoadingState } from "./loading-state";
 import { OfflineState } from "./offline-state";
 
+jest.mock("nativewind", () => ({
+  useColorScheme: jest.fn(),
+}));
+
 describe("state views", () => {
   beforeAll(() => {
     initI18n("en");
+  });
+
+  beforeEach(() => {
+    (useColorScheme as jest.Mock).mockReturnValue({ colorScheme: "light" });
   });
 
   it("LoadingState shows the loading label", async () => {
@@ -47,5 +56,21 @@ describe("state views", () => {
     expect(getByText("Check your connection and try again.")).toBeTruthy();
     fireEvent.press(getByRole("button"));
     expect(onRetry).toHaveBeenCalled();
+  });
+
+  it("OfflineState without onRetry shows no action", async () => {
+    const { queryByRole } = await render(<OfflineState />);
+    expect(queryByRole("button")).toBeNull();
+  });
+});
+
+describe("state views dark mode", () => {
+  beforeEach(() => {
+    (useColorScheme as jest.Mock).mockReturnValue({ colorScheme: "dark" });
+  });
+
+  it("LoadingState renders in dark mode without crashing", async () => {
+    const { getByText } = await render(<LoadingState />);
+    expect(getByText("Loading…")).toBeTruthy();
   });
 });

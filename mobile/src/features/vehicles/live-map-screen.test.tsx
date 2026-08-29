@@ -2,6 +2,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { Providers } from '../../test/test-utils';
 import { LiveMapScreen } from './live-map-screen';
 import React from 'react';
+import { useColorScheme } from 'nativewind';
 
 const mockGoBack = jest.fn();
 
@@ -23,7 +24,15 @@ jest.mock('react-native-maps', () => {
   };
 });
 
+jest.mock('nativewind', () => ({
+  useColorScheme: jest.fn(),
+}));
+
 describe('LiveMapScreen', () => {
+  beforeEach(() => {
+    (useColorScheme as jest.Mock).mockReturnValue({ colorScheme: 'light' });
+  });
+
   const renderScreen = () =>
     render(
       <Providers>
@@ -39,5 +48,20 @@ describe('LiveMapScreen', () => {
     const backButton = await findByText('Back');
     await fireEvent.press(backButton);
     expect(mockGoBack).toHaveBeenCalled();
+  });
+});
+
+describe('LiveMapScreen dark mode', () => {
+  beforeEach(() => {
+    (useColorScheme as jest.Mock).mockReturnValue({ colorScheme: 'dark' });
+  });
+
+  it('renders correctly in dark mode', async () => {
+    const { findByText } = await render(
+      <Providers>
+        <LiveMapScreen />
+      </Providers>
+    );
+    expect(await findByText('Live GPS Map')).toBeTruthy();
   });
 });

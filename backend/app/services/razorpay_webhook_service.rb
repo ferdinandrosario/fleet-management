@@ -78,16 +78,23 @@ class RazorpayWebhookService
       notes = payment_entity["notes"] || {}
       tenant_slug = notes["tenant_slug"] || notes[:tenant_slug]
 
-      return unless tenant_slug.present? && TenantRegistry.exists?(slug: tenant_slug)
+      unless tenant_slug.present? && TenantRegistry.exists?(slug: tenant_slug)
+        Rails.logger.error("[RazorpayWebhookService] payment event dropped: " \
+          "tenant_slug=#{tenant_slug.inspect} not found, order_id=#{order_id}")
+        return
+      end
 
       Apartment::Tenant.switch(tenant_slug) do
         booking = Booking.find_by(razorpay_order_id: order_id)
         if booking
           if status == "captured"
-            booking.update!(payment_status: :advance_paid)
+            booking.update!(status: :confirmed, payment_status: :advance_paid)
           elsif status == "failed"
             booking.update!(payment_status: :pending)
           end
+        else
+          Rails.logger.error("[RazorpayWebhookService] payment event: " \
+            "no booking found for order_id=#{order_id} in tenant=#{tenant_slug}")
         end
       end
     end
@@ -100,12 +107,19 @@ class RazorpayWebhookService
       notes = order_entity["notes"] || {}
       tenant_slug = notes["tenant_slug"] || notes[:tenant_slug]
 
-      return unless tenant_slug.present? && TenantRegistry.exists?(slug: tenant_slug)
+      unless tenant_slug.present? && TenantRegistry.exists?(slug: tenant_slug)
+        Rails.logger.error("[RazorpayWebhookService] order event dropped: " \
+          "tenant_slug=#{tenant_slug.inspect} not found, order_id=#{order_id}")
+        return
+      end
 
       Apartment::Tenant.switch(tenant_slug) do
         booking = Booking.find_by(razorpay_order_id: order_id)
         if booking && status == "paid"
-          booking.update!(payment_status: :advance_paid)
+          booking.update!(status: :confirmed, payment_status: :advance_paid)
+        elsif booking.nil?
+          Rails.logger.error("[RazorpayWebhookService] order event: " \
+            "no booking found for order_id=#{order_id} in tenant=#{tenant_slug}")
         end
       end
     end

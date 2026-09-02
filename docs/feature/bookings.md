@@ -46,7 +46,9 @@ Customer / Driver / Owner Admin (tenant schema context)
 - Generates sandboxed Razorpay order payload.
 
 ### 3. `PaymentVerificationService`
-- Verifies Razorpay payment signature & payment ID.
+- Verifies Razorpay payment signature (HMAC-SHA256 of `order_id|payment_id`
+  against `RAZORPAY_KEY_SECRET`) using `secure_compare`. Fail-closed: a missing
+  or invalid signature always rejects the request.
 - Transitions booking state to `confirmed` and `payment_status` to `advance_paid`.
 
 ## API Reference

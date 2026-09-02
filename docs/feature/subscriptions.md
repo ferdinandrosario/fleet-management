@@ -42,6 +42,10 @@ Enforces resource caps (e.g. max vehicles, max bookings, max drivers) configured
 - Razorpay Webhooks verify HMAC-SHA256 signatures via `RAZORPAY_WEBHOOK_SECRET`.
 - Idempotency is guaranteed through a 7-day cache key tracking `razorpay_webhook_event:<id>`.
 - Handles UPI Autopay mandate lifecycle states (`subscription.authenticated`, `subscription.pending`, `subscription.paused`, `subscription.charged`, `subscription.active`, `subscription.halted`, `subscription.cancelled`).
+- `payment.captured` / `order.paid` events resolve `tenant_slug` from Razorpay `notes`,
+  switch into the tenant schema, and transition the booking to `confirmed` + `advance_paid`.
+  Missing or unknown `tenant_slug`, and unmatched `order_id`, are logged at error level
+  (never silently dropped).
 - `Subscription#gst_breakdown` calculates 18% GST (CGST+SGST or IGST) for Indian B2B invoicing.
 
 ## Authorization & Policies

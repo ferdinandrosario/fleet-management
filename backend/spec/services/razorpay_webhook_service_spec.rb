@@ -134,13 +134,11 @@ RSpec.describe RazorpayWebhookService do
         provision_tenant(slug)
       end
 
-      it "updates booking payment status on payment.captured and payment.failed" do
+      it "confirms booking and updates payment status on payment.captured" do
         Apartment::Tenant.switch(slug) do
           customer = create(:user, role: :customer)
-          vehicle1 = create(:vehicle)
-          vehicle2 = create(:vehicle)
-          create(:booking, vehicle: vehicle1, customer: customer, razorpay_order_id: "order_captured_123", payment_status: :pending)
-          create(:booking, vehicle: vehicle2, customer: customer, razorpay_order_id: "order_failed_123", payment_status: :pending)
+          vehicle = create(:vehicle)
+          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_captured_123", status: :pending_payment, payment_status: :pending)
         end
 
         captured_event = {
@@ -149,6 +147,20 @@ RSpec.describe RazorpayWebhookService do
         }
         expect(described_class.call(event: captured_event)).to be_success
 
+        Apartment::Tenant.switch(slug) do
+          booking = Booking.find_by(razorpay_order_id: "order_captured_123")
+          expect(booking.status).to eq("confirmed")
+          expect(booking.payment_status).to eq("advance_paid")
+        end
+      end
+
+      it "resets payment status on payment.failed" do
+        Apartment::Tenant.switch(slug) do
+          customer = create(:user, role: :customer)
+          vehicle = create(:vehicle)
+          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_failed_123", status: :pending_payment, payment_status: :pending)
+        end
+
         failed_event = {
           "event" => "payment.failed",
           "payload" => { "payment" => { "entity" => { "order_id" => "order_failed_123", "status" => "failed", "notes" => { "tenant_slug" => slug } } } }
@@ -156,16 +168,17 @@ RSpec.describe RazorpayWebhookService do
         expect(described_class.call(event: failed_event)).to be_success
 
         Apartment::Tenant.switch(slug) do
-          expect(Booking.find_by(razorpay_order_id: "order_captured_123").payment_status).to eq("advance_paid")
-          expect(Booking.find_by(razorpay_order_id: "order_failed_123").payment_status).to eq("pending")
+          booking = Booking.find_by(razorpay_order_id: "order_failed_123")
+          expect(booking.status).to eq("pending_payment")
+          expect(booking.payment_status).to eq("pending")
         end
       end
 
-      it "updates booking payment status on order.paid" do
+      it "confirms booking on order.paid" do
         Apartment::Tenant.switch(slug) do
           customer = create(:user, role: :customer)
           vehicle = create(:vehicle)
-          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_paid_123", payment_status: :pending)
+          create(:booking, vehicle: vehicle, customer: customer, razorpay_order_id: "order_paid_123", status: :pending_payment, payment_status: :pending)
         end
 
         order_event = {
@@ -175,8 +188,37 @@ RSpec.describe RazorpayWebhookService do
         expect(described_class.call(event: order_event)).to be_success
 
         Apartment::Tenant.switch(slug) do
-          expect(Booking.find_by(razorpay_order_id: "order_paid_123").payment_status).to eq("advance_paid")
+          booking = Booking.find_by(razorpay_order_id: "order_paid_123")
+          expect(booking.status).to eq("confirmed")
+          expect(booking.payment_status).to eq("advance_paid")
         end
+      end
+
+      it "logs error when tenant_slug is missing from payment event" do
+        event = {
+          "event" => "payment.captured",
+          "payload" => { "payment" => { "entity" => { "order_id" => "order_no_tenant", "status" => "captured", "notes" => {} } } }
+        }
+        expect(Rails.logger).to receive(:error).with(/payment event dropped.*tenant_slug=nil/)
+        expect(described_class.call(event: event)).to be_success
+      end
+
+      it "logs error when tenant_slug is unknown in order event" do
+        event = {
+          "event" => "order.paid",
+          "payload" => { "order" => { "entity" => { "id" => "order_unknown", "status" => "paid", "notes" => { "tenant_slug" => "nonexistent_tenant" } } } }
+        }
+        expect(Rails.logger).to receive(:error).with(/order event dropped.*tenant_slug="nonexistent_tenant"/)
+        expect(described_class.call(event: event)).to be_success
+      end
+
+      it "logs error when no booking matches the order_id in payment event" do
+        event = {
+          "event" => "payment.captured",
+          "payload" => { "payment" => { "entity" => { "order_id" => "order_no_match", "status" => "captured", "notes" => { "tenant_slug" => slug } } } }
+        }
+        expect(Rails.logger).to receive(:error).with(/no booking found for order_id=order_no_match/)
+        expect(described_class.call(event: event)).to be_success
       end
     end
 

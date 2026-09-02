@@ -128,11 +128,21 @@ RSpec.describe "Api::V1::Bookings", :tenant_schema, type: :request do
   end
 
   describe "POST /api/v1/bookings/:id/pay_advance" do
+    let(:razorpay_secret) { "test_secret_for_spec" }
+    
+    before do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with("RAZORPAY_KEY_SECRET").and_return(razorpay_secret)
+    end
+
     it "verifies payment and confirms booking" do
       booking = in_tenant(slug) { create(:booking, customer: customer_user, vehicle: vehicle, status: :pending_payment) }
 
+      signature = OpenSSL::HMAC.hexdigest("SHA256", razorpay_secret, "#{booking.razorpay_order_id}|pay_test_999")
+
       post "/api/v1/bookings/#{booking.uuid}/pay_advance", headers: headers, params: {
-        razorpay_payment_id: "pay_test_999"
+        razorpay_payment_id: "pay_test_999",
+        razorpay_signature: signature
       }
 
       expect(response).to have_http_status(:ok)

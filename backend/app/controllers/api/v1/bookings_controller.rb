@@ -101,18 +101,25 @@ module Api
         booking = Booking.find_by!(uuid: params[:id])
         authorize booking
 
-        if booking.completed?
-          return render_error(
-            code: "invalid_transition",
-            message: I18n.t("errors.cannot_cancel_completed", default: "Completed booking cannot be cancelled"),
-            status: :unprocessable_content
-          )
+        result = BookingCancellationService.call(booking: booking)
+
+        if result.success?
+          render_success(data: { booking: BookingSerializer.call(result.booking) })
+        else
+          if result.errors[:booking]&.include?("cannot be cancelled")
+            render_error(
+              code: "invalid_transition",
+              message: I18n.t("errors.cannot_cancel_completed", default: "Completed booking cannot be cancelled"),
+              status: :unprocessable_content
+            )
+          else
+            render_error(
+              code: "refund_failed",
+              message: result.errors.values.flatten.first,
+              status: :unprocessable_content
+            )
+          end
         end
-
-        booking.cancelled!
-        booking.update(payment_status: :refunded) if booking.advance_paid?
-
-        render_success(data: { booking: BookingSerializer.call(booking) })
       rescue ActiveRecord::RecordNotFound
         skip_authorization
         render_error(code: "not_found", message: I18n.t("errors.not_found"), status: :not_found)

@@ -42,6 +42,9 @@ gem "rack-cors"
 # per owner). `require: "apartment"` — the gem name and require path differ.
 gem "ros-apartment", "= 3.4.4", require: "apartment"
 
+# Payment gateway integration (API calls for refunds, fetching orders, etc.)
+gem "razorpay", "= 3.2.4"
+
 # Geospatial: PostGIS column types + spatial queries for vehicle discovery.
 gem "activerecord-postgis-adapter"
 gem "rgeo"
